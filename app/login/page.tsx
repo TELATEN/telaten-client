@@ -1,33 +1,58 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Heart, Eye, EyeOff } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Heart, Eye, EyeOff } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import useLogin from "@/hooks/services/auth/use-login";
+import Spinner from "@/components/Spinner";
 
 export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { mutateAsync, isPending, error } = useLogin();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    toast({
-      title: 'Selamat Datang Kembali!',
-      description: 'Anda berhasil masuk.',
+    await mutateAsync({
+      email: formData.email,
+      password: formData.password,
     });
 
-    router.push('/dashboard');
+    if (error?.message) {
+      toast({
+        title: "Terjadi Kesalahan",
+        description: error.message,
+        variant: "destructive",
+      });
+
+      return;
+    }
+
+    toast({
+      title: "Selamat Datang Kembali!",
+      description: "Anda berhasil masuk.",
+    });
+
+    router.push("/dashboard");
   };
 
   return (
@@ -43,7 +68,9 @@ export default function LoginPage() {
 
         <Card className="shadow-xl border-2 border-pink-100">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-center">Masuk</CardTitle>
+            <CardTitle className="text-2xl font-bold text-center">
+              Masuk
+            </CardTitle>
             <CardDescription className="text-center">
               Masukkan email dan password Anda
             </CardDescription>
@@ -57,7 +84,9 @@ export default function LoginPage() {
                   type="email"
                   placeholder="nama@contoh.com"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                   required
                   className="h-12"
                 />
@@ -67,10 +96,12 @@ export default function LoginPage() {
                 <div className="relative">
                   <Input
                     id="password"
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     placeholder="Masukkan password"
                     value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
                     required
                     className="h-12 pr-10"
                   />
@@ -101,15 +132,17 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
+                disabled={isPending}
                 className="w-full h-12 text-base font-semibold bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
               >
+                {isPending && <Spinner />}
                 Masuk
               </Button>
             </form>
 
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">
-                Belum punya akun?{' '}
+                Belum punya akun?{" "}
                 <Link
                   href="/register"
                   className="text-pink-600 hover:text-pink-700 font-semibold"
@@ -122,7 +155,8 @@ export default function LoginPage() {
         </Card>
 
         <p className="text-center text-xs text-gray-500 mt-6">
-          Dengan masuk, Anda menyetujui Syarat & Ketentuan dan Kebijakan Privasi kami
+          Dengan masuk, Anda menyetujui Syarat & Ketentuan dan Kebijakan Privasi
+          kami
         </p>
       </div>
     </div>
