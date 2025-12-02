@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import {
   Card,
   CardContent,
@@ -20,6 +22,11 @@ import useLogin from "@/hooks/services/auth/use-login";
 import Spinner from "@/components/Spinner";
 import { LoginParams } from "@/types";
 
+const loginSchema = z.object({
+  email: z.string().min(1, "Email wajib diisi").email("Format email tidak valid"),
+  password: z.string().min(1, "Password wajib diisi").min(6, "Password minimal 6 karakter"),
+});
+
 export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
@@ -30,6 +37,7 @@ export default function LoginPage() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginParams>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -89,13 +97,7 @@ export default function LoginPage() {
                   id="email"
                   type="email"
                   placeholder="nama@contoh.com"
-                  {...register("email", {
-                    required: "Email wajib diisi",
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: "Format email tidak valid",
-                    },
-                  })}
+                  {...register("email")}
                   className="h-12"
                 />
                 {errors.email && (
@@ -109,13 +111,7 @@ export default function LoginPage() {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Masukkan password"
-                    {...register("password", {
-                      required: "Password wajib diisi",
-                      minLength: {
-                        value: 6,
-                        message: "Password minimal 6 karakter",
-                      },
-                    })}
+                    {...register("password")}
                     className="h-12 pr-10"
                   />
                   <Button
