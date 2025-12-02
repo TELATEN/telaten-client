@@ -6,7 +6,7 @@ export interface LoginParams {
 }
 
 export interface LoginResponse {
-  token: string;
-  message: string;
+  access_token: string;
+  token_type: string;
   user: User;
 }

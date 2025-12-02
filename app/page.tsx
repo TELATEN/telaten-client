@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Heart,
   MessageCircle,
@@ -13,92 +13,112 @@ import {
   Zap,
   Shield,
   BarChart3,
-} from 'lucide-react';
+  User,
+  LogOut,
+} from "lucide-react";
+import { useAuthStore } from "@/hooks/stores/use-auth.store";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function LandingPage() {
+  const user = useAuthStore((state) => state.user);
+
   const features = [
     {
       icon: MessageCircle,
-      title: 'Curhat Keuangan',
-      description: 'Ceritakan transaksi seperti chat biasa. TELATEN akan mencatat dengan sabar dan teliti.',
+      title: "Curhat Keuangan",
+      description:
+        "Ceritakan transaksi seperti chat biasa. TELATEN akan mencatat dengan sabar dan teliti.",
     },
     {
       icon: Sparkles,
-      title: 'AI Assistant',
-      description: 'Asisten pintar yang memahami bahasa sehari-hari dan siap membantu kapan saja.',
+      title: "AI Assistant",
+      description:
+        "Asisten pintar yang memahami bahasa sehari-hari dan siap membantu kapan saja.",
     },
     {
       icon: Target,
-      title: 'Misi & Gamifikasi',
-      description: 'Naik level sambil belajar mengelola usaha dengan cara yang menyenangkan.',
+      title: "Misi & Gamifikasi",
+      description:
+        "Naik level sambil belajar mengelola usaha dengan cara yang menyenangkan.",
     },
     {
       icon: BarChart3,
-      title: 'Laporan Otomatis',
-      description: 'Lihat performa usaha dalam sekali pandang tanpa ribet hitung manual.',
+      title: "Laporan Otomatis",
+      description:
+        "Lihat performa usaha dalam sekali pandang tanpa ribet hitung manual.",
     },
     {
       icon: Zap,
-      title: 'Super Cepat',
-      description: 'Input transaksi dalam hitungan detik. Hemat waktu, fokus jualan.',
+      title: "Super Cepat",
+      description:
+        "Input transaksi dalam hitungan detik. Hemat waktu, fokus jualan.",
     },
     {
       icon: Shield,
-      title: 'Aman Terpercaya',
-      description: 'Data Anda tersimpan aman dengan enkripsi tingkat bank.',
+      title: "Aman Terpercaya",
+      description: "Data Anda tersimpan aman dengan enkripsi tingkat bank.",
     },
   ];
 
   const plans = [
     {
-      name: 'Gratis',
-      price: '0',
-      period: 'selamanya',
+      name: "Gratis",
+      price: "0",
+      period: "selamanya",
       features: [
-        'Pencatatan transaksi unlimited',
-        'Laporan keuangan dasar',
-        'AI Assistant',
-        'Misi dan gamifikasi',
-        'Support komunitas',
+        "Pencatatan transaksi unlimited",
+        "Laporan keuangan dasar",
+        "AI Assistant",
+        "Misi dan gamifikasi",
+        "Support komunitas",
       ],
-      cta: 'Mulai Gratis',
+      cta: "Mulai Gratis",
       popular: false,
     },
     {
-      name: 'Pro',
-      price: '49.000',
-      period: 'per bulan',
+      name: "Pro",
+      price: "49.000",
+      period: "per bulan",
       features: [
-        'Semua fitur Gratis',
-        'Laporan advanced & export',
-        'Integrasi WhatsApp',
-        'Analisis prediktif AI',
-        'Priority support 24/7',
-        'Multi-user access',
+        "Semua fitur Gratis",
+        "Laporan advanced & export",
+        "Integrasi WhatsApp",
+        "Analisis prediktif AI",
+        "Priority support 24/7",
+        "Multi-user access",
       ],
-      cta: 'Coba 30 Hari Gratis',
+      cta: "Coba 30 Hari Gratis",
       popular: true,
     },
   ];
 
   const testimonials = [
     {
-      name: 'Bu Siti',
-      business: 'Warung Nasi Padang',
-      quote: 'Dulu ribet banget catat untung rugi. Sekarang tinggal cerita aja, TELATEN yang kerja!',
-      avatar: '👩',
+      name: "Bu Siti",
+      business: "Warung Nasi Padang",
+      quote:
+        "Dulu ribet banget catat untung rugi. Sekarang tinggal cerita aja, TELATEN yang kerja!",
+      avatar: "👩",
     },
     {
-      name: 'Mas Budi',
-      business: 'Toko Kelontong',
-      quote: 'Gak nyangka bisa pakai aplikasi modern dengan cara yang gampang banget. Mantap!',
-      avatar: '👨',
+      name: "Mas Budi",
+      business: "Toko Kelontong",
+      quote:
+        "Gak nyangka bisa pakai aplikasi modern dengan cara yang gampang banget. Mantap!",
+      avatar: "👨",
     },
     {
-      name: 'Mbak Rina',
-      business: 'Online Shop Fashion',
-      quote: 'Level sudah 15! Serasa main game tapi yang dicapai adalah omzet naik terus.',
-      avatar: '👩‍💼',
+      name: "Mbak Rina",
+      business: "Online Shop Fashion",
+      quote:
+        "Level sudah 15! Serasa main game tapi yang dicapai adalah omzet naik terus.",
+      avatar: "👩‍💼",
     },
   ];
 
@@ -115,22 +135,46 @@ export default function LandingPage() {
                 <h1 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
                   TELATEN
                 </h1>
-                <p className="text-xs text-gray-500 hidden sm:block">Teknologi yang Sabar</p>
+                <p className="text-xs text-gray-500 hidden sm:block">
+                  Teknologi yang Sabar
+                </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <Link href="/login">
-                <Button variant="ghost" className="font-semibold">
-                  Masuk
-                </Button>
-              </Link>
-              <Link href="/register">
-                <Button className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 font-semibold shadow-lg">
-                  Daftar Gratis
-                </Button>
-              </Link>
-            </div>
+            {!!user ? (
+              <div className="flex items-center gap-3">
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Avatar>
+                      <AvatarFallback>
+                        {user.name.slice(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem>
+                      <User className="h-4 w-4 mr-2"></User> Profil
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="text-destructive">
+                      <LogOut className="h-4 w-4 mr-2"></LogOut> Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <Link href="/login">
+                  <Button variant="ghost" className="font-semibold">
+                    Masuk
+                  </Button>
+                </Link>
+                <Link href="/register">
+                  <Button className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 font-semibold shadow-lg">
+                    Daftar Gratis
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </header>
@@ -145,15 +189,15 @@ export default function LandingPage() {
             </div>
 
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-              Kelola Usaha dengan{' '}
+              Kelola Usaha dengan{" "}
               <span className="bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent">
                 Sabar & Telaten
               </span>
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
-              Aplikasi keuangan UMKM yang inklusif. Cukup ceritakan transaksi Anda seperti chat biasa,
-              TELATEN akan mencatatnya dengan sabar.
+              Aplikasi keuangan UMKM yang inklusif. Cukup ceritakan transaksi
+              Anda seperti chat biasa, TELATEN akan mencatatnya dengan sabar.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
@@ -203,7 +247,9 @@ export default function LandingPage() {
                     <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
                     <div className="w-3 h-3 rounded-full bg-green-400"></div>
                   </div>
-                  <div className="text-xs text-white/80 ml-2">TELATEN Dashboard</div>
+                  <div className="text-xs text-white/80 ml-2">
+                    TELATEN Dashboard
+                  </div>
                 </div>
               </div>
               <div className="bg-gray-900 p-8 aspect-video flex items-center justify-center">
@@ -223,11 +269,12 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-              Fitur yang <span className="text-pink-600">Powerful</span> tapi{' '}
+              Fitur yang <span className="text-pink-600">Powerful</span> tapi{" "}
               <span className="text-purple-600">Mudah</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Dirancang khusus untuk UMKM Indonesia dengan bahasa dan cara yang familiar
+              Dirancang khusus untuk UMKM Indonesia dengan bahasa dan cara yang
+              familiar
             </p>
           </div>
 
@@ -243,8 +290,12 @@ export default function LandingPage() {
                     <div className="w-14 h-14 bg-gradient-to-br from-pink-100 to-purple-100 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                       <Icon className="w-7 h-7 text-pink-600" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                    <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {feature.description}
+                    </p>
                   </CardContent>
                 </Card>
               );
@@ -268,10 +319,11 @@ export default function LandingPage() {
             {plans.map((plan, index) => (
               <Card
                 key={index}
-                className={`relative border-2 ${plan.popular
-                    ? 'border-pink-500 shadow-2xl scale-105'
-                    : 'border-gray-200'
-                  }`}
+                className={`relative border-2 ${
+                  plan.popular
+                    ? "border-pink-500 shadow-2xl scale-105"
+                    : "border-gray-200"
+                }`}
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-pink-500 to-purple-500 text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">
@@ -279,9 +331,13 @@ export default function LandingPage() {
                   </div>
                 )}
                 <CardContent className="p-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                    {plan.name}
+                  </h3>
                   <div className="mb-6">
-                    <span className="text-5xl font-bold text-gray-900">Rp {plan.price}</span>
+                    <span className="text-5xl font-bold text-gray-900">
+                      Rp {plan.price}
+                    </span>
                     <span className="text-gray-600 ml-2">/ {plan.period}</span>
                   </div>
 
@@ -296,10 +352,11 @@ export default function LandingPage() {
 
                   <Link href="/register">
                     <Button
-                      className={`w-full h-12 font-semibold ${plan.popular
-                          ? 'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600'
-                          : 'bg-gray-900 hover:bg-gray-800'
-                        }`}
+                      className={`w-full h-12 font-semibold ${
+                        plan.popular
+                          ? "bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
+                          : "bg-gray-900 hover:bg-gray-800"
+                      }`}
                     >
                       {plan.cta}
                     </Button>
@@ -331,11 +388,17 @@ export default function LandingPage() {
                       {testimonial.avatar}
                     </div>
                     <div>
-                      <h4 className="font-bold text-gray-900">{testimonial.name}</h4>
-                      <p className="text-sm text-gray-600">{testimonial.business}</p>
+                      <h4 className="font-bold text-gray-900">
+                        {testimonial.name}
+                      </h4>
+                      <p className="text-sm text-gray-600">
+                        {testimonial.business}
+                      </p>
                     </div>
                   </div>
-                  <p className="text-gray-700 italic leading-relaxed">"{testimonial.quote}"</p>
+                  <p className="text-gray-700 italic leading-relaxed">
+                    "{testimonial.quote}"
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -349,7 +412,8 @@ export default function LandingPage() {
             Siap Kelola Usaha dengan Lebih Baik?
           </h2>
           <p className="text-xl mb-10 opacity-90">
-            Bergabung dengan ribuan pemilik usaha yang sudah lebih teratur dan berkembang bersama TELATEN
+            Bergabung dengan ribuan pemilik usaha yang sudah lebih teratur dan
+            berkembang bersama TELATEN
           </p>
           <Link href="/register">
             <Button
@@ -383,33 +447,72 @@ export default function LandingPage() {
             <div>
               <h4 className="font-bold mb-4">Produk</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
-                <li><Link href="#features" className="hover:text-white">Fitur</Link></li>
-                <li><Link href="#pricing" className="hover:text-white">Harga</Link></li>
-                <li><Link href="#" className="hover:text-white">Tutorial</Link></li>
+                <li>
+                  <Link href="#features" className="hover:text-white">
+                    Fitur
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#pricing" className="hover:text-white">
+                    Harga
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-white">
+                    Tutorial
+                  </Link>
+                </li>
               </ul>
             </div>
 
             <div>
               <h4 className="font-bold mb-4">Perusahaan</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
-                <li><Link href="#" className="hover:text-white">Tentang Kami</Link></li>
-                <li><Link href="#" className="hover:text-white">Blog</Link></li>
-                <li><Link href="#" className="hover:text-white">Karir</Link></li>
+                <li>
+                  <Link href="#" className="hover:text-white">
+                    Tentang Kami
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-white">
+                    Blog
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-white">
+                    Karir
+                  </Link>
+                </li>
               </ul>
             </div>
 
             <div>
               <h4 className="font-bold mb-4">Bantuan</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
-                <li><Link href="#" className="hover:text-white">Pusat Bantuan</Link></li>
-                <li><Link href="#" className="hover:text-white">Kontak</Link></li>
-                <li><Link href="#" className="hover:text-white">Privacy Policy</Link></li>
+                <li>
+                  <Link href="#" className="hover:text-white">
+                    Pusat Bantuan
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-white">
+                    Kontak
+                  </Link>
+                </li>
+                <li>
+                  <Link href="#" className="hover:text-white">
+                    Privacy Policy
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
 
           <div className="border-t border-gray-800 pt-8 text-center text-gray-400 text-sm">
-            <p>&copy; 2024 TELATEN. All rights reserved. Made with love for Indonesian UMKM.</p>
+            <p>
+              &copy; 2024 TELATEN. All rights reserved. Made with love for
+              Indonesian UMKM.
+            </p>
           </div>
         </div>
       </footer>
