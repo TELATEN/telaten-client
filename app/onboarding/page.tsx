@@ -53,7 +53,7 @@ export default function OnboardingPage() {
     // Simulate AI processing
     setTimeout(() => {
       toast({
-        title: 'Selamat Datang di TLATEN!',
+        title: 'Selamat Datang di TELATEN!',
         description: 'Profil usaha Anda sudah tersimpan. Mari mulai berjualan!',
       });
 
@@ -69,18 +69,18 @@ export default function OnboardingPage() {
             <div className="w-20 h-20 bg-gradient-to-br from-pink-400 via-purple-400 to-cyan-400 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-lg">
               <Sparkles className="w-10 h-10 text-white animate-pulse" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Memproses Informasi Anda</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Memproses Informasi Anda</h1>
             <div className="flex items-center justify-center mb-6">
               <Loader2 className="w-8 h-8 animate-spin text-pink-500 mr-3" />
               <div className="text-left">
-                <p className="text-gray-700 font-medium">Menganalisis data usaha Anda...</p>
-                <p className="text-sm text-gray-500">Membuat milestone personal dengan AI</p>
+                <p className="text-gray-700 dark:text-gray-300 font-medium">Menganalisis data usaha Anda...</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Membuat milestone personal dengan AI</p>
               </div>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
               <div className="bg-gradient-to-r from-pink-500 to-purple-500 h-2 rounded-full animate-pulse" style={{ width: '70%' }}></div>
             </div>
-            <p className="text-sm text-gray-500">Mohon tunggu sebentar...</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">Mohon tunggu sebentar...</p>
           </div>
         ) : (
           <>
@@ -88,20 +88,19 @@ export default function OnboardingPage() {
               <div className="w-20 h-20 bg-gradient-to-br from-pink-400 via-purple-400 to-cyan-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                 <Heart className="w-10 h-10 text-white" fill="white" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">Mari Kenalan Dulu!</h1>
-              <p className="text-gray-600">Ceritakan sedikit tentang usaha Anda</p>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Mari Kenalan Dulu!</h1>
+              <p className="text-gray-600 dark:text-gray-400">Ceritakan sedikit tentang usaha Anda</p>
 
               <div className="flex items-center justify-center gap-2 mt-4">
                 {[1, 2, 3].map((i) => (
                   <div
                     key={i}
-                    className={`h-2 rounded-full transition-all ${
-                      i === step
+                    className={`h-2 rounded-full transition-all ${i === step
                         ? 'w-8 bg-gradient-to-r from-pink-500 to-purple-500'
                         : i < step
-                        ? 'w-2 bg-pink-300'
-                        : 'w-2 bg-gray-300'
-                    }`}
+                          ? 'w-2 bg-pink-300'
+                          : 'w-2 bg-gray-300'
+                      }`}
                   />
                 ))}
               </div>
@@ -115,8 +114,8 @@ export default function OnboardingPage() {
                       <div className="w-20 h-20 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
                         <Store className="w-10 h-10 text-pink-600" />
                       </div>
-                      <h2 className="text-xl font-semibold text-gray-900 mb-2">Apa nama usaha Anda?</h2>
-                      <p className="text-gray-600 text-sm">Nama ini akan muncul di dashboard Anda</p>
+                      <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Apa nama usaha Anda?</h2>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">Nama ini akan muncul di dashboard Anda</p>
                     </div>
 
                     <div className="space-y-4">
@@ -127,10 +126,10 @@ export default function OnboardingPage() {
                         onChange={(e) =>
                           setFormData({ ...formData, businessName: e.target.value })
                         }
-                        className="h-16 text-lg text-center font-medium border-2 border-gray-200 focus:border-pink-500 rounded-xl"
+                        className="h-16 text-lg text-center font-medium border-2 border-gray-200 dark:border-gray-700/30 focus:border-pink-500 rounded-xl"
                         autoFocus
                       />
-                      <p className="text-xs text-gray-500 text-center">Ketik nama usaha Anda di atas</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 text-center">Ketik nama usaha Anda di atas</p>
                     </div>
                   </div>
                 )}
@@ -141,8 +140,8 @@ export default function OnboardingPage() {
                       <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-cyan-100 rounded-full flex items-center justify-center mx-auto mb-6">
                         <Package className="w-10 h-10 text-purple-600" />
                       </div>
-                      <h2 className="text-xl font-semibold text-gray-900 mb-2">Jenis usaha apa yang Anda jalankan?</h2>
-                      <p className="text-gray-600 text-sm">Pilih yang paling sesuai dengan bisnis Anda</p>
+                      <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Jenis usaha apa yang Anda jalankan?</h2>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">Pilih yang paling sesuai dengan bisnis Anda</p>
                     </div>
 
                     <div className="grid grid-cols-1 gap-4">
@@ -151,11 +150,10 @@ export default function OnboardingPage() {
                           key={type}
                           type="button"
                           variant="outline"
-                          className={`h-16 text-base font-medium border-2 rounded-xl transition-all ${
-                            formData.businessType === type
+                          className={`h-16 text-base font-medium border-2 rounded-xl transition-all ${formData.businessType === type
                               ? 'border-pink-500 bg-pink-50 text-pink-700 shadow-lg transform scale-105'
-                              : 'border-gray-300 hover:border-pink-300 hover:bg-pink-25'
-                          }`}
+                              : 'border-gray-300 dark:border-gray-600 hover:border-pink-300 hover:bg-pink-25'
+                            }`}
                           onClick={() => setFormData({ ...formData, businessType: type })}
                         >
                           {type}
@@ -171,8 +169,8 @@ export default function OnboardingPage() {
                       <div className="w-20 h-20 bg-gradient-to-br from-cyan-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-6">
                         <MapPin className="w-10 h-10 text-cyan-600" />
                       </div>
-                      <h2 className="text-xl font-semibold text-gray-900 mb-2">Di mana lokasi usaha Anda?</h2>
-                      <p className="text-gray-600 text-sm">Bantu kami memahami area operasi Anda</p>
+                      <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Di mana lokasi usaha Anda?</h2>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm">Bantu kami memahami area operasi Anda</p>
                     </div>
 
                     <div className="space-y-6">
@@ -182,9 +180,9 @@ export default function OnboardingPage() {
                           placeholder="Kota/Kabupaten"
                           value={formData.location}
                           onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                          className="h-16 text-lg text-center font-medium border-2 border-gray-200 focus:border-pink-500 rounded-xl"
+                          className="h-16 text-lg text-center font-medium border-2 border-gray-200 dark:border-gray-700/30 focus:border-pink-500 rounded-xl"
                         />
-                        <p className="text-xs text-gray-500 text-center">Contoh: Jakarta Selatan</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 text-center">Contoh: Jakarta Selatan</p>
                       </div>
 
                       <div className="space-y-3">
@@ -195,9 +193,9 @@ export default function OnboardingPage() {
                           onChange={(e) =>
                             setFormData({ ...formData, mainProduct: e.target.value })
                           }
-                          className="h-16 text-lg text-center font-medium border-2 border-gray-200 focus:border-pink-500 rounded-xl"
+                          className="h-16 text-lg text-center font-medium border-2 border-gray-200 dark:border-gray-700/30 focus:border-pink-500 rounded-xl"
                         />
-                        <p className="text-xs text-gray-500 text-center">Contoh: Nasi goreng, Minuman</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 text-center">Contoh: Nasi goreng, Minuman</p>
                       </div>
                     </div>
                   </div>
@@ -227,7 +225,7 @@ export default function OnboardingPage() {
               </CardContent>
             </Card>
 
-            <p className="text-center text-sm text-gray-500 mt-4">
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
               Langkah {step} dari 3
             </p>
           </>

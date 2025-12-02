@@ -57,26 +57,26 @@ export default function ProfilPage() {
   const handleHelp = () => {
     toast({
       title: 'Pusat Bantuan',
-      description: 'TLATEN siap membantu Anda! Hubungi kami kapan saja.',
+      description: 'TELATEN siap membantu Anda! Hubungi kami kapan saja.',
     });
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-2xl mx-auto px-4 py-6 md:py-8">
         <header className="mb-6">
           <Card className="bg-gradient-to-br from-pink-400 via-purple-400 to-cyan-400 border-0 shadow-lg">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
                 <Avatar className="w-20 h-20 border-4 border-white shadow-md">
-                  <AvatarFallback className="text-2xl font-bold bg-white text-pink-600">
+                  <AvatarFallback className="text-2xl font-bold bg-white dark:bg-gray-800 text-pink-600">
                     {user.name.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
                   <h1 className="text-2xl font-bold text-white mb-1">{user.name}</h1>
                   <p className="text-white/90 mb-2">{user.businessName}</p>
-                  <Badge className="bg-white/20 text-white border-white/30 backdrop-blur-sm">
+                  <Badge className="bg-white dark:bg-gray-800/20 text-white border-white/30 backdrop-blur-sm">
                     Level {user.level} - {user.levelTitle}
                   </Badge>
                 </div>
@@ -89,22 +89,22 @@ export default function ProfilPage() {
           <Card>
             <CardContent className="p-4 text-center">
               <Trophy className="w-6 h-6 text-yellow-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-900">{totalXP}</p>
-              <p className="text-xs text-gray-600">Total XP</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalXP}</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">Total XP</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <Target className="w-6 h-6 text-green-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-900">{completedMissions}</p>
-              <p className="text-xs text-gray-600">Misi Selesai</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{completedMissions}</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">Misi Selesai</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <Sparkles className="w-6 h-6 text-purple-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-900">{user.level}</p>
-              <p className="text-xs text-gray-600">Level Saat Ini</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{user.level}</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">Level Saat Ini</p>
             </CardContent>
           </Card>
         </div>
@@ -123,19 +123,17 @@ export default function ProfilPage() {
                 return (
                   <div
                     key={achievement.id}
-                    className={`p-4 rounded-lg text-center transition-all ${
-                      achievement.unlocked
+                    className={`p-4 rounded-lg text-center transition-all ${achievement.unlocked
                         ? 'bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-300'
-                        : 'bg-gray-100 opacity-50'
-                    }`}
+                        : 'bg-gray-100 dark:bg-gray-700 opacity-50'
+                      }`}
                   >
                     <Icon
-                      className={`w-8 h-8 mx-auto mb-2 ${
-                        achievement.unlocked ? 'text-yellow-600' : 'text-gray-400'
-                      }`}
+                      className={`w-8 h-8 mx-auto mb-2 ${achievement.unlocked ? 'text-yellow-600' : 'text-gray-400'
+                        }`}
                     />
-                    <p className="text-sm font-medium text-gray-700 mb-1">{achievement.name}</p>
-                    <p className="text-xs text-gray-500">{achievement.description}</p>
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{achievement.name}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{achievement.description}</p>
                   </div>
                 );
               })}
@@ -151,7 +149,7 @@ export default function ProfilPage() {
                 variant="ghost"
                 className="w-full justify-start h-14 px-5 text-base"
               >
-                <User className="w-5 h-5 mr-3 text-gray-600" />
+                <User className="w-5 h-5 mr-3 text-gray-600 dark:text-gray-400" />
                 Edit Profil
               </Button>
             </CardContent>
@@ -164,7 +162,7 @@ export default function ProfilPage() {
                 variant="ghost"
                 className="w-full justify-start h-14 px-5 text-base"
               >
-                <Store className="w-5 h-5 mr-3 text-gray-600" />
+                <Store className="w-5 h-5 mr-3 text-gray-600 dark:text-gray-400" />
                 Informasi Usaha
               </Button>
             </CardContent>
@@ -177,7 +175,7 @@ export default function ProfilPage() {
                 variant="ghost"
                 className="w-full justify-start h-14 px-5 text-base"
               >
-                <Settings className="w-5 h-5 mr-3 text-gray-600" />
+                <Settings className="w-5 h-5 mr-3 text-gray-600 dark:text-gray-400" />
                 Pengaturan
               </Button>
             </CardContent>
@@ -190,7 +188,7 @@ export default function ProfilPage() {
                 variant="ghost"
                 className="w-full justify-start h-14 px-5 text-base"
               >
-                <HelpCircle className="w-5 h-5 mr-3 text-gray-600" />
+                <HelpCircle className="w-5 h-5 mr-3 text-gray-600 dark:text-gray-400" />
                 Pusat Bantuan
               </Button>
             </CardContent>

@@ -20,7 +20,7 @@ export default function KeuanganPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-2xl mx-auto px-4 py-6 md:py-8">
         <header className="mb-6">
           <div className="flex items-center gap-3 mb-4">
@@ -28,16 +28,16 @@ export default function KeuanganPage() {
               <Wallet className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Keuangan Curhat</h1>
-              <p className="text-gray-600">Ceritakan transaksi seperti chat</p>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Keuangan Curhat</h1>
+              <p className="text-gray-600 dark:text-gray-400">Ceritakan transaksi seperti chat</p>
             </div>
           </div>
 
-          <Card className="bg-gradient-to-br from-pink-50 to-purple-50 border-2 border-pink-200">
+          <Card className="bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 border-2 border-pink-200 dark:border-pink-800/30">
             <CardContent className="p-5">
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Pemasukan</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Pemasukan</p>
                   <div className="flex items-center gap-1">
                     <TrendingUp className="w-4 h-4 text-green-600" />
                     <p className="text-sm font-bold text-green-700">
@@ -46,7 +46,7 @@ export default function KeuanganPage() {
                   </div>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Pengeluaran</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Pengeluaran</p>
                   <div className="flex items-center gap-1">
                     <TrendingDown className="w-4 h-4 text-red-600" />
                     <p className="text-sm font-bold text-red-700">
@@ -55,7 +55,7 @@ export default function KeuanganPage() {
                   </div>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Laba/Rugi</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-1">Laba/Rugi</p>
                   <p
                     className={`text-sm font-bold ${
                       summary.profit >= 0 ? 'text-green-700' : 'text-red-700'
@@ -70,7 +70,7 @@ export default function KeuanganPage() {
         </header>
 
         <div className="mb-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Riwayat Transaksi</h2>
+          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Riwayat Transaksi</h2>
           <div className="space-y-3">
             {transactions.map((transaction) => (
               <Card
@@ -84,11 +84,11 @@ export default function KeuanganPage() {
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <p className="font-semibold text-gray-900 mb-1">
+                      <p className="font-semibold text-gray-900 dark:text-white mb-1">
                         {transaction.description}
                       </p>
-                      <div className="flex items-center gap-2 text-xs text-gray-600">
-                        <span className="px-2 py-1 bg-white rounded">
+                      <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                        <span className="px-2 py-1 bg-white dark:bg-gray-800 rounded">
                           {transaction.category}
                         </span>
                         <span>

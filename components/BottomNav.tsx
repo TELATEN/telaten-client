@@ -21,7 +21,7 @@ export function BottomNav() {
   const isCenterActive = pathname === centerItem.href;
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 md:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 border-t border-gray-200/50 dark:border-gray-700/50 md:hidden">
       <div className="flex items-center justify-around h-16 safe-area-bottom relative">
         {navItems.slice(0, 2).map((item) => {
           const isActive = pathname === item.href;
@@ -34,8 +34,8 @@ export function BottomNav() {
               className={cn(
                 'flex flex-col items-center justify-center flex-1 h-full transition-colors',
                 isActive
-                  ? 'text-pink-600'
-                  : 'text-gray-500 hover:text-pink-500'
+                  ? 'text-pink-600 dark:text-pink-400'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-pink-500'
               )}
             >
               <Icon className="w-6 h-6 mb-1" />
@@ -58,7 +58,7 @@ export function BottomNav() {
           </div>
           <span className={cn(
             "text-xs font-medium mt-1",
-            isCenterActive ? "text-pink-600" : "text-gray-500"
+            isCenterActive ? "text-pink-600 dark:text-pink-400" : "text-gray-500 dark:text-gray-400"
           )}>
             {centerItem.label}
           </span>
@@ -75,8 +75,8 @@ export function BottomNav() {
               className={cn(
                 'flex flex-col items-center justify-center flex-1 h-full transition-colors',
                 isActive
-                  ? 'text-pink-600'
-                  : 'text-gray-500 hover:text-pink-500'
+                  ? 'text-pink-600 dark:text-pink-400'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-pink-500'
               )}
             >
               <Icon className="w-6 h-6 mb-1" />

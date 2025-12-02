@@ -36,7 +36,7 @@ export default function RegisterPage() {
 
     toast({
       title: 'Pendaftaran Berhasil!',
-      description: 'Selamat datang di TLATEN. Mari kita mulai perjalanan Anda!',
+      description: 'Selamat datang di TELATEN. Mari kita mulai perjalanan Anda!',
     });
 
     router.push('/onboarding');
@@ -49,8 +49,8 @@ export default function RegisterPage() {
           <div className="w-20 h-20 bg-gradient-to-br from-pink-400 via-purple-400 to-cyan-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
             <Heart className="w-10 h-10 text-white" fill="white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">TLATEN</h1>
-          <p className="text-gray-600">Teknologi yang Sabar</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">TELATEN</h1>
+          <p className="text-gray-600 dark:text-gray-400">Teknologi yang Sabar</p>
         </div>
 
         <Card className="shadow-xl border-2 border-pink-100">
@@ -122,9 +122,9 @@ export default function RegisterPage() {
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-500" />
+                      <EyeOff className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                     ) : (
-                      <Eye className="h-4 w-4 text-gray-500" />
+                      <Eye className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                     )}
                   </Button>
                 </div>
@@ -152,7 +152,7 @@ export default function RegisterPage() {
             </form>
 
             <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 Sudah punya akun?{' '}
                 <Link
                   href="/login"
@@ -165,7 +165,7 @@ export default function RegisterPage() {
           </CardContent>
         </Card>
 
-        <p className="text-center text-xs text-gray-500 mt-6">
+        <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-6">
           Dengan mendaftar, Anda menyetujui Syarat & Ketentuan dan Kebijakan Privasi kami
         </p>
       </div>

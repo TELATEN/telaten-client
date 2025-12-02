@@ -23,7 +23,7 @@ export default function AssistantPage() {
     {
       id: '1',
       type: 'assistant',
-      content: 'Halo! Saya TLATEN, asisten digital Anda. Ceritakan apa yang ingin Anda lakukan hari ini?',
+      content: 'Halo! Saya TELATEN, asisten digital Anda. Ceritakan apa yang ingin Anda lakukan hari ini?',
       timestamp: new Date(),
     },
   ]);
@@ -50,7 +50,7 @@ export default function AssistantPage() {
         const assistantReply: Message = {
           id: (Date.now() + 1).toString(),
           type: 'assistant',
-          content: 'Baik, saya mengerti. TLATEN akan membantu Anda dengan sabar!',
+          content: 'Baik, saya mengerti. TELATEN akan membantu Anda dengan sabar!',
           timestamp: new Date(),
         };
         setMessages((prev) => [...prev, assistantReply]);
@@ -61,9 +61,9 @@ export default function AssistantPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Mobile Header */}
-      <div className="sticky top-0 bg-white border-b border-gray-200 z-10 md:hidden">
+      <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200/50 dark:border-gray-700/50 z-10 md:hidden">
         <div className="flex items-center justify-between px-4 py-3">
           <Button
             variant="ghost"
@@ -74,41 +74,40 @@ export default function AssistantPage() {
             <ArrowLeft className="w-4 h-4" />
             Kembali
           </Button>
-          <h1 className="text-lg font-semibold">TLATEN Assistant</h1>
+          <h1 className="text-lg font-semibold">TELATEN Assistant</h1>
           <div className="w-16" /> {/* Spacer for centering */}
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 py-6 md:py-8">
-        <header className="mb-6">
+      <div className="max-w-2xl mx-auto px-4 py-6 md:py-8 min-h-[calc(100vh-80px)] md:min-h-[calc(100vh-0px)] flex flex-col">
+        <header className="mb-6 max-w-2xl mx-auto">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 bg-gradient-to-br from-pink-400 via-purple-400 to-cyan-400 rounded-xl flex items-center justify-center">
               <Sparkles className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">TLATEN Assistant</h1>
-              <p className="text-gray-600">Teknologi yang Sabar</p>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">TELATEN Assistant</h1>
+              <p className="text-gray-600 dark:text-gray-400">Teknologi yang Sabar</p>
             </div>
           </div>
         </header>
 
-        <div className="space-y-4 mb-24 md:mb-32">
+        <div className="space-y-4 mb-6 max-w-2xl mx-auto flex-1">
           {messages.map((message) => (
             <div
               key={message.id}
               className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[80%] rounded-2xl p-4 ${
-                  message.type === 'user'
+                className={`max-w-[80%] rounded-2xl p-4 ${message.type === 'user'
                     ? 'bg-gradient-to-br from-pink-500 to-purple-500 text-white'
-                    : 'bg-white border-2 border-gray-200 text-gray-900'
-                }`}
+                    : 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700/30 text-gray-900 dark:text-white'
+                  }`}
               >
                 {message.type === 'assistant' && (
                   <div className="flex items-center gap-2 mb-2">
                     <MessageSquare className="w-4 h-4 text-pink-500" />
-                    <span className="text-xs font-semibold text-pink-600">TLATEN</span>
+                    <span className="text-xs font-semibold text-pink-600">TELATEN</span>
                   </div>
                 )}
                 <p className="text-base leading-relaxed">{message.content}</p>
@@ -117,8 +116,9 @@ export default function AssistantPage() {
           ))}
         </div>
 
-        <div className="fixed bottom-20 md:bottom-6 left-0 right-0 px-4 max-w-2xl mx-auto">
-          <Card className="shadow-lg border-2 border-pink-200 bg-gradient-to-r from-pink-50 to-purple-50">
+        {/* Sticky Input at Bottom */}
+        <div className="sticky bottom-0 pb-20 md:pb-6 mt-auto">
+          <Card className="shadow-lg border-2 border-pink-200 dark:border-pink-800/30 bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20">
             <CardContent className="p-4">
               <div className="flex items-center gap-2">
                 <Button
@@ -132,7 +132,7 @@ export default function AssistantPage() {
                   value={messageInput}
                   onChange={(e) => setMessageInput(e.target.value)}
                   placeholder="Ketik transaksi atau gunakan voice..."
-                  className="flex-1 h-12 text-base bg-white"
+                  className="flex-1 h-12 text-base bg-white dark:bg-gray-800"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       handleSendMessage();
@@ -147,7 +147,7 @@ export default function AssistantPage() {
                   <Send className="w-5 h-5" />
                 </Button>
               </div>
-              <p className="text-xs text-gray-500 mt-2 text-center">
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
                 Contoh: "Tadi jual 10 nasi goreng @ 15rb"
               </p>
             </CardContent>

@@ -37,9 +37,9 @@ export default function EditProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Mobile Header */}
-      <div className="sticky top-0 bg-white border-b border-gray-200 z-10 md:hidden">
+      <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200/50 dark:border-gray-700/50 z-10 md:hidden">
         <div className="flex items-center justify-between px-4 py-3">
           <Button
             variant="ghost"
@@ -74,7 +74,7 @@ export default function EditProfilePage() {
                   <Camera className="w-4 h-4" />
                 </Button>
               </div>
-              <p className="text-sm text-gray-500 text-center">
+              <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
                 Ketuk ikon kamera untuk mengubah foto profil
               </p>
             </div>
@@ -131,15 +131,15 @@ export default function EditProfilePage() {
             <CardTitle>Informasi Level</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-pink-50 to-purple-50 rounded-lg">
+            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 rounded-lg">
               <div>
-                <p className="font-medium text-gray-900">Level {user.level}</p>
-                <p className="text-sm text-gray-600">{user.levelTitle}</p>
-                <p className="text-xs text-gray-500 mt-1">{user.xp} XP terkumpul</p>
+                <p className="font-medium text-gray-900 dark:text-white">Level {user.level}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">{user.levelTitle}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{user.xp} XP terkumpul</p>
               </div>
               <div className="text-right">
                 <p className="text-2xl font-bold text-pink-600">{user.xp}</p>
-                <p className="text-xs text-gray-500">Total XP</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Total XP</p>
               </div>
             </div>
           </CardContent>
