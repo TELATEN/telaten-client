@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 import {
   Card,
   CardContent,
@@ -17,24 +18,29 @@ import { Heart, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import useLogin from "@/hooks/services/auth/use-login";
 import Spinner from "@/components/Spinner";
+import { LoginParams } from "@/types";
 
 export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginParams>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   const { mutateAsync, isPending, error } = useLogin();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const onSubmit = async (data: LoginParams) => {
     await mutateAsync({
-      email: formData.email,
-      password: formData.password,
+      ...data,
     });
 
     if (error?.message) {
@@ -76,20 +82,25 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="nama@contoh.com"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  required
+                  {...register("email", {
+                    required: "Email wajib diisi",
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "Format email tidak valid",
+                    },
+                  })}
                   className="h-12"
                 />
+                {errors.email && (
+                  <p className="text-sm text-red-500">{errors.email.message}</p>
+                )}
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
@@ -98,11 +109,13 @@ export default function LoginPage() {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Masukkan password"
-                    value={formData.password}
-                    onChange={(e) =>
-                      setFormData({ ...formData, password: e.target.value })
-                    }
-                    required
+                    {...register("password", {
+                      required: "Password wajib diisi",
+                      minLength: {
+                        value: 6,
+                        message: "Password minimal 6 karakter",
+                      },
+                    })}
                     className="h-12 pr-10"
                   />
                   <Button
@@ -119,6 +132,11 @@ export default function LoginPage() {
                     )}
                   </Button>
                 </div>
+                {errors.password && (
+                  <p className="text-sm text-red-500">
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
 
               <div className="flex items-center justify-end">
