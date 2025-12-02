@@ -87,7 +87,7 @@ export default function AssistantPage() {
             </div>
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">TELATEN Assistant</h1>
-              <p className="text-gray-600 dark:text-gray-400">Teknologi yang Sabar</p>
+              <p className="text-gray-600 dark:text-gray-400">Maju Pelan-pelan, Usaha Jadi Mapapan</p>
             </div>
           </div>
         </header>
@@ -100,8 +100,8 @@ export default function AssistantPage() {
             >
               <div
                 className={`max-w-[80%] rounded-2xl p-4 ${message.type === 'user'
-                    ? 'bg-gradient-to-br from-pink-500 to-purple-500 text-white'
-                    : 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700/30 text-gray-900 dark:text-white'
+                  ? 'bg-gradient-to-br from-pink-500 to-purple-500 text-white'
+                  : 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700/30 text-gray-900 dark:text-white'
                   }`}
               >
                 {message.type === 'assistant' && (

@@ -179,10 +179,7 @@ export default function SettingsPage() {
             <Button
               variant="ghost"
               className="w-full justify-start h-14 px-5 text-base dark:text-white dark:hover:bg-gray-700"
-              onClick={() => toast({
-                title: 'Pusat Bantuan',
-                description: 'Fitur ini akan segera tersedia.',
-              })}
+              onClick={() => router.push('/help')}
             >
               <HelpCircle className="w-5 h-5 mr-3 text-gray-600 dark:text-gray-400" />
               Pusat Bantuan
@@ -208,7 +205,7 @@ export default function SettingsPage() {
         <Card className="dark:bg-gray-800 dark:border-gray-700">
           <CardContent className="p-6 text-center">
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">TLATEN v1.0.0</p>
-            <p className="text-xs text-gray-400 dark:text-gray-500">Teknologi yang Sabar</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500">Maju Pelan-pelan, Usaha Jadi Mapapan.</p>
           </CardContent>
         </Card>
       </div>

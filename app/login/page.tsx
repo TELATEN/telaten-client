@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Heart, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import useLogin from "@/hooks/services/auth/use-login";
 import Spinner from "@/components/Spinner";
@@ -70,17 +71,23 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-gradient-to-br from-pink-400 via-purple-400 to-cyan-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-            <Heart className="w-10 h-10 text-white" fill="white" />
+          <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg overflow-hidden bg-white">
+            <Image
+              src="/images/logo-telaten.png"
+              alt="TELATEN Logo"
+              width={80}
+              height={80}
+              className="object-cover"
+            />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">TELATEN</h1>
-          <p className="text-gray-600 dark:text-gray-400">Teknologi yang Sabar</p>
+          <p className="text-gray-600 dark:text-gray-400">Maju Pelan-pelan, Usaha Jadi Mapapan</p>
         </div>
 
-        <Card className="shadow-xl border-2 border-pink-100">
+        <Card className="shadow-xl border-2 border-pink-100 dark:border-pink-900/30">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold text-center">
               Masuk
@@ -138,7 +145,7 @@ export default function LoginPage() {
               <div className="flex items-center justify-end">
                 <Link
                   href="/forgot-password"
-                  className="text-sm text-pink-600 hover:text-pink-700 font-medium"
+                  className="text-sm text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 font-medium"
                 >
                   Lupa password?
                 </Link>
@@ -159,7 +166,7 @@ export default function LoginPage() {
                 Belum punya akun?{' '}
                 <Link
                   href="/register"
-                  className="text-pink-600 hover:text-pink-700 font-semibold"
+                  className="text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 font-semibold"
                 >
                   Daftar Sekarang
                 </Link>

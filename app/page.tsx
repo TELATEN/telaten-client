@@ -129,10 +129,10 @@ export default function LandingPage() {
           <div className="flex items-center justify-between h-16 md:h-20">
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg overflow-hidden">
-                <Image 
-                  src="/images/logo-telaten.png" 
-                  alt="TELATEN Logo" 
-                  width={40} 
+                <Image
+                  src="/images/logo-telaten.png"
+                  alt="TELATEN Logo"
+                  width={40}
                   height={40}
                   className="object-cover"
                 />
@@ -141,7 +141,7 @@ export default function LandingPage() {
                 <h1 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
                   TELATEN
                 </h1>
-                <p className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">Teknologi yang Sabar</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">Maju Pelan-pelan, Usaha Jadi Mapapan</p>
               </div>
             </div>
 
@@ -257,10 +257,10 @@ export default function LandingPage() {
               <div className="bg-gray-900 p-8 aspect-video flex items-center justify-center">
                 <div className="text-center">
                   <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl animate-pulse overflow-hidden bg-white">
-                    <Image 
-                      src="/images/logo-telaten.png" 
-                      alt="TELATEN Logo" 
-                      width={80} 
+                    <Image
+                      src="/images/logo-telaten.png"
+                      alt="TELATEN Logo"
+                      width={80}
                       height={80}
                       className="object-cover"
                     />
@@ -323,8 +323,8 @@ export default function LandingPage() {
               <Card
                 key={index}
                 className={`relative border-2 ${plan.popular
-                    ? 'border-pink-500 dark:border-pink-600 shadow-2xl scale-105'
-                    : 'border-gray-200 dark:border-gray-800'
+                  ? 'border-pink-500 dark:border-pink-600 shadow-2xl scale-105'
+                  : 'border-gray-200 dark:border-gray-800'
                   }`}
               >
                 {plan.popular && (
@@ -350,11 +350,10 @@ export default function LandingPage() {
 
                   <Link href="/register">
                     <Button
-                      className={`w-full h-12 font-semibold ${
-                        plan.popular
-                          ? "bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
-                          : "bg-gray-900 hover:bg-gray-800"
-                      }`}
+                      className={`w-full h-12 font-semibold ${plan.popular
+                        ? 'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600'
+                        : 'bg-gray-900 hover:bg-gray-800'
+                        }`}
                     >
                       {plan.cta}
                     </Button>
@@ -424,10 +423,10 @@ export default function LandingPage() {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden bg-white">
-                  <Image 
-                    src="/images/logo-telaten.png" 
-                    alt="TELATEN Logo" 
-                    width={40} 
+                  <Image
+                    src="/images/logo-telaten.png"
+                    alt="TELATEN Logo"
+                    width={40}
                     height={40}
                     className="object-cover"
                   />
@@ -437,7 +436,7 @@ export default function LandingPage() {
                 </div>
               </div>
               <p className="text-gray-400 dark:text-gray-500 text-sm">
-                Teknologi yang Sabar untuk UMKM Indonesia
+                Maju Pelan-pelan, Usaha Jadi Mapapan untuk UMKM Indonesia
               </p>
             </div>
 

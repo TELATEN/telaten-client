@@ -3,13 +3,26 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { Home, Target, Wallet, User, PanelLeftClose, PanelLeft, MessageSquare } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { Home, Target, Wallet, User, PanelLeftClose, PanelLeft, MessageSquare, Settings, LogOut, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 export function CollapsibleSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const handleLogout = () => {
+    // Implement logout logic here
+    router.push('/login');
+  };
 
   const navItems = [
     { href: '/dashboard', label: 'Beranda', icon: Home },
@@ -47,7 +60,7 @@ export function CollapsibleSidebar() {
         ) : (
           // Extended mode: Logo is clickable link + separate collapse button
           <>
-            <Link href="/dashboard" className="flex items-center gap-2 overflow-hidden">
+            <Link href="/" className="flex items-center gap-2 overflow-hidden">
               <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 hover:bg-gray-50 transition-colors">
                 <Image
                   src="/images/logo-telaten.png"
@@ -108,28 +121,58 @@ export function CollapsibleSidebar() {
         </nav>
       </div>
 
-      {/* Bottom Section - User Profile */}
+      {/* Bottom Section - User Profile with Dropdown */}
       <div className="border-t border-gray-200/50 dark:border-gray-700/50 p-2">
-        <Link
-          href="/profil"
-          className={cn(
-            'flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors',
-            pathname === '/profil' 
-              ? 'bg-pink-50 dark:bg-pink-900/20 text-pink-600 dark:text-pink-400' 
-              : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-pink-600 dark:hover:text-pink-400'
-          )}
-        >
-          <div className="w-8 h-8 bg-gradient-to-br from-pink-400 via-purple-400 to-cyan-400 rounded-full flex items-center justify-center flex-shrink-0">
-            <User className="w-5 h-5 text-white" />
-          </div>
-          <div className={cn(
-            "flex-1 overflow-hidden transition-opacity duration-300",
-            isCollapsed ? "opacity-0 w-0" : "opacity-100"
-          )}>
-            <p className="text-sm font-medium truncate dark:text-white">Profil</p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">Lihat profil Anda</p>
-          </div>
-        </Link>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              className={cn(
+                'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors',
+                'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-pink-600 dark:hover:text-pink-400'
+              )}
+            >
+              <div className="w-8 h-8 bg-gradient-to-br from-pink-400 via-purple-400 to-cyan-400 rounded-full flex items-center justify-center flex-shrink-0">
+                <User className="w-5 h-5 text-white" />
+              </div>
+              <div className={cn(
+                "flex-1 overflow-hidden transition-opacity duration-300 text-left",
+                isCollapsed ? "opacity-0 w-0" : "opacity-100"
+              )}>
+                <p className="text-sm font-medium truncate dark:text-white">Jane Doe</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">jane@example.com</p>
+              </div>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuItem asChild>
+              <Link href="/profil" className="flex items-center gap-2 cursor-pointer">
+                <User className="w-4 h-4" />
+                <span>Profil</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/settings" className="flex items-center gap-2 cursor-pointer">
+                <Settings className="w-4 h-4" />
+                <span>Pengaturan</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link href="/" className="flex items-center gap-2 cursor-pointer">
+                <Globe className="w-4 h-4" />
+                <span>Kembali ke Beranda</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem 
+              onClick={handleLogout}
+              className="flex items-center gap-2 cursor-pointer text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Logout</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </aside>
   );

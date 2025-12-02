@@ -88,21 +88,23 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-gradient-to-br from-pink-400 via-purple-400 to-cyan-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-            <Heart className="w-10 h-10 text-white" fill="white" />
+          <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg overflow-hidden bg-white">
+            <Image
+              src="/images/logo-telaten.png"
+              alt="TELATEN Logo"
+              width={80}
+              height={80}
+              className="object-cover"
+            />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            TELATEN
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Teknologi yang Sabar
-          </p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">TELATEN</h1>
+          <p className="text-gray-600 dark:text-gray-400">Maju Pelan-pelan, Usaha Jadi Mapapan</p>
         </div>
 
-        <Card className="shadow-xl border-2 border-pink-100">
+        <Card className="shadow-xl border-2 border-pink-100 dark:border-pink-900/30">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold text-center">
               Daftar
@@ -203,7 +205,7 @@ export default function RegisterPage() {
                 Sudah punya akun?{" "}
                 <Link
                   href="/login"
-                  className="text-pink-600 hover:text-pink-700 font-semibold"
+                  className="text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 font-semibold"
                 >
                   Masuk
                 </Link>

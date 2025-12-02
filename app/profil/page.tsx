@@ -124,16 +124,16 @@ export default function ProfilPage() {
                   <div
                     key={achievement.id}
                     className={`p-4 rounded-lg text-center transition-all ${achievement.unlocked
-                        ? 'bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-300'
-                        : 'bg-gray-100 dark:bg-gray-700 opacity-50'
+                        ? 'bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/30 dark:to-orange-900/30 border-2 border-yellow-300 dark:border-yellow-700'
+                        : 'bg-gray-100 dark:bg-gray-800 opacity-50'
                       }`}
                   >
                     <Icon
-                      className={`w-8 h-8 mx-auto mb-2 ${achievement.unlocked ? 'text-yellow-600' : 'text-gray-400'
+                      className={`w-8 h-8 mx-auto mb-2 ${achievement.unlocked ? 'text-yellow-600 dark:text-yellow-500' : 'text-gray-400 dark:text-gray-600'
                         }`}
                     />
-                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{achievement.name}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{achievement.description}</p>
+                    <p className="text-sm font-medium text-gray-900 dark:text-gray-200 mb-1">{achievement.name}</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">{achievement.description}</p>
                   </div>
                 );
               })}
@@ -204,7 +204,7 @@ export default function ProfilPage() {
                   })
                 }
                 variant="ghost"
-                className="w-full justify-start h-14 px-5 text-base text-red-600 hover:text-red-700 hover:bg-red-50"
+                className="w-full justify-start h-14 px-5 text-base text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20"
               >
                 <LogOut className="w-5 h-5 mr-3" />
                 Keluar
