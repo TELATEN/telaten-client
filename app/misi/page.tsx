@@ -26,12 +26,12 @@ export default function MisiPage() {
   const handleSOS = () => {
     toast({
       title: 'Butuh Bantuan?',
-      description: 'TLATEN akan menjelaskan langkah demi langkah dengan sabar.',
+      description: 'TELATEN akan menjelaskan langkah demi langkah dengan sabar.',
     });
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-4xl mx-auto px-4 py-6 md:py-8">
         <header className="mb-6">
           <div className="flex items-center gap-3 mb-2">
@@ -39,8 +39,8 @@ export default function MisiPage() {
               <Target className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Misi Saya</h1>
-              <p className="text-gray-600">Selesaikan misi untuk naik level</p>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Misi Saya</h1>
+              <p className="text-gray-600 dark:text-gray-400">Selesaikan misi untuk naik level</p>
             </div>
           </div>
         </header>
@@ -49,22 +49,22 @@ export default function MisiPage() {
           <Card>
             <CardContent className="p-4 text-center">
               <Clock className="w-6 h-6 text-yellow-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-900">{pendingMissions.length}</p>
-              <p className="text-xs text-gray-600">Belum Mulai</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{pendingMissions.length}</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">Belum Mulai</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <Target className="w-6 h-6 text-blue-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-900">{inReviewMissions.length}</p>
-              <p className="text-xs text-gray-600">Dalam Review</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{inReviewMissions.length}</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">Dalam Review</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <CheckCircle2 className="w-6 h-6 text-green-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-900">{completedMissions.length}</p>
-              <p className="text-xs text-gray-600">Selesai</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">{completedMissions.length}</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">Selesai</p>
             </CardContent>
           </Card>
         </div>
@@ -89,7 +89,7 @@ export default function MisiPage() {
             ) : (
               <Card>
                 <CardContent className="p-8 text-center">
-                  <p className="text-gray-500">Tidak ada misi tersedia</p>
+                  <p className="text-gray-500 dark:text-gray-400">Tidak ada misi tersedia</p>
                 </CardContent>
               </Card>
             )}
@@ -108,7 +108,7 @@ export default function MisiPage() {
             ) : (
               <Card>
                 <CardContent className="p-8 text-center">
-                  <p className="text-gray-500">Tidak ada misi dalam review</p>
+                  <p className="text-gray-500 dark:text-gray-400">Tidak ada misi dalam review</p>
                 </CardContent>
               </Card>
             )}
@@ -127,7 +127,7 @@ export default function MisiPage() {
             ) : (
               <Card>
                 <CardContent className="p-8 text-center">
-                  <p className="text-gray-500">Belum ada misi yang selesai</p>
+                  <p className="text-gray-500 dark:text-gray-400">Belum ada misi yang selesai</p>
                   <p className="text-sm text-gray-400 mt-2">
                     Mulai kerjakan misi untuk mendapatkan XP dan naik level!
                   </p>

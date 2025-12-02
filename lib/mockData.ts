@@ -52,7 +52,7 @@ export const mockMissions: Mission[] = [
   {
     id: '1',
     title: 'Catat Penjualan Hari Ini',
-    description: 'Ceritakan apa saja yang terjual hari ini. TLATEN akan membantu mencatatnya.',
+    description: 'Ceritakan apa saja yang terjual hari ini. TELATEN akan membantu mencatatnya.',
     difficulty: 'mudah',
     xpReward: 50,
     status: 'pending',
@@ -61,7 +61,7 @@ export const mockMissions: Mission[] = [
   {
     id: '2',
     title: 'Foto Produk Terbaik',
-    description: 'Ambil foto produk yang paling laris. TLATEN akan bantu buat postingan.',
+    description: 'Ambil foto produk yang paling laris. TELATEN akan bantu buat postingan.',
     difficulty: 'mudah',
     xpReward: 75,
     status: 'pending',
@@ -71,7 +71,7 @@ export const mockMissions: Mission[] = [
   {
     id: '3',
     title: 'Hitung Laba Rugi Minggu Ini',
-    description: 'TLATEN akan tanya beberapa pertanyaan tentang pengeluaran dan pemasukan.',
+    description: 'TELATEN akan tanya beberapa pertanyaan tentang pengeluaran dan pemasukan.',
     difficulty: 'sedang',
     xpReward: 100,
     status: 'in-review',

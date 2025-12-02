@@ -20,7 +20,7 @@ export default function LandingPage() {
     {
       icon: MessageCircle,
       title: 'Curhat Keuangan',
-      description: 'Ceritakan transaksi seperti chat biasa. TLATEN akan mencatat dengan sabar dan teliti.',
+      description: 'Ceritakan transaksi seperti chat biasa. TELATEN akan mencatat dengan sabar dan teliti.',
     },
     {
       icon: Sparkles,
@@ -85,7 +85,7 @@ export default function LandingPage() {
     {
       name: 'Bu Siti',
       business: 'Warung Nasi Padang',
-      quote: 'Dulu ribet banget catat untung rugi. Sekarang tinggal cerita aja, TLATEN yang kerja!',
+      quote: 'Dulu ribet banget catat untung rugi. Sekarang tinggal cerita aja, TELATEN yang kerja!',
       avatar: '👩',
     },
     {
@@ -113,7 +113,7 @@ export default function LandingPage() {
               </div>
               <div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-                  TLATEN
+                  TELATEN
                 </h1>
                 <p className="text-xs text-gray-500 hidden sm:block">Teknologi yang Sabar</p>
               </div>
@@ -153,7 +153,7 @@ export default function LandingPage() {
 
             <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
               Aplikasi keuangan UMKM yang inklusif. Cukup ceritakan transaksi Anda seperti chat biasa,
-              TLATEN akan mencatatnya dengan sabar.
+              TELATEN akan mencatatnya dengan sabar.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
@@ -203,7 +203,7 @@ export default function LandingPage() {
                     <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
                     <div className="w-3 h-3 rounded-full bg-green-400"></div>
                   </div>
-                  <div className="text-xs text-white/80 ml-2">TLATEN Dashboard</div>
+                  <div className="text-xs text-white/80 ml-2">TELATEN Dashboard</div>
                 </div>
               </div>
               <div className="bg-gray-900 p-8 aspect-video flex items-center justify-center">
@@ -268,11 +268,10 @@ export default function LandingPage() {
             {plans.map((plan, index) => (
               <Card
                 key={index}
-                className={`relative border-2 ${
-                  plan.popular
+                className={`relative border-2 ${plan.popular
                     ? 'border-pink-500 shadow-2xl scale-105'
                     : 'border-gray-200'
-                }`}
+                  }`}
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-pink-500 to-purple-500 text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">
@@ -297,11 +296,10 @@ export default function LandingPage() {
 
                   <Link href="/register">
                     <Button
-                      className={`w-full h-12 font-semibold ${
-                        plan.popular
+                      className={`w-full h-12 font-semibold ${plan.popular
                           ? 'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600'
                           : 'bg-gray-900 hover:bg-gray-800'
-                      }`}
+                        }`}
                     >
                       {plan.cta}
                     </Button>
@@ -317,7 +315,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-              Cerita dari Pengguna TLATEN
+              Cerita dari Pengguna TELATEN
             </h2>
             <p className="text-xl text-gray-600">
               Ribuan UMKM sudah merasakan manfaatnya
@@ -351,7 +349,7 @@ export default function LandingPage() {
             Siap Kelola Usaha dengan Lebih Baik?
           </h2>
           <p className="text-xl mb-10 opacity-90">
-            Bergabung dengan ribuan pemilik usaha yang sudah lebih teratur dan berkembang bersama TLATEN
+            Bergabung dengan ribuan pemilik usaha yang sudah lebih teratur dan berkembang bersama TELATEN
           </p>
           <Link href="/register">
             <Button
@@ -374,7 +372,7 @@ export default function LandingPage() {
                   <Heart className="w-6 h-6 text-white" fill="white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold">TLATEN</h3>
+                  <h3 className="text-xl font-bold">TELATEN</h3>
                 </div>
               </div>
               <p className="text-gray-400 text-sm">
@@ -411,7 +409,7 @@ export default function LandingPage() {
           </div>
 
           <div className="border-t border-gray-800 pt-8 text-center text-gray-400 text-sm">
-            <p>&copy; 2024 TLATEN. All rights reserved. Made with love for Indonesian UMKM.</p>
+            <p>&copy; 2024 TELATEN. All rights reserved. Made with love for Indonesian UMKM.</p>
           </div>
         </div>
       </footer>

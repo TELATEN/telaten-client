@@ -17,7 +17,7 @@ export function LevelCard({ user }: LevelCardProps) {
             <p className="text-pink-100 text-sm font-medium">Level {user.level}</p>
             <h3 className="text-white text-xl font-bold">{user.levelTitle}</h3>
           </div>
-          <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+          <div className="w-14 h-14 bg-white dark:bg-gray-800/20 rounded-full flex items-center justify-center backdrop-blur-sm">
             <Trophy className="w-8 h-8 text-white" fill="white" />
           </div>
         </div>
@@ -29,9 +29,9 @@ export function LevelCard({ user }: LevelCardProps) {
               {user.xp} / {user.xpToNextLevel}
             </span>
           </div>
-          <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/20">
+          <div className="relative h-2 w-full overflow-hidden rounded-full bg-white dark:bg-gray-800/20">
             <div
-              className="h-full bg-white transition-all"
+              className="h-full bg-white dark:bg-gray-800 transition-all"
               style={{ width: `${progressPercentage}%` }}
             />
           </div>

@@ -23,8 +23,8 @@ export function MissionCard({ mission, onStart, onSOS }: MissionCardProps) {
       <CardContent className="p-5">
         <div className="flex items-start justify-between mb-3">
           <div className="flex-1">
-            <h3 className="text-lg font-bold text-gray-900 mb-1">{mission.title}</h3>
-            <p className="text-sm text-gray-600 leading-relaxed">{mission.description}</p>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">{mission.title}</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">{mission.description}</p>
           </div>
           {mission.autoGenerate && (
             <Sparkles className="w-5 h-5 text-purple-500 ml-2 flex-shrink-0" />

@@ -7,6 +7,7 @@ import { BottomNav } from "@/components/BottomNav";
 import { CollapsibleSidebar } from "@/components/CollapsibleSidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { QueryProvider } from "@/components/provider/QueryProvider";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,23 +26,33 @@ export default function RootLayout({
   const shouldShowBottomNav = !isAuthPage && pathname !== "/assistant";
   return (
     <QueryProvider>
-      <html lang="id">
+      <html lang="id" suppressHydrationWarning>
+        <head>
+          <link rel="icon" href="/images/logo-telaten.png" type="image/png" />
+        </head>
         <body className={inter.className}>
-          {isAuthPage ? (
-            <>
-              {children}
-              <Toaster />
-            </>
-          ) : (
-            <>
-              <div className="flex min-h-screen">
-                <CollapsibleSidebar />
-                <main className="flex-1 pb-20 md:pb-0">{children}</main>
-              </div>
-              {shouldShowBottomNav && <BottomNav />}
-              <Toaster />
-            </>
-          )}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem={false}
+            disableTransitionOnChange
+          >
+            {isAuthPage ? (
+              <>
+                {children}
+                <Toaster />
+              </>
+            ) : (
+              <>
+                <div className="flex min-h-screen">
+                  <CollapsibleSidebar />
+                  <main className="flex-1 pb-20 md:pb-0">{children}</main>
+                </div>
+                {shouldShowBottomNav && <BottomNav />}
+                <Toaster />
+              </>
+            )}
+          </ThemeProvider>
         </body>
       </html>
     </QueryProvider>

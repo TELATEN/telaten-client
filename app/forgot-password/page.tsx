@@ -32,8 +32,8 @@ export default function ForgotPasswordPage() {
           <div className="w-20 h-20 bg-gradient-to-br from-pink-400 via-purple-400 to-cyan-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
             <Heart className="w-10 h-10 text-white" fill="white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">TLATEN</h1>
-          <p className="text-gray-600">Teknologi yang Sabar</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">TELATEN</h1>
+          <p className="text-gray-600 dark:text-gray-400">Teknologi yang Sabar</p>
         </div>
 
         <Card className="shadow-xl border-2 border-pink-100">
@@ -98,8 +98,8 @@ export default function ForgotPasswordPage() {
           </CardContent>
         </Card>
 
-        <p className="text-center text-xs text-gray-500 mt-6">
-          Butuh bantuan? Hubungi tim support TLATEN
+        <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-6">
+          Butuh bantuan? Hubungi tim support TELATEN
         </p>
       </div>
     </div>
