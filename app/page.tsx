@@ -1,10 +1,10 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
-  Heart,
   MessageCircle,
   Target,
   Sparkles,
@@ -103,19 +103,25 @@ export default function LandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200">
+    <div className="min-h-screen bg-white dark:bg-gray-950">
+      <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-950/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-pink-400 via-purple-400 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg">
-                <Heart className="w-6 h-6 text-white" fill="white" />
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg overflow-hidden">
+                <Image 
+                  src="/images/logo-telaten.png" 
+                  alt="TELATEN Logo" 
+                  width={40} 
+                  height={40}
+                  className="object-cover"
+                />
               </div>
               <div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
                   TELATEN
                 </h1>
-                <p className="text-xs text-gray-500 hidden sm:block">Teknologi yang Sabar</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">Teknologi yang Sabar</p>
               </div>
             </div>
 
@@ -135,23 +141,23 @@ export default function LandingPage() {
         </div>
       </header>
 
-      <section className="relative overflow-hidden bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 py-20 md:py-32">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      <section className="relative overflow-hidden bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 py-20 md:py-32">
+        <div className="absolute inset-0 bg-grid-pattern opacity-5 dark:opacity-10"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-2 bg-pink-100 text-pink-700 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+            <div className="inline-flex items-center gap-2 bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 px-4 py-2 rounded-full text-sm font-semibold mb-6">
               <Sparkles className="w-4 h-4" />
               <span>Gratis Selamanya untuk Fitur Dasar</span>
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
               Kelola Usaha dengan{' '}
               <span className="bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent">
                 Sabar & Telaten
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
               Aplikasi keuangan UMKM yang inklusif. Cukup ceritakan transaksi Anda seperti chat biasa,
               TELATEN akan mencatatnya dengan sabar.
             </p>
@@ -170,32 +176,32 @@ export default function LandingPage() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="w-full sm:w-auto h-14 px-8 text-lg font-semibold border-2 hover:bg-gray-50"
+                  className="w-full sm:w-auto h-14 px-8 text-lg font-semibold border-2 hover:bg-gray-50 dark:hover:bg-gray-800"
                 >
                   Lihat Fitur
                 </Button>
               </Link>
             </div>
 
-            <div className="flex items-center justify-center gap-8 text-sm text-gray-600">
+            <div className="flex items-center justify-center gap-8 text-sm text-gray-600 dark:text-gray-300">
               <div className="flex items-center gap-2">
-                <Check className="w-5 h-5 text-green-600" />
+                <Check className="w-5 h-5 text-green-600 dark:text-green-400" />
                 <span>Tanpa Kartu Kredit</span>
               </div>
               <div className="flex items-center gap-2">
-                <Check className="w-5 h-5 text-green-600" />
+                <Check className="w-5 h-5 text-green-600 dark:text-green-400" />
                 <span>Setup 5 Menit</span>
               </div>
               <div className="hidden sm:flex items-center gap-2">
-                <Check className="w-5 h-5 text-green-600" />
+                <Check className="w-5 h-5 text-green-600 dark:text-green-400" />
                 <span>Ramah Pemula</span>
               </div>
             </div>
           </div>
 
           <div className="mt-16 relative">
-            <div className="absolute inset-0 bg-gradient-to-t from-pink-100 to-transparent blur-3xl opacity-30"></div>
-            <Card className="max-w-5xl mx-auto shadow-2xl border-4 border-pink-200 overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-t from-pink-100 dark:from-pink-900/20 to-transparent blur-3xl opacity-30"></div>
+            <Card className="max-w-5xl mx-auto shadow-2xl border-4 border-pink-200 dark:border-pink-800 overflow-hidden">
               <div className="bg-gradient-to-br from-pink-500 to-purple-600 p-3">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1.5">
@@ -203,15 +209,21 @@ export default function LandingPage() {
                     <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
                     <div className="w-3 h-3 rounded-full bg-green-400"></div>
                   </div>
-                  <div className="text-xs text-white/80 ml-2">TELATEN Dashboard</div>
+                  <div className="text-xs text-white/80 dark:text-white/60 ml-2">TELATEN Dashboard</div>
                 </div>
               </div>
               <div className="bg-gray-900 p-8 aspect-video flex items-center justify-center">
                 <div className="text-center">
-                  <div className="w-20 h-20 bg-gradient-to-br from-pink-400 via-purple-400 to-cyan-400 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl animate-pulse">
-                    <Heart className="w-10 h-10 text-white" fill="white" />
+                  <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl animate-pulse overflow-hidden bg-white">
+                    <Image 
+                      src="/images/logo-telaten.png" 
+                      alt="TELATEN Logo" 
+                      width={80} 
+                      height={80}
+                      className="object-cover"
+                    />
                   </div>
-                  <p className="text-white/60 text-sm">Dashboard Preview</p>
+                  <p className="text-white/60 dark:text-white/40 text-sm">Dashboard Preview</p>
                 </div>
               </div>
             </Card>
@@ -219,14 +231,14 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="features" className="py-20 md:py-32 bg-white">
+      <section id="features" className="py-20 md:py-32 bg-white dark:bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-              Fitur yang <span className="text-pink-600">Powerful</span> tapi{' '}
-              <span className="text-purple-600">Mudah</span>
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+              Fitur yang <span className="text-pink-600 dark:text-pink-400">Powerful</span> tapi{' '}
+              <span className="text-purple-600 dark:text-purple-400">Mudah</span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Dirancang khusus untuk UMKM Indonesia dengan bahasa dan cara yang familiar
             </p>
           </div>
@@ -237,14 +249,14 @@ export default function LandingPage() {
               return (
                 <Card
                   key={index}
-                  className="border-2 border-gray-200 hover:border-pink-300 hover:shadow-xl transition-all duration-300 group"
+                  className="border-2 border-gray-200 dark:border-gray-800 hover:border-pink-300 dark:hover:border-pink-700 hover:shadow-xl transition-all duration-300 group"
                 >
                   <CardContent className="p-8">
-                    <div className="w-14 h-14 bg-gradient-to-br from-pink-100 to-purple-100 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                      <Icon className="w-7 h-7 text-pink-600" />
+                    <div className="w-14 h-14 bg-gradient-to-br from-pink-100 to-purple-100 dark:from-pink-900/30 dark:to-purple-900/30 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                      <Icon className="w-7 h-7 text-pink-600 dark:text-pink-400" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                    <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">{feature.title}</h3>
+                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{feature.description}</p>
                   </CardContent>
                 </Card>
               );
@@ -253,13 +265,13 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="py-20 md:py-32 bg-gradient-to-br from-gray-50 to-pink-50">
+      <section className="py-20 md:py-32 bg-gradient-to-br from-gray-50 to-pink-50 dark:from-gray-900 dark:to-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
               Pilih Paket yang Cocok
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-gray-600 dark:text-gray-300">
               Mulai gratis, upgrade kapan saja tanpa ribet
             </p>
           </div>
@@ -269,8 +281,8 @@ export default function LandingPage() {
               <Card
                 key={index}
                 className={`relative border-2 ${plan.popular
-                    ? 'border-pink-500 shadow-2xl scale-105'
-                    : 'border-gray-200'
+                    ? 'border-pink-500 dark:border-pink-600 shadow-2xl scale-105'
+                    : 'border-gray-200 dark:border-gray-800'
                   }`}
               >
                 {plan.popular && (
@@ -279,17 +291,17 @@ export default function LandingPage() {
                   </div>
                 )}
                 <CardContent className="p-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{plan.name}</h3>
                   <div className="mb-6">
-                    <span className="text-5xl font-bold text-gray-900">Rp {plan.price}</span>
-                    <span className="text-gray-600 ml-2">/ {plan.period}</span>
+                    <span className="text-5xl font-bold text-gray-900 dark:text-white">Rp {plan.price}</span>
+                    <span className="text-gray-600 dark:text-gray-400 ml-2">/ {plan.period}</span>
                   </div>
 
                   <ul className="space-y-4 mb-8">
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-start gap-3">
-                        <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700">{feature}</span>
+                        <Check className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-700 dark:text-gray-300">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -311,31 +323,31 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="py-20 md:py-32 bg-white">
+      <section className="py-20 md:py-32 bg-white dark:bg-gray-950">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
               Cerita dari Pengguna TELATEN
             </h2>
-            <p className="text-xl text-gray-600">
+            <p className="text-xl text-gray-600 dark:text-gray-300">
               Ribuan UMKM sudah merasakan manfaatnya
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="border-2 border-gray-200">
+              <Card key={index} className="border-2 border-gray-200 dark:border-gray-800">
                 <CardContent className="p-8">
                   <div className="flex items-center gap-4 mb-6">
                     <div className="w-12 h-12 bg-gradient-to-br from-pink-400 to-purple-400 rounded-full flex items-center justify-center text-2xl">
                       {testimonial.avatar}
                     </div>
                     <div>
-                      <h4 className="font-bold text-gray-900">{testimonial.name}</h4>
-                      <p className="text-sm text-gray-600">{testimonial.business}</p>
+                      <h4 className="font-bold text-gray-900 dark:text-white">{testimonial.name}</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{testimonial.business}</p>
                     </div>
                   </div>
-                  <p className="text-gray-700 italic leading-relaxed">"{testimonial.quote}"</p>
+                  <p className="text-gray-700 dark:text-gray-300 italic leading-relaxed">"{testimonial.quote}"</p>
                 </CardContent>
               </Card>
             ))}
@@ -343,12 +355,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="py-20 md:py-32 bg-gradient-to-br from-pink-600 via-purple-600 to-cyan-600 text-white">
+      <section className="py-20 md:py-32 bg-gradient-to-br from-pink-600 via-purple-600 to-cyan-600 dark:from-pink-700 dark:via-purple-700 dark:to-cyan-700 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
             Siap Kelola Usaha dengan Lebih Baik?
           </h2>
-          <p className="text-xl mb-10 opacity-90">
+          <p className="text-xl mb-10 opacity-90 dark:opacity-80">
             Bergabung dengan ribuan pemilik usaha yang sudah lebih teratur dan berkembang bersama TELATEN
           </p>
           <Link href="/register">
@@ -363,26 +375,32 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-gray-900 dark:bg-black text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-pink-400 via-purple-400 to-cyan-400 rounded-xl flex items-center justify-center">
-                  <Heart className="w-6 h-6 text-white" fill="white" />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden bg-white">
+                  <Image 
+                    src="/images/logo-telaten.png" 
+                    alt="TELATEN Logo" 
+                    width={40} 
+                    height={40}
+                    className="object-cover"
+                  />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold">TELATEN</h3>
                 </div>
               </div>
-              <p className="text-gray-400 text-sm">
+              <p className="text-gray-400 dark:text-gray-500 text-sm">
                 Teknologi yang Sabar untuk UMKM Indonesia
               </p>
             </div>
 
             <div>
               <h4 className="font-bold mb-4">Produk</h4>
-              <ul className="space-y-2 text-gray-400 text-sm">
+              <ul className="space-y-2 text-gray-400 dark:text-gray-500 text-sm">
                 <li><Link href="#features" className="hover:text-white">Fitur</Link></li>
                 <li><Link href="#pricing" className="hover:text-white">Harga</Link></li>
                 <li><Link href="#" className="hover:text-white">Tutorial</Link></li>
@@ -391,7 +409,7 @@ export default function LandingPage() {
 
             <div>
               <h4 className="font-bold mb-4">Perusahaan</h4>
-              <ul className="space-y-2 text-gray-400 text-sm">
+              <ul className="space-y-2 text-gray-400 dark:text-gray-500 text-sm">
                 <li><Link href="#" className="hover:text-white">Tentang Kami</Link></li>
                 <li><Link href="#" className="hover:text-white">Blog</Link></li>
                 <li><Link href="#" className="hover:text-white">Karir</Link></li>
@@ -400,7 +418,7 @@ export default function LandingPage() {
 
             <div>
               <h4 className="font-bold mb-4">Bantuan</h4>
-              <ul className="space-y-2 text-gray-400 text-sm">
+              <ul className="space-y-2 text-gray-400 dark:text-gray-500 text-sm">
                 <li><Link href="#" className="hover:text-white">Pusat Bantuan</Link></li>
                 <li><Link href="#" className="hover:text-white">Kontak</Link></li>
                 <li><Link href="#" className="hover:text-white">Privacy Policy</Link></li>
@@ -408,7 +426,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="border-t border-gray-800 pt-8 text-center text-gray-400 text-sm">
+          <div className="border-t border-gray-800 dark:border-gray-900 pt-8 text-center text-gray-400 dark:text-gray-500 text-sm">
             <p>&copy; 2024 TELATEN. All rights reserved. Made with love for Indonesian UMKM.</p>
           </div>
         </div>
