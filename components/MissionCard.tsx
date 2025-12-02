@@ -19,7 +19,7 @@ export function MissionCard({ mission, onStart, onSOS }: MissionCardProps) {
   };
 
   return (
-    <Card className="border-2 border-pink-200 shadow-md hover:shadow-lg transition-shadow">
+    <Card className="border-1 border-pink-200 shadow-md hover:shadow-lg transition-shadow">
       <CardContent className="p-5">
         <div className="flex items-start justify-between mb-3">
           <div className="flex-1">
@@ -53,7 +53,7 @@ export function MissionCard({ mission, onStart, onSOS }: MissionCardProps) {
         <Button
           onClick={onSOS}
           variant="outline"
-          className="h-12 px-4 border-2 border-pink-300 text-pink-700 hover:bg-pink-50"
+          className="h-12 px-4 border border-pink-300 text-pink-700 hover:bg-pink-50"
         >
           <AlertCircle className="w-5 h-5" />
         </Button>

@@ -77,8 +77,8 @@ export default function KeuanganPage() {
                 key={transaction.id}
                 className={`border-l-4 ${
                   transaction.type === 'income'
-                    ? 'border-l-green-500 bg-green-50/50'
-                    : 'border-l-red-500 bg-red-50/50'
+                    ? 'border-l-green-500 bg-green-50/50 dark:bg-green-900/20'
+                    : 'border-l-red-500 bg-red-50/50 dark:bg-red-900/20'
                 }`}
               >
                 <CardContent className="p-4">

@@ -93,7 +93,7 @@ export function CollapsibleSidebar() {
                     )}
                     title={isCollapsed ? item.label : undefined}
                   >
-                    <Icon className="w-7 h-7 flex-shrink-0" />
+                    <Icon className="w-5 h-5 flex-shrink-0" />
                     <span className={cn(
                       "truncate text-sm transition-opacity duration-300",
                       isCollapsed ? "opacity-0 w-0" : "opacity-100"
