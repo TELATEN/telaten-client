@@ -8,6 +8,7 @@ import { CollapsibleSidebar } from "@/components/CollapsibleSidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { QueryProvider } from "@/components/provider/QueryProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { AppLoader } from "@/components/AppLoader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,14 +44,14 @@ export default function RootLayout({
                 <Toaster />
               </>
             ) : (
-              <>
+              <AppLoader>
                 <div className="flex min-h-screen">
                   <CollapsibleSidebar />
                   <main className="flex-1 pb-20 md:pb-0">{children}</main>
                 </div>
                 {shouldShowBottomNav && <BottomNav />}
                 <Toaster />
-              </>
+              </AppLoader>
             )}
           </ThemeProvider>
         </body>

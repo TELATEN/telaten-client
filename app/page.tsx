@@ -519,10 +519,7 @@ export default function LandingPage() {
           </div>
 
           <div className="border-t border-gray-800 dark:border-gray-900 pt-8 text-center text-gray-400 dark:text-gray-500 text-sm">
-            <p>
-              &copy; 2024 TELATEN. All rights reserved. Made with love for
-              Indonesian UMKM.
-            </p>
+            <p>&copy; 2025 TELATEN. All rights reserved. Made with love for Indonesian UMKM.</p>
           </div>
         </div>
       </footer>

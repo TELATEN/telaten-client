@@ -1,32 +1,52 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
-import {
-  Home,
-  Target,
-  Wallet,
-  User,
-  PanelLeftClose,
-  PanelLeft,
-  MessageSquare,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
+import { Home, Target, Wallet, User, PanelLeftClose, PanelLeft, MessageSquare, Settings, LogOut, Globe } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import NavProfile from "./NavProfile";
-import { useAuthStore } from "@/hooks/stores/use-auth.store";
+import { useAuthStore } from '@/hooks/stores/use-auth.store';
 import UserAvatar from "./UserAvatar";
+import useMe from '@/hooks/services/auth/use-me';
+
+const SIDEBAR_STATE_KEY = 'telaten-sidebar-collapsed';
 
 export function CollapsibleSidebar() {
   const user = useAuthStore((state) => state.user);
   const pathname = usePathname();
   const router = useRouter();
+  const { data: userData } = useMe();
+  const clearAuth = useAuthStore((state) => state.clearAuth);
+  
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Initialize from localStorage synchronously on mount
+  useEffect(() => {
+    const saved = localStorage.getItem(SIDEBAR_STATE_KEY);
+    if (saved === 'true') {
+      setIsCollapsed(true);
+    }
+    setIsMounted(true);
+  }, []);
+
+  // Persist to localStorage on changes (skip first render)
+  useEffect(() => {
+    if (isMounted) {
+      localStorage.setItem(SIDEBAR_STATE_KEY, String(isCollapsed));
+    }
+  }, [isCollapsed, isMounted]);
+
+  // Don't render until state is loaded from localStorage
+  if (!isMounted) {
+    return null;
+  }
 
   const handleLogout = () => {
-    // Implement logout logic here
-    router.push("/login");
+    clearAuth();
+    router.push('/login');
   };
 
   const navItems = [

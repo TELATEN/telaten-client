@@ -2,14 +2,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { mockUser, mockMissions } from '@/lib/mockData';
+import { mockMissions } from '@/lib/mockData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import {
   User,
   Store,
@@ -21,22 +18,25 @@ import {
   Crown,
   Sparkles,
   Edit,
-  MapPin,
-  Package,
+  Mail,
+  Calendar,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import useMe from '@/hooks/services/auth/use-me';
+import useBusinessProfile from '@/hooks/services/business/use-business-profile';
 
 export default function ProfilPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const [user] = useState(mockUser);
+  const { data: userData } = useMe();
+  const { data: businessData } = useBusinessProfile();
+  
   const completedMissions = mockMissions.filter((m) => m.status === 'completed').length;
-  const totalXP = user.xp;
 
   const achievements = [
     { id: 1, name: 'Pedagang Pemula', icon: Trophy, unlocked: true, description: 'Mendaftarkan usaha pertama' },
     { id: 2, name: 'Rajin Mencatat', icon: Target, unlocked: completedMissions >= 3, description: 'Menyelesaikan 3 misi pertama' },
-    { id: 3, name: 'Master Keuangan', icon: Crown, unlocked: totalXP >= 1000, description: 'Mengumpulkan 1000 XP' },
+    { id: 3, name: 'Bisnis Terdaftar', icon: Crown, unlocked: !!businessData, description: 'Mendaftarkan informasi bisnis' },
     { id: 4, name: 'Bisnis Stabil', icon: Sparkles, unlocked: false, description: 'Beroperasi selama 30 hari' },
     { id: 5, name: 'Pelanggan Setia', icon: User, unlocked: false, description: 'Mendapatkan 50 ulasan positif' },
     { id: 6, name: 'Pengusaha Handal', icon: Store, unlocked: false, description: 'Mencapai level 10' },
@@ -61,6 +61,14 @@ export default function ProfilPage() {
     });
   };
 
+  const handleLogout = () => {
+    toast({
+      title: 'Logout Berhasil',
+      description: 'Anda telah keluar dari aplikasi.',
+    });
+    router.push('/login');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-2xl mx-auto px-4 py-6 md:py-8">
@@ -70,14 +78,14 @@ export default function ProfilPage() {
               <div className="flex items-center gap-4">
                 <Avatar className="w-20 h-20 border-4 border-white shadow-md">
                   <AvatarFallback className="text-2xl font-bold bg-white dark:bg-gray-800 text-pink-600">
-                    {user.name.charAt(0)}
+                    {userData?.name ? userData.name.charAt(0).toUpperCase() : 'U'}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1">
-                  <h1 className="text-2xl font-bold text-white mb-1">{user.name}</h1>
-                  <p className="text-white/90 mb-2">{user.businessName}</p>
-                  <Badge className="bg-white dark:bg-gray-800/20 text-white border-white/30 backdrop-blur-sm">
-                    Level {user.level} - {user.levelTitle}
+                  <h1 className="text-2xl font-bold text-white mb-1">{userData?.name || 'User'}</h1>
+                  <p className="text-white/90 mb-2">{businessData?.business_name || 'Belum ada bisnis'}</p>
+                  <Badge className="bg-white/20 dark:bg-white/10 text-white border-white/30 backdrop-blur-sm">
+                    {userData?.email || 'No email'}
                   </Badge>
                 </div>
               </div>
@@ -85,29 +93,71 @@ export default function ProfilPage() {
           </Card>
         </header>
 
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          <Card>
-            <CardContent className="p-4 text-center">
-              <Trophy className="w-6 h-6 text-yellow-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{totalXP}</p>
-              <p className="text-xs text-gray-600 dark:text-gray-400">Total XP</p>
+        {/* Info Cards */}
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <Card className="bg-white dark:bg-gray-800">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <Mail className="w-8 h-8 text-pink-500 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Email</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                    {userData?.email || '-'}
+                  </p>
+                </div>
+              </div>
             </CardContent>
           </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <Target className="w-6 h-6 text-green-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{completedMissions}</p>
-              <p className="text-xs text-gray-600 dark:text-gray-400">Misi Selesai</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4 text-center">
-              <Sparkles className="w-6 h-6 text-purple-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{user.level}</p>
-              <p className="text-xs text-gray-600 dark:text-gray-400">Level Saat Ini</p>
+          <Card className="bg-white dark:bg-gray-800">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <Calendar className="w-8 h-8 text-purple-500 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Bergabung</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                    {userData?.created_at ? new Date(userData.created_at).toLocaleDateString('id-ID', {
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric'
+                    }) : '-'}
+                  </p>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
+
+        {/* Business Info */}
+        {businessData && (
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Store className="w-5 h-5 text-pink-500" />
+                Informasi Bisnis
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">Nama Usaha</span>
+                <span className="font-medium text-gray-900 dark:text-white">{businessData.business_name}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">Kategori</span>
+                <span className="font-medium text-gray-900 dark:text-white">{businessData.business_category}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">Tahap</span>
+                <span className="font-medium text-gray-900 dark:text-white">{businessData.business_stage}</span>
+              </div>
+              {businessData.address && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400">Lokasi</span>
+                  <span className="font-medium text-gray-900 dark:text-white text-right">{businessData.address.city}, {businessData.address.state}</span>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
 
         <Card className="mb-6">
           <CardHeader>
