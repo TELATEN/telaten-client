@@ -20,6 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+
   const isAuthPage =
     pathname === "/login" ||
     pathname === "/register" ||
@@ -27,6 +28,7 @@ export default function RootLayout({
     pathname === "/onboarding" ||
     pathname === "/unauthorized" ||
     pathname === "/";
+
   const shouldShowBottomNav = !isAuthPage && pathname !== "/assistant";
   return (
     <QueryProvider>
@@ -52,7 +54,14 @@ export default function RootLayout({
                   <AppLoader>
                     <div className="flex min-h-screen">
                       <CollapsibleSidebar />
-                      <main className="flex-1 md:pb-0">{children}</main>
+                      <main
+                        className={[
+                          "flex-1 md:pb-0",
+                          shouldShowBottomNav ? "pb-16" : "",
+                        ].join(" ")}
+                      >
+                        {children}
+                      </main>
                     </div>
                     {shouldShowBottomNav && <BottomNav />}
                     <Toaster />

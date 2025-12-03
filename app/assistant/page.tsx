@@ -155,7 +155,7 @@ export default function AssistantPage() {
             </div>
 
             {/* Sticky Input at Bottom */}
-            <div className="sticky bottom-0 pb-6 mt-auto">
+            <div className="sticky bottom-0 pb-4 mt-auto">
               <Card className="shadow-lg border-2 border-pink-200 dark:border-pink-800/30 bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20">
                 <CardContent className="p-4">
                   <div className="flex items-center gap-2">
