@@ -1,4 +1,3 @@
-import { User as Auth } from "@/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,11 +5,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Globe, Home, LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
+import UserAvatar from "./UserAvatar";
 
 interface Props {
   children?: React.ReactNode;
@@ -29,11 +28,9 @@ export default function NavProfile({ children }: Props) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         {children || (
-          <Avatar>
-            <AvatarFallback>
-              {user?.name.slice(0, 2).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
+          <div className="flex cursor-pointer">
+            <UserAvatar user={user}></UserAvatar>
+          </div>
         )}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">

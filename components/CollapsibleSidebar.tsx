@@ -16,6 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import NavProfile from "./NavProfile";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
+import UserAvatar from "./UserAvatar";
 
 export function CollapsibleSidebar() {
   const user = useAuthStore((state) => state.user);
@@ -136,9 +137,7 @@ export function CollapsibleSidebar() {
               "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-pink-600 dark:hover:text-pink-400"
             )}
           >
-            <div className="w-8 h-8 bg-gradient-to-br from-pink-400 via-purple-400 to-cyan-400 rounded-full flex items-center justify-center flex-shrink-0">
-              <User className="w-5 h-5 text-white" />
-            </div>
+            <UserAvatar user={user}></UserAvatar>
             <div
               className={cn(
                 "flex-1 overflow-hidden transition-opacity duration-300 text-left",
