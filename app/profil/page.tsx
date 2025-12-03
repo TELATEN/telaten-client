@@ -24,12 +24,16 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import useMe from '@/hooks/services/auth/use-me';
 import useBusinessProfile from '@/hooks/services/business/use-business-profile';
+import { useAuthStore } from '@/hooks/stores/use-auth.store';
+import useLogout from '@/hooks/services/auth/use-logout';
 
 export default function ProfilPage() {
   const router = useRouter();
   const { toast } = useToast();
   const { data: userData } = useMe();
   const { data: businessData } = useBusinessProfile();
+  const clearAuth = useAuthStore((state) => state.clearAuth);
+  const { mutateAsync: logout } = useLogout();
   
   const completedMissions = mockMissions.filter((m) => m.status === 'completed').length;
 
@@ -61,12 +65,23 @@ export default function ProfilPage() {
     });
   };
 
-  const handleLogout = () => {
-    toast({
-      title: 'Logout Berhasil',
-      description: 'Anda telah keluar dari aplikasi.',
-    });
-    router.push('/login');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      clearAuth();
+      toast({
+        title: 'Berhasil Logout',
+        description: 'Anda telah keluar dari sistem.',
+      });
+      router.push('/login');
+    } catch (error: any) {
+      clearAuth();
+      toast({
+        title: 'Logout',
+        description: 'Anda telah keluar dari sistem.',
+      });
+      router.push('/login');
+    }
   };
 
   return (

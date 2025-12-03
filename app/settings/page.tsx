@@ -9,11 +9,15 @@ import { Switch } from '@/components/ui/switch';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { useAuthStore } from '@/hooks/stores/use-auth.store';
+import useLogout from '@/hooks/services/auth/use-logout';
 
 export default function SettingsPage() {
   const router = useRouter();
   const { toast } = useToast();
   const { theme, setTheme } = useTheme();
+  const clearAuth = useAuthStore((state) => state.clearAuth);
+  const { mutateAsync: logout, isPending } = useLogout();
   const [mounted, setMounted] = useState(false);
   const [settings, setSettings] = useState({
     notifications: true,
@@ -41,12 +45,23 @@ export default function SettingsPage() {
     });
   };
 
-  const handleLogout = () => {
-    toast({
-      title: 'Keluar',
-      description: 'Anda telah berhasil keluar dari akun.',
-    });
-    router.push('/');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      clearAuth();
+      toast({
+        title: 'Berhasil Logout',
+        description: 'Anda telah keluar dari sistem.',
+      });
+      router.push('/login');
+    } catch (error: any) {
+      clearAuth();
+      toast({
+        title: 'Logout',
+        description: 'Anda telah keluar dari sistem.',
+      });
+      router.push('/login');
+    }
   };
 
   if (!mounted) {
@@ -193,10 +208,11 @@ export default function SettingsPage() {
             <Button
               variant="ghost"
               onClick={handleLogout}
+              disabled={isPending}
               className="w-full justify-start h-14 px-5 text-base text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
             >
               <LogOut className="w-5 h-5 mr-3" />
-              Keluar dari Akun
+              {isPending ? 'Logging out...' : 'Keluar dari Akun'}
             </Button>
           </CardContent>
         </Card>

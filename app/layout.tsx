@@ -9,6 +9,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { QueryProvider } from "@/components/provider/QueryProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AppLoader } from "@/components/AppLoader";
+import AuthGuard from "@/components/AuthGuard";
+import BusinessProfileGuard from "@/components/BusinessProfileGuard";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +25,7 @@ export default function RootLayout({
     pathname === "/register" ||
     pathname === "/forgot-password" ||
     pathname === "/onboarding" ||
+    pathname === "/unauthorized" ||
     pathname === "/";
   const shouldShowBottomNav = !isAuthPage && pathname !== "/assistant";
   return (
@@ -38,21 +41,25 @@ export default function RootLayout({
             enableSystem={false}
             disableTransitionOnChange
           >
-            {isAuthPage ? (
-              <>
-                {children}
-                <Toaster />
-              </>
-            ) : (
-              <AppLoader>
-                <div className="flex min-h-screen">
-                  <CollapsibleSidebar />
-                  <main className="flex-1 pb-20 md:pb-0">{children}</main>
-                </div>
-                {shouldShowBottomNav && <BottomNav />}
-                <Toaster />
-              </AppLoader>
-            )}
+            <AuthGuard>
+              <BusinessProfileGuard>
+                {isAuthPage ? (
+                  <>
+                    {children}
+                    <Toaster />
+                  </>
+                ) : (
+                  <AppLoader>
+                    <div className="flex min-h-screen">
+                      <CollapsibleSidebar />
+                      <main className="flex-1 pb-20 md:pb-0">{children}</main>
+                    </div>
+                    {shouldShowBottomNav && <BottomNav />}
+                    <Toaster />
+                  </AppLoader>
+                )}
+              </BusinessProfileGuard>
+            </AuthGuard>
           </ThemeProvider>
         </body>
       </html>

@@ -9,17 +9,34 @@ import NavProfile from "./NavProfile";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import UserAvatar from "./UserAvatar";
 import useMe from '@/hooks/services/auth/use-me';
-import { useAuthStore } from '@/hooks/stores/use-auth.store';
+import useLogout from "@/hooks/services/auth/use-logout";
+import { useToast } from "@/hooks/use-toast";
 
 export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { toast } = useToast();
   const { data: userData } = useMe();
   const clearAuth = useAuthStore((state) => state.clearAuth);
+  const { mutateAsync: logout } = useLogout();
 
-  const handleLogout = () => {
-    clearAuth();
-    router.push('/login');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      clearAuth();
+      toast({
+        title: "Berhasil Logout",
+        description: "Anda telah keluar dari sistem.",
+      });
+      router.push('/login');
+    } catch (error: any) {
+      clearAuth();
+      toast({
+        title: "Logout",
+        description: "Anda telah keluar dari sistem.",
+      });
+      router.push('/login');
+    }
   };
 
   const navItems = [

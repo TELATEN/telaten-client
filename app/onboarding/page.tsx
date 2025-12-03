@@ -11,10 +11,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Store, MapPin, Package, ChevronRight, ChevronLeft, Loader2, Target, CheckCircle2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import useCreateBusinessProfile from '@/hooks/services/business/use-create-business-profile';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function OnboardingPage() {
   const router = useRouter();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [step, setStep] = useState(1);
   const createBusinessProfile = useCreateBusinessProfile();
 
@@ -130,6 +132,9 @@ export default function OnboardingPage() {
 
     createBusinessProfile.mutate(payload, {
       onSuccess: () => {
+        // Invalidate business profile query to refetch
+        queryClient.invalidateQueries({ queryKey: ['business-profile'] });
+        
         toast({
           title: 'Selamat Datang di TELATEN!',
           description: 'Profil usaha Anda sudah tersimpan. Mari mulai berjualan!',

@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import UserAvatar from "./UserAvatar";
 import useLogout from "@/hooks/services/auth/use-logout";
+import { useToast } from "@/hooks/use-toast";
 
 interface Props {
   children?: React.ReactNode;
@@ -18,13 +19,28 @@ interface Props {
 
 export default function NavProfile({ children }: Props) {
   const router = useRouter();
+  const { toast } = useToast();
   const user = useAuthStore((state) => state.user);
-  const { mutateAsync } = useLogout();
+  const clearAuth = useAuthStore((state) => state.clearAuth);
+  const { mutateAsync: logout, isPending } = useLogout();
 
   const handleLogout = async () => {
-    await mutateAsync();
-
-    router.push("/login");
+    try {
+      await logout();
+      clearAuth();
+      toast({
+        title: "Berhasil Logout",
+        description: "Anda telah keluar dari sistem.",
+      });
+      router.push("/login");
+    } catch (error: any) {
+      clearAuth();
+      toast({
+        title: "Logout",
+        description: "Anda telah keluar dari sistem.",
+      });
+      router.push("/login");
+    }
   };
 
   return (
@@ -74,10 +90,11 @@ export default function NavProfile({ children }: Props) {
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={handleLogout}
+          disabled={isPending}
           className="flex items-center gap-2 cursor-pointer text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400"
         >
           <LogOut className="w-4 h-4" />
-          <span>Logout</span>
+          <span>{isPending ? "Logging out..." : "Logout"}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
