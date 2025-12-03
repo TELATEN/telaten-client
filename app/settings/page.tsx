@@ -97,7 +97,7 @@ export default function SettingsPage() {
                 <Bell className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                 <div>
                   <p className="font-medium dark:text-white">Notifikasi</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Terima notifikasi dari TLATEN</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Terima notifikasi dari TELATEN</p>
                 </div>
               </div>
               <Switch
@@ -204,7 +204,7 @@ export default function SettingsPage() {
         {/* App Info */}
         <Card className="dark:bg-gray-800 dark:border-gray-700">
           <CardContent className="p-6 text-center">
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">TLATEN v1.0.0</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">TELATEN v1.0.0</p>
             <p className="text-xs text-gray-400 dark:text-gray-500">Maju Pelan-pelan, Usaha Jadi Mapapan.</p>
           </CardContent>
         </Card>

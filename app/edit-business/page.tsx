@@ -1,27 +1,53 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Store, MapPin, Package, FileText } from 'lucide-react';
+import { ArrowLeft, Store, MapPin, Package, FileText, Target, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { mockUser } from '@/lib/mockData';
+import useBusinessProfile from '@/hooks/services/business/use-business-profile';
 
 export default function EditBusinessPage() {
   const router = useRouter();
   const { toast } = useToast();
+  const { data: businessProfile } = useBusinessProfile();
 
   const [businessInfo, setBusinessInfo] = useState({
-    name: mockUser.businessName,
-    type: 'Warung Makan',
-    location: 'Jakarta Selatan',
-    mainProduct: 'Nasi goreng, Minuman',
-    description: 'Warung makan keluarga dengan cita rasa tradisional',
+    name: '',
+    category: '',
+    description: '',
+    street: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    country: '',
+    stage: '',
+    targetMarket: '',
+    primaryGoal: '',
   });
+
+  // Populate form when data is loaded
+  useEffect(() => {
+    if (businessProfile) {
+      setBusinessInfo({
+        name: businessProfile.business_name || '',
+        category: businessProfile.business_category || '',
+        description: businessProfile.business_description || '',
+        street: businessProfile.address?.street || '',
+        city: businessProfile.address?.city || '',
+        state: businessProfile.address?.state || '',
+        zipCode: businessProfile.address?.zip_code || '',
+        country: businessProfile.address?.country || '',
+        stage: businessProfile.business_stage || '',
+        targetMarket: businessProfile.target_market || '',
+        primaryGoal: businessProfile.primary_goal || '',
+      });
+    }
+  }, [businessProfile]);
 
   const handleSave = () => {
     toast({
@@ -71,37 +97,17 @@ export default function EditBusinessPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="businessType">Jenis Usaha</Label>
+              <Label htmlFor="businessCategory">Kategori Usaha</Label>
               <Input
-                id="businessType"
-                value={businessInfo.type}
-                onChange={(e) => setBusinessInfo({ ...businessInfo, type: e.target.value })}
-                placeholder="Contoh: Warung Makan, Toko Kelontong"
+                id="businessCategory"
+                value={businessInfo.category}
+                onChange={(e) => setBusinessInfo({ ...businessInfo, category: e.target.value })}
+                placeholder="Contoh: Food & Beverage, Retail"
                 className="h-12"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="location">Lokasi</Label>
-              <Input
-                id="location"
-                value={businessInfo.location}
-                onChange={(e) => setBusinessInfo({ ...businessInfo, location: e.target.value })}
-                placeholder="Kota/Kabupaten"
-                className="h-12"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="mainProduct">Produk Utama</Label>
-              <Input
-                id="mainProduct"
-                value={businessInfo.mainProduct}
-                onChange={(e) => setBusinessInfo({ ...businessInfo, mainProduct: e.target.value })}
-                placeholder="Produk/jasa utama yang dijual"
-                className="h-12"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="description">Deskripsi</Label>
+              <Label htmlFor="description">Deskripsi Usaha</Label>
               <Textarea
                 id="description"
                 value={businessInfo.description}
@@ -110,6 +116,103 @@ export default function EditBusinessPage() {
                 rows={4}
                 className="resize-none"
               />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="businessStage">Tahap Usaha</Label>
+              <Input
+                id="businessStage"
+                value={businessInfo.stage}
+                onChange={(e) => setBusinessInfo({ ...businessInfo, stage: e.target.value })}
+                placeholder="Contoh: Operational, Planning, Growth"
+                className="h-12"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="targetMarket">Target Market</Label>
+              <Input
+                id="targetMarket"
+                value={businessInfo.targetMarket}
+                onChange={(e) => setBusinessInfo({ ...businessInfo, targetMarket: e.target.value })}
+                placeholder="Contoh: Mahasiswa, Pekerja Remote"
+                className="h-12"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="primaryGoal">Tujuan Utama</Label>
+              <Textarea
+                id="primaryGoal"
+                value={businessInfo.primaryGoal}
+                onChange={(e) => setBusinessInfo({ ...businessInfo, primaryGoal: e.target.value })}
+                placeholder="Tujuan bisnis Anda"
+                rows={3}
+                className="resize-none"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Address Card */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <MapPin className="w-5 h-5" />
+              Alamat Usaha
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="street">Alamat Lengkap</Label>
+              <Input
+                id="street"
+                value={businessInfo.street}
+                onChange={(e) => setBusinessInfo({ ...businessInfo, street: e.target.value })}
+                placeholder="Jl. Nama Jalan No. XX"
+                className="h-12"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="city">Kota</Label>
+                <Input
+                  id="city"
+                  value={businessInfo.city}
+                  onChange={(e) => setBusinessInfo({ ...businessInfo, city: e.target.value })}
+                  placeholder="Kota"
+                  className="h-12"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="state">Provinsi</Label>
+                <Input
+                  id="state"
+                  value={businessInfo.state}
+                  onChange={(e) => setBusinessInfo({ ...businessInfo, state: e.target.value })}
+                  placeholder="Provinsi"
+                  className="h-12"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="zipCode">Kode Pos</Label>
+                <Input
+                  id="zipCode"
+                  value={businessInfo.zipCode}
+                  onChange={(e) => setBusinessInfo({ ...businessInfo, zipCode: e.target.value })}
+                  placeholder="12345"
+                  className="h-12"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="country">Negara</Label>
+                <Input
+                  id="country"
+                  value={businessInfo.country}
+                  onChange={(e) => setBusinessInfo({ ...businessInfo, country: e.target.value })}
+                  placeholder="Indonesia"
+                  className="h-12"
+                />
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -126,23 +229,40 @@ export default function EditBusinessPage() {
                   <Store className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white">{businessInfo.name}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{businessInfo.type}</p>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">{businessInfo.name || 'Nama Usaha'}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{businessInfo.category || 'Kategori'}</p>
                 </div>
               </div>
               <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4" />
-                  <span>{businessInfo.location}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Package className="w-4 h-4" />
-                  <span>{businessInfo.mainProduct}</span>
-                </div>
                 <div className="flex items-start gap-2">
-                  <FileText className="w-4 h-4 mt-0.5" />
-                  <span className="text-xs">{businessInfo.description}</span>
+                  <FileText className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <span className="text-xs">{businessInfo.description || 'Deskripsi usaha'}</span>
                 </div>
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4 flex-shrink-0" />
+                  <span className="text-xs">
+                    {businessInfo.street || businessInfo.city || businessInfo.state
+                      ? `${businessInfo.street ? businessInfo.street + ', ' : ''}${businessInfo.city}${businessInfo.state ? ', ' + businessInfo.state : ''}`
+                      : 'Alamat belum diisi'}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 flex-shrink-0" />
+                  <span className="text-xs">{businessInfo.stage || 'Tahap usaha'}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Target className="w-4 h-4 flex-shrink-0" />
+                  <span className="text-xs">{businessInfo.targetMarket || 'Target market'}</span>
+                </div>
+                {businessInfo.primaryGoal && (
+                  <div className="flex items-start gap-2 pt-2 border-t border-pink-200 dark:border-pink-800/50">
+                    <Package className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-xs font-medium mb-1">Tujuan Utama:</p>
+                      <p className="text-xs">{businessInfo.primaryGoal}</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </CardContent>

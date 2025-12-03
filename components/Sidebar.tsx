@@ -8,10 +8,19 @@ import { cn } from "@/lib/utils";
 import NavProfile from "./NavProfile";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import UserAvatar from "./UserAvatar";
+import useMe from '@/hooks/services/auth/use-me';
+import { useAuthStore } from '@/hooks/stores/use-auth.store';
 
 export function Sidebar() {
   const pathname = usePathname();
-  const user = useAuthStore((state) => state.user);
+  const router = useRouter();
+  const { data: userData } = useMe();
+  const clearAuth = useAuthStore((state) => state.clearAuth);
+
+  const handleLogout = () => {
+    clearAuth();
+    router.push('/login');
+  };
 
   const navItems = [
     { href: "/", label: "Beranda", icon: Home },

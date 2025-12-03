@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, User, Mail, Phone, Camera } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -9,17 +9,29 @@ import { Label } from '@/components/ui/label';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { mockUser } from '@/lib/mockData';
+import useMe from '@/hooks/services/auth/use-me';
 
 export default function EditProfilePage() {
   const router = useRouter();
   const { toast } = useToast();
-  const [user, setUser] = useState(mockUser);
+  const { data: userData } = useMe();
+  
   const [formData, setFormData] = useState({
-    name: user.name,
-    email: 'user@example.com', // Mock email since it's not in mockUser
-    phone: '', // Phone not in User type yet
+    name: '',
+    email: '',
+    phone: '',
   });
+
+  // Populate form when data is loaded
+  useEffect(() => {
+    if (userData) {
+      setFormData({
+        name: userData.name || '',
+        email: userData.email || '',
+        phone: '',
+      });
+    }
+  }, [userData]);
 
   const handleSave = () => {
     toast({
@@ -63,7 +75,7 @@ export default function EditProfilePage() {
               <div className="relative mb-4">
                 <Avatar className="w-24 h-24 border-4 border-white shadow-lg">
                   <AvatarFallback className="text-2xl font-bold bg-gradient-to-br from-pink-400 to-purple-500 text-white">
-                    {user.name.charAt(0)}
+                    {formData.name ? formData.name.charAt(0).toUpperCase() : 'U'}
                   </AvatarFallback>
                 </Avatar>
                 <Button
@@ -125,21 +137,26 @@ export default function EditProfilePage() {
           </CardContent>
         </Card>
 
-        {/* Level Info */}
+        {/* Account Info */}
         <Card className="mb-6">
           <CardHeader>
-            <CardTitle>Informasi Level</CardTitle>
+            <CardTitle>Informasi Akun</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 rounded-lg">
-              <div>
-                <p className="font-medium text-gray-900 dark:text-white">Level {user.level}</p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">{user.levelTitle}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{user.xp} XP terkumpul</p>
+            <div className="space-y-3 text-sm">
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">User ID</span>
+                <span className="font-mono text-gray-900 dark:text-white text-xs">{userData?.id}</span>
               </div>
-              <div className="text-right">
-                <p className="text-2xl font-bold text-pink-600">{user.xp}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Total XP</p>
+              <div className="flex justify-between">
+                <span className="text-gray-600 dark:text-gray-400">Bergabung sejak</span>
+                <span className="text-gray-900 dark:text-white">
+                  {userData?.created_at ? new Date(userData.created_at).toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  }) : '-'}
+                </span>
               </div>
             </div>
           </CardContent>

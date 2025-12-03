@@ -2,29 +2,31 @@
 
 import { useState } from 'react';
 import { Switch } from '@/components/ui/switch';
-import { LevelCard } from '@/components/LevelCard';
 import { MissionCard } from '@/components/MissionCard';
-import { mockUser, mockMissions } from '@/lib/mockData';
+import { mockMissions } from '@/lib/mockData';
 import { useToast } from '@/hooks/use-toast';
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon, Store } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import useMe from '@/hooks/services/auth/use-me';
+import useBusinessProfile from '@/hooks/services/business/use-business-profile';
 
 export default function DashboardPage() {
-  const [user, setUser] = useState(mockUser);
+  const { data: userData } = useMe();
+  const { data: businessData } = useBusinessProfile();
+  const [isBusinessOpen, setIsBusinessOpen] = useState(true);
   const { toast } = useToast();
 
   const currentMission = mockMissions.find((m) => m.status === 'pending');
 
   const handleToggleBusiness = () => {
-    setUser((prev) => ({
-      ...prev,
-      isBusinessOpen: !prev.isBusinessOpen,
-    }));
+    const newStatus = !isBusinessOpen;
+    setIsBusinessOpen(newStatus);
 
     toast({
-      title: user.isBusinessOpen ? 'Warung Ditutup' : 'Warung Dibuka',
-      description: user.isBusinessOpen
-        ? 'Semoga dapat istirahat yang cukup!'
-        : 'Semangat berjualan hari ini!',
+      title: newStatus ? 'Warung Dibuka' : 'Warung Ditutup',
+      description: newStatus
+        ? 'Semangat berjualan hari ini!'
+        : 'Semoga dapat istirahat yang cukup!',
     });
   };
 
@@ -50,16 +52,16 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-                Selamat Datang, {user.name}!
+                Selamat Datang, {userData?.name || 'User'}!
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-1">{user.businessName}</p>
+              <p className="text-gray-600 dark:text-gray-400 mt-1">{businessData?.business_name || 'Belum ada bisnis'}</p>
             </div>
           </div>
 
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm dark:border dark:border-gray-700/30">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                {user.isBusinessOpen ? (
+                {isBusinessOpen ? (
                   <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
                     <Sun className="w-5 h-5 text-green-600" />
                   </div>
@@ -71,12 +73,12 @@ export default function DashboardPage() {
                 <div>
                   <p className="font-semibold text-gray-900 dark:text-white">Status Warung</p>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {user.isBusinessOpen ? 'Buka' : 'Tutup'}
+                    {isBusinessOpen ? 'Buka' : 'Tutup'}
                   </p>
                 </div>
               </div>
               <Switch
-                checked={user.isBusinessOpen}
+                checked={isBusinessOpen}
                 onCheckedChange={handleToggleBusiness}
                 className="data-[state=checked]:bg-green-600"
               />
@@ -84,9 +86,41 @@ export default function DashboardPage() {
           </div>
         </header>
 
-        <section className="mb-6">
-          <LevelCard user={user} />
-        </section>
+        {/* Business Info */}
+        {businessData && (
+          <section className="mb-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Store className="w-5 h-5 text-pink-500" />
+                  Informasi Bisnis
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400">Kategori</span>
+                  <span className="font-medium text-gray-900 dark:text-white">{businessData.business_category}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400">Tahap</span>
+                  <span className="font-medium text-gray-900 dark:text-white">{businessData.business_stage}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400">Target Market</span>
+                  <span className="font-medium text-gray-900 dark:text-white">{businessData.target_market}</span>
+                </div>
+                {businessData.address && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Lokasi</span>
+                    <span className="font-medium text-gray-900 dark:text-white text-right">
+                      {businessData.address.city}, {businessData.address.state}
+                    </span>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </section>
+        )}
 
         <section>
           <div className="flex items-center justify-between mb-4">
