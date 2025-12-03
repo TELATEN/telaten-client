@@ -24,11 +24,10 @@ interface Message {
 }
 
 export default function AssistantPage() {
-  const [showSession, setShowSession] = useState(false);
-
   const router = useRouter();
   const { toast } = useToast();
   const [messageInput, setMessageInput] = useState("");
+  const [showSession, setShowSession] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",

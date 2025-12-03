@@ -13,7 +13,18 @@ export default function CollapseChatSessionPanel({
   selectedSession?: ChatSession | null;
   setSelectedSession?: (val: ChatSession) => void;
 }) {
+  const isDesktop = typeof window != "undefined" && window.innerWidth >= 1024;
   const { data: sessions } = useGetChatSessions();
+
+  const handleSelect = (session: ChatSession) => {
+    if (setSelectedSession) {
+      setSelectedSession(session);
+    }
+
+    if (!isDesktop) {
+      setShow(false);
+    }
+  };
 
   return (
     <>
@@ -57,9 +68,7 @@ export default function CollapseChatSessionPanel({
                 "p-3 hover:bg-muted py-1.5 rounded transition flex items-center justify-between group cursor-pointer overflow-hidden",
                 selectedSession?.id == session.id ? "bg-muted" : "",
               ].join(" ")}
-              onClick={() =>
-                setSelectedSession ? setSelectedSession(session) : null
-              }
+              onClick={() => handleSelect(session)}
             >
               <div
                 className={[
