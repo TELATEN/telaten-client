@@ -34,7 +34,7 @@ export default function RootLayout({
         <head>
           <link rel="icon" href="/images/logo-telaten.png" type="image/png" />
         </head>
-        <body className={inter.className}>
+        <body className={inter.className} suppressHydrationWarning>
           <ThemeProvider
             attribute="class"
             defaultTheme="light"

@@ -32,14 +32,14 @@ export default function NavProfile({ children }: Props) {
         title: "Berhasil Logout",
         description: "Anda telah keluar dari sistem.",
       });
-      router.push("/login");
+      router.push("/");
     } catch (error: any) {
       clearAuth();
       toast({
         title: "Logout",
         description: "Anda telah keluar dari sistem.",
       });
-      router.push("/login");
+      router.push("/");
     }
   };
 

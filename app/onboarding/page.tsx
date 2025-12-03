@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Store, MapPin, Package, ChevronRight, ChevronLeft, Loader2, Target, CheckCircle2 } from 'lucide-react';
+import { Store, MapPin, Package, ChevronRight, ChevronLeft, Target, CheckCircle2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import useCreateBusinessProfile from '@/hooks/services/business/use-create-business-profile';
 import { useQueryClient } from '@tanstack/react-query';
@@ -155,28 +155,42 @@ export default function OnboardingPage() {
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 flex items-center justify-center p-4">
       <div className="w-full max-w-lg">
         {createBusinessProfile.isPending ? (
-          <div className="text-center">
-            <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-8 shadow-lg overflow-hidden bg-white animate-pulse">
-              <Image 
-                src="/images/logo-telaten.png" 
-                alt="TELATEN Logo" 
-                width={80} 
-                height={80}
-                className="object-cover"
-              />
-            </div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Menyimpan Profil Bisnis</h1>
-            <div className="flex items-center justify-center mb-6">
-              <Loader2 className="w-8 h-8 animate-spin text-pink-500 mr-3" />
-              <div className="text-left">
-                <p className="text-gray-700 dark:text-gray-300 font-medium">Memproses data usaha Anda...</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Mohon tunggu sebentar</p>
+          <Card className="shadow-2xl border-2 border-pink-100 dark:border-pink-900/30">
+            <CardContent className="p-12 text-center">
+              <div className="relative mb-8">
+                <Image 
+                  src="/images/logo-telaten.png" 
+                  alt="TELATEN Logo" 
+                  width={80} 
+                  height={80}
+                  className="mx-auto animate-pulse"
+                  priority
+                />
               </div>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
-              <div className="bg-gradient-to-r from-pink-500 to-purple-500 h-2 rounded-full animate-pulse" style={{ width: '70%' }}></div>
-            </div>
-          </div>
+              
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                Mempersiapkan Personalisasi
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400 mb-8">
+                Mengatur preferensi dan rekomendasi khusus untuk bisnis Anda
+              </p>
+              
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-4 overflow-hidden">
+                <div 
+                  className="bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 h-3 rounded-full animate-progress"
+                  style={{ 
+                    animation: 'progress 2s ease-in-out infinite',
+                  }}
+                ></div>
+              </div>
+              
+              <div className="flex gap-1 justify-center">
+                <div className="h-2 w-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                <div className="h-2 w-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                <div className="h-2 w-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+              </div>
+            </CardContent>
+          </Card>
         ) : (
           <>
             <div className="text-center mb-8">

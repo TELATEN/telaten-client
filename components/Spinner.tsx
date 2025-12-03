@@ -1,5 +1,9 @@
-import { Loader2 } from "lucide-react";
-
 export default function Spinner() {
-  return <Loader2 className="size-4 animate-spin"></Loader2>;
+  return (
+    <div className="flex gap-1">
+      <div className="h-1.5 w-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+      <div className="h-1.5 w-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+      <div className="h-1.5 w-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+    </div>
+  );
 }
