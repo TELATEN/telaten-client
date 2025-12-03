@@ -141,7 +141,7 @@ export default function LandingPage() {
 
             {!!user ? (
               <div className="flex items-center gap-3">
-                <NavProfile user={user}></NavProfile>
+                <NavProfile></NavProfile>
               </div>
             ) : (
               <div className="flex items-center gap-3">
