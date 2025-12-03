@@ -1,11 +1,25 @@
+import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import { http } from "@/lib/http";
-import { RegisterParams, User } from "@/types";
+import { RegisterParams, RegisterResponse, User } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 
 export default function useRegister() {
-  const mutationFn = async (params: RegisterParams): Promise<User> => {
+  const setAuth = useAuthStore((state) => state.setAuth);
+
+  const mutationFn = async (params: RegisterParams): Promise<RegisterResponse> => {
     const res = await http().post("/auth/register", params);
-    return res.data;
+    const result = res.data as RegisterResponse;
+
+    // Convert user data to match User type (created_at: string → Date)
+    const user: User = {
+      ...result.user,
+      created_at: new Date(result.user.created_at),
+    };
+
+    // Auto-login: Save user and token after successful registration
+    setAuth(user, result.access_token);
+
+    return result;
   };
 
   return useMutation({

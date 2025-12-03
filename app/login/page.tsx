@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -22,6 +22,7 @@ import { useToast } from "@/hooks/use-toast";
 import useLogin from "@/hooks/services/auth/use-login";
 import Spinner from "@/components/Spinner";
 import { LoginParams } from "@/types";
+import { useAuthStore } from "@/hooks/stores/use-auth.store";
 
 const loginSchema = z.object({
   email: z
@@ -38,6 +39,14 @@ export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
+  const token = useAuthStore((state) => state.token);
+
+  useEffect(() => {
+    // Redirect if already logged in
+    if (token) {
+      router.replace('/dashboard');
+    }
+  }, [token, router]);
 
   const {
     register,

@@ -9,17 +9,37 @@ import NavProfile from "./NavProfile";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import UserAvatar from "./UserAvatar";
 import useMe from '@/hooks/services/auth/use-me';
-import { useAuthStore } from '@/hooks/stores/use-auth.store';
+import useLogout from "@/hooks/services/auth/use-logout";
+import { useToast } from "@/hooks/use-toast";
 
 export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { toast } = useToast();
   const { data: userData } = useMe();
+  const avatarUser = userData
+    ? { ...userData, created_at: new Date(userData.created_at) }
+    : undefined;
   const clearAuth = useAuthStore((state) => state.clearAuth);
+  const { mutateAsync: logout } = useLogout();
 
-  const handleLogout = () => {
-    clearAuth();
-    router.push('/login');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      clearAuth();
+      toast({
+        title: "Berhasil Logout",
+        description: "Anda telah keluar dari sistem.",
+      });
+      router.push('/login');
+    } catch (error: any) {
+      clearAuth();
+      toast({
+        title: "Logout",
+        description: "Anda telah keluar dari sistem.",
+      });
+      router.push('/login');
+    }
   };
 
   const navItems = [
@@ -76,23 +96,23 @@ export function Sidebar() {
             );
           })}
         </ul>
-      </nav>
 
-      <div className="border-t border-gray-200/50 dark:border-gray-700/50 p-4">
-        <NavProfile>
-          <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-            <UserAvatar user={user}></UserAvatar>
-            <div className="flex-1 min-w-0 text-left">
-              <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
-                {user?.name}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                {user?.email}
-              </p>
-            </div>
-          </button>
-        </NavProfile>
-      </div>
+        <div className="border-t border-gray-200/50 dark:border-gray-700/50 p-4">
+          <NavProfile>
+            <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              <UserAvatar user={avatarUser} />
+              <div className="flex-1 min-w-0 text-left">
+                <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                  {userData?.name}
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                  {userData?.email}
+                </p>
+              </div>
+            </button>
+          </NavProfile>
+        </div>
+      </nav>
     </aside>
   );
 }

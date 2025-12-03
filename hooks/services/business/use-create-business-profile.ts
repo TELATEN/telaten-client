@@ -36,7 +36,7 @@ interface BusinessProfileResponse {
 const createBusinessProfile = async (
   payload: CreateBusinessProfilePayload
 ): Promise<BusinessProfileResponse> => {
-  const response = await http.post<BusinessProfileResponse>('/business/profile', payload);
+  const response = await http().post<BusinessProfileResponse>('/business/profile', payload);
   return response.data;
 };
 
