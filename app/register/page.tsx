@@ -24,23 +24,23 @@ import Spinner from "@/components/Spinner";
 import { RegisterParams } from "@/types";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
 
-const registerSchema = z
-  .object({
-    name: z.string().min(1, "Nama lengkap wajib diisi"),
-    email: z
-      .string()
-      .min(1, "Email wajib diisi")
-      .email("Format email tidak valid"),
-    password: z
-      .string()
-      .min(1, "Password wajib diisi")
-      .min(8, "Password minimal 8 karakter"),
-    confirmPassword: z.string().min(1, "Konfirmasi password wajib diisi"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Password dan konfirmasi password tidak cocok",
-    path: ["confirmPassword"],
-  });
+const registerSchemaBase = z.object({
+  name: z.string().min(1, "Nama lengkap wajib diisi"),
+  email: z
+    .string()
+    .min(1, "Email wajib diisi")
+    .email("Format email tidak valid"),
+  password: z
+    .string()
+    .min(1, "Password wajib diisi")
+    .min(8, "Password minimal 8 karakter"),
+  confirmPassword: z.string().min(1, "Konfirmasi password wajib diisi"),
+});
+
+const registerSchema = registerSchemaBase.refine((data: z.infer<typeof registerSchemaBase>) => data.password === data.confirmPassword, {
+  message: "Password dan konfirmasi password tidak cocok",
+  path: ["confirmPassword"],
+});
 
 export default function RegisterPage() {
   const router = useRouter();
