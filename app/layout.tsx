@@ -27,7 +27,7 @@ export default function RootLayout({
   const shouldShowBottomNav = !isAuthPage && pathname !== "/assistant";
   return (
     <QueryProvider>
-      <html lang="id" suppressHydrationWarning>
+      <html lang="id" suppressHydrationWarning className="overflow-x-hidden">
         <head>
           <link rel="icon" href="/images/logo-telaten.png" type="image/png" />
         </head>
@@ -47,7 +47,7 @@ export default function RootLayout({
               <AppLoader>
                 <div className="flex min-h-screen">
                   <CollapsibleSidebar />
-                  <main className="flex-1 pb-20 md:pb-0">{children}</main>
+                  <main className="flex-1 md:pb-0">{children}</main>
                 </div>
                 {shouldShowBottomNav && <BottomNav />}
                 <Toaster />
