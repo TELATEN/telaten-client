@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import UserAvatar from "./UserAvatar";
+import useLogout from "@/hooks/services/auth/use-logout";
 
 interface Props {
   children?: React.ReactNode;
@@ -18,9 +19,11 @@ interface Props {
 export default function NavProfile({ children }: Props) {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
+  const { mutateAsync } = useLogout();
 
-  const handleLogout = () => {
-    // logout logic here
+  const handleLogout = async () => {
+    await mutateAsync();
+
     router.push("/login");
   };
 

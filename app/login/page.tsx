@@ -24,8 +24,14 @@ import Spinner from "@/components/Spinner";
 import { LoginParams } from "@/types";
 
 const loginSchema = z.object({
-  email: z.string().min(1, "Email wajib diisi").email("Format email tidak valid"),
-  password: z.string().min(1, "Password wajib diisi").min(6, "Password minimal 6 karakter"),
+  email: z
+    .string()
+    .min(1, "Email wajib diisi")
+    .email("Format email tidak valid"),
+  password: z
+    .string()
+    .min(1, "Password wajib diisi")
+    .min(6, "Password minimal 6 karakter"),
 });
 
 export default function LoginPage() {
@@ -45,29 +51,31 @@ export default function LoginPage() {
     },
   });
 
-  const { mutateAsync, isPending, error } = useLogin();
+  const { mutate: login, isPending } = useLogin();
 
   const onSubmit = async (data: LoginParams) => {
-    await mutateAsync({
-      ...data,
-    });
+    login(
+      {
+        ...data,
+      },
+      {
+        onSuccess: () => {
+          toast({
+            title: "Selamat datang kembali!",
+            description: "Anda berhasil masuk.",
+          });
 
-    if (error?.message) {
-      toast({
-        title: "Terjadi Kesalahan",
-        description: error.message,
-        variant: "destructive",
-      });
-
-      return;
-    }
-
-    toast({
-      title: "Selamat Datang Kembali!",
-      description: "Anda berhasil masuk.",
-    });
-
-    router.push("/dashboard");
+          router.push("/dashboard");
+        },
+        onError: () => {
+          toast({
+            title: "Terjadi Kesalahan",
+            description: "Username atau password salah",
+            variant: "destructive",
+          });
+        },
+      }
+    );
   };
 
   return (
@@ -83,8 +91,12 @@ export default function LoginPage() {
               className="object-cover"
             />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">TELATEN</h1>
-          <p className="text-gray-600 dark:text-gray-400">Maju Pelan-pelan, Usaha Jadi Mapapan</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            TELATEN
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Maju Pelan-pelan, Usaha Jadi Mapapan
+          </p>
         </div>
 
         <Card className="shadow-xl border-2 border-pink-100 dark:border-pink-900/30">
@@ -163,7 +175,7 @@ export default function LoginPage() {
 
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Belum punya akun?{' '}
+                Belum punya akun?{" "}
                 <Link
                   href="/register"
                   className="text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 font-semibold"
@@ -176,7 +188,8 @@ export default function LoginPage() {
         </Card>
 
         <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-6">
-          Dengan masuk, Anda menyetujui Syarat & Ketentuan dan Kebijakan Privasi kami
+          Dengan masuk, Anda menyetujui Syarat & Ketentuan dan Kebijakan Privasi
+          kami
         </p>
       </div>
     </div>
