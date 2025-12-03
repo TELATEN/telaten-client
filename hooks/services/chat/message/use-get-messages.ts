@@ -2,9 +2,9 @@ import { http } from "@/lib/http";
 import { ChatMessage } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 
-export default function useGetChatMessages(sessionId: string) {
+export default function useGetChatMessages(sessionId?: string) {
   const queryFn = async (): Promise<ChatMessage[]> => {
-    const res = await http().get(`/chat/messages/${sessionId}`);
+    const res = await http().get(`/chat/sessions/${sessionId}`);
 
     return res.data;
   };

@@ -1,6 +1,9 @@
+"use client";
+
 import useGetChatSessions from "@/hooks/services/chat/session/use-get-sessions";
 import { ChatSession } from "@/types";
 import { MoreHorizontal, PanelRightClose, Plus } from "lucide-react";
+import { useEffect } from "react";
 
 export default function CollapseChatSessionPanel({
   show,
@@ -15,6 +18,7 @@ export default function CollapseChatSessionPanel({
 }) {
   const isDesktop = typeof window != "undefined" && window.innerWidth >= 1024;
   const { data: sessions } = useGetChatSessions();
+  const hashId = window.location.hash.slice(1);
 
   const handleSelect = (session: ChatSession) => {
     if (setSelectedSession) {
@@ -24,7 +28,19 @@ export default function CollapseChatSessionPanel({
     if (!isDesktop) {
       setShow(false);
     }
+
+    window.location.hash = session.id;
   };
+
+  useEffect(() => {
+    if (hashId && setSelectedSession) {
+      const session = sessions?.find((s) => s.id == hashId);
+
+      if (session) {
+        setSelectedSession(session);
+      }
+    }
+  }, [hashId, setSelectedSession, sessions]);
 
   return (
     <>
