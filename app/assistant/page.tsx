@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,10 +12,8 @@ import {
   MessageSquare,
   ArrowLeft,
   History,
-  PanelRightClose,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import useGetChatSessions from "@/hooks/services/chat/session/use-get-sessions";
 import CollapseChatSessionPanel from "@/components/chat/CollapseChatSessionPanel";
 
 interface Message {
@@ -26,8 +24,6 @@ interface Message {
 }
 
 export default function AssistantPage() {
-  const { data: sessions, isLoading, error } = useGetChatSessions();
-
   const [showSession, setShowSession] = useState(false);
 
   const router = useRouter();
@@ -98,7 +94,7 @@ export default function AssistantPage() {
                 <h1 className="text-lg font-semibold">TELATEN Assistant</h1>
               </div>
 
-              {!showSession && (
+              {!showSession ? (
                 <Button
                   variant="ghost"
                   size="sm"
@@ -107,6 +103,8 @@ export default function AssistantPage() {
                 >
                   <History className="w-4 h-4" />
                 </Button>
+              ) : (
+                <div className="ml-auto"></div>
               )}
             </div>
           </div>
