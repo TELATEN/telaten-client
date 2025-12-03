@@ -17,6 +17,9 @@ export function Sidebar() {
   const router = useRouter();
   const { toast } = useToast();
   const { data: userData } = useMe();
+  const avatarUser = userData
+    ? { ...userData, created_at: new Date(userData.created_at) }
+    : undefined;
   const clearAuth = useAuthStore((state) => state.clearAuth);
   const { mutateAsync: logout } = useLogout();
 
@@ -93,23 +96,23 @@ export function Sidebar() {
             );
           })}
         </ul>
-      </nav>
 
-      <div className="border-t border-gray-200/50 dark:border-gray-700/50 p-4">
-        <NavProfile>
-          <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-            <UserAvatar user={user}></UserAvatar>
-            <div className="flex-1 min-w-0 text-left">
-              <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
-                {user?.name}
-              </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                {user?.email}
-              </p>
-            </div>
-          </button>
-        </NavProfile>
-      </div>
+        <div className="border-t border-gray-200/50 dark:border-gray-700/50 p-4">
+          <NavProfile>
+            <button className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              <UserAvatar user={avatarUser} />
+              <div className="flex-1 min-w-0 text-left">
+                <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                  {userData?.name}
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                  {userData?.email}
+                </p>
+              </div>
+            </button>
+          </NavProfile>
+        </div>
+      </nav>
     </aside>
   );
 }
