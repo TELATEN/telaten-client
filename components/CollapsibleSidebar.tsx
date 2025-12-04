@@ -1,19 +1,31 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
-import { Home, Target, Wallet, User, PanelLeftClose, PanelLeft, MessageSquare, Settings, LogOut, Globe } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
+import {
+  Home,
+  Target,
+  Wallet,
+  User,
+  PanelLeftClose,
+  PanelLeft,
+  MessageSquare,
+  Settings,
+  LogOut,
+  Globe,
+  Rocket,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 import NavProfile from "./NavProfile";
-import { useAuthStore } from '@/hooks/stores/use-auth.store';
+import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import UserAvatar from "./UserAvatar";
-import useMe from '@/hooks/services/auth/use-me';
+import useMe from "@/hooks/services/auth/use-me";
 import useLogout from "@/hooks/services/auth/use-logout";
 import { useToast } from "@/hooks/use-toast";
 
-const SIDEBAR_STATE_KEY = 'telaten-sidebar-collapsed';
+const SIDEBAR_STATE_KEY = "telaten-sidebar-collapsed";
 
 export function CollapsibleSidebar() {
   const user = useAuthStore((state) => state.user);
@@ -23,14 +35,14 @@ export function CollapsibleSidebar() {
   const { data: userData } = useMe();
   const clearAuth = useAuthStore((state) => state.clearAuth);
   const { mutateAsync: logout } = useLogout();
-  
+
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
   // Initialize from localStorage synchronously on mount
   useEffect(() => {
     const saved = localStorage.getItem(SIDEBAR_STATE_KEY);
-    if (saved === 'true') {
+    if (saved === "true") {
       setIsCollapsed(true);
     }
     setIsMounted(true);
@@ -56,14 +68,14 @@ export function CollapsibleSidebar() {
         title: "Berhasil Logout",
         description: "Anda telah keluar dari sistem.",
       });
-      router.push('/');
+      router.push("/");
     } catch (error: any) {
       clearAuth();
       toast({
         title: "Logout",
         description: "Anda telah keluar dari sistem.",
       });
-      router.push('/');
+      router.push("/");
     }
   };
 
@@ -71,6 +83,7 @@ export function CollapsibleSidebar() {
     { href: "/dashboard", label: "Beranda", icon: Home },
     { href: "/assistant", label: "AI Assistant", icon: MessageSquare },
     { href: "/misi", label: "Misi", icon: Target },
+    { href: "/achievement", label: "Pencapaian", icon: Rocket },
     { href: "/keuangan", label: "Keuangan", icon: Wallet },
   ];
 
