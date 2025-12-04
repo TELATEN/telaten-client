@@ -45,14 +45,16 @@ export function useSendMessage() {
                     business_id: "",
                     created_at: new Date(),
                   });
+                  break;
                 case "token":
                   setMessage(
                     (prev) =>
                       ({
                         ...prev,
-                        content: prev?.content + data.data.text,
+                        content: (prev?.content || "") + data.data.text,
                       }) as ChatMessage
                   );
+                  break;
                 default:
                   //
                   break;
