@@ -1,32 +1,57 @@
 'use client';
 
-import { useState } from 'react';
-import { MissionCard } from '@/components/MissionCard';
-import { mockMissions } from '@/lib/mockData';
+import { MilestoneCard } from '@/components/MilestoneCard';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
-import { Target, CheckCircle2, Clock } from 'lucide-react';
+import { Target, CheckCircle2, Clock, Loader2 } from 'lucide-react';
+import useMilestones from '@/hooks/services/milestone/use-milestones';
+import useStartMilestone from '@/hooks/services/milestone/use-start-milestone';
+import useCompleteTask from '@/hooks/services/milestone/use-complete-task';
 
 export default function MisiPage() {
   const { toast } = useToast();
-  const [missions] = useState(mockMissions);
+  const { data: milestones, isLoading } = useMilestones();
+  const startMilestone = useStartMilestone();
+  const completeTask = useCompleteTask();
 
-  const pendingMissions = missions.filter((m) => m.status === 'pending');
-  const inReviewMissions = missions.filter((m) => m.status === 'in-review');
-  const completedMissions = missions.filter((m) => m.status === 'completed');
+  const pendingMilestones = milestones?.filter((m) => m.status === 'pending') || [];
+  const inProgressMilestones = milestones?.filter((m) => m.status === 'in_progress') || [];
+  const completedMilestones = milestones?.filter((m) => m.status === 'completed') || [];
 
-  const handleStartMission = (missionTitle: string) => {
-    toast({
-      title: 'Mulai Misi',
-      description: `Anda akan mulai: ${missionTitle}`,
+  const handleStartMilestone = (milestoneId: string) => {
+    startMilestone.mutate(milestoneId, {
+      onSuccess: (data) => {
+        toast({
+          title: 'Milestone Dimulai!',
+          description: `Anda mulai mengerjakan: ${data.title}`,
+        });
+      },
+      onError: (error: any) => {
+        toast({
+          title: 'Gagal Memulai Milestone',
+          description: error?.response?.data?.message || 'Terjadi kesalahan',
+          variant: 'destructive',
+        });
+      },
     });
   };
 
-  const handleSOS = () => {
-    toast({
-      title: 'Butuh Bantuan?',
-      description: 'TELATEN akan menjelaskan langkah demi langkah dengan sabar.',
+  const handleCompleteTask = (taskId: string) => {
+    completeTask.mutate(taskId, {
+      onSuccess: (data) => {
+        toast({
+          title: 'Tugas Selesai!',
+          description: `+${data.reward_points} poin`,
+        });
+      },
+      onError: (error: any) => {
+        toast({
+          title: 'Gagal Menyelesaikan Tugas',
+          description: error?.response?.data?.message || 'Terjadi kesalahan',
+          variant: 'destructive',
+        });
+      },
     });
   };
 
@@ -49,93 +74,105 @@ export default function MisiPage() {
           <Card>
             <CardContent className="p-4 text-center">
               <Clock className="w-6 h-6 text-yellow-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{pendingMissions.length}</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                {isLoading ? '-' : pendingMilestones.length}
+              </p>
               <p className="text-xs text-gray-600 dark:text-gray-400">Belum Mulai</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <Target className="w-6 h-6 text-blue-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{inReviewMissions.length}</p>
-              <p className="text-xs text-gray-600 dark:text-gray-400">Dalam Review</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                {isLoading ? '-' : inProgressMilestones.length}
+              </p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">Sedang Berjalan</p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <CheckCircle2 className="w-6 h-6 text-green-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{completedMissions.length}</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                {isLoading ? '-' : completedMilestones.length}
+              </p>
               <p className="text-xs text-gray-600 dark:text-gray-400">Selesai</p>
             </CardContent>
           </Card>
         </div>
 
-        <Tabs defaultValue="pending" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-6">
-            <TabsTrigger value="pending">Tersedia</TabsTrigger>
-            <TabsTrigger value="in-review">Dalam Review</TabsTrigger>
-            <TabsTrigger value="completed">Selesai</TabsTrigger>
-          </TabsList>
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-pink-500" />
+          </div>
+        ) : (
+          <Tabs defaultValue="pending" className="w-full">
+            <TabsList className="grid w-full grid-cols-3 mb-6">
+              <TabsTrigger value="pending">Tersedia</TabsTrigger>
+              <TabsTrigger value="in_progress">Sedang Berjalan</TabsTrigger>
+              <TabsTrigger value="completed">Selesai</TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="pending" className="space-y-4">
-            {pendingMissions.length > 0 ? (
-              pendingMissions.map((mission) => (
-                <MissionCard
-                  key={mission.id}
-                  mission={mission}
-                  onStart={() => handleStartMission(mission.title)}
-                  onSOS={handleSOS}
-                />
-              ))
-            ) : (
-              <Card>
-                <CardContent className="p-8 text-center">
-                  <p className="text-gray-500 dark:text-gray-400">Tidak ada misi tersedia</p>
-                </CardContent>
-              </Card>
-            )}
-          </TabsContent>
+            <TabsContent value="pending" className="space-y-4">
+              {pendingMilestones.length > 0 ? (
+                pendingMilestones.map((milestone) => (
+                  <MilestoneCard
+                    key={milestone.id}
+                    milestone={milestone}
+                    onStart={handleStartMilestone}
+                    onCompleteTask={handleCompleteTask}
+                  />
+                ))
+              ) : (
+                <Card>
+                  <CardContent className="p-8 text-center">
+                    <p className="text-gray-500 dark:text-gray-400">Tidak ada milestone tersedia</p>
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
 
-          <TabsContent value="in-review" className="space-y-4">
-            {inReviewMissions.length > 0 ? (
-              inReviewMissions.map((mission) => (
-                <MissionCard
-                  key={mission.id}
-                  mission={mission}
-                  onStart={() => handleStartMission(mission.title)}
-                  onSOS={handleSOS}
-                />
-              ))
-            ) : (
-              <Card>
-                <CardContent className="p-8 text-center">
-                  <p className="text-gray-500 dark:text-gray-400">Tidak ada misi dalam review</p>
-                </CardContent>
-              </Card>
-            )}
-          </TabsContent>
+            <TabsContent value="in_progress" className="space-y-4">
+              {inProgressMilestones.length > 0 ? (
+                inProgressMilestones.map((milestone) => (
+                  <MilestoneCard
+                    key={milestone.id}
+                    milestone={milestone}
+                    onStart={handleStartMilestone}
+                    onCompleteTask={handleCompleteTask}
+                  />
+                ))
+              ) : (
+                <Card>
+                  <CardContent className="p-8 text-center">
+                    <p className="text-gray-500 dark:text-gray-400">Tidak ada milestone yang sedang berjalan</p>
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
 
-          <TabsContent value="completed" className="space-y-4">
-            {completedMissions.length > 0 ? (
-              completedMissions.map((mission) => (
-                <MissionCard
-                  key={mission.id}
-                  mission={mission}
-                  onStart={() => handleStartMission(mission.title)}
-                  onSOS={handleSOS}
-                />
-              ))
-            ) : (
-              <Card>
-                <CardContent className="p-8 text-center">
-                  <p className="text-gray-500 dark:text-gray-400">Belum ada misi yang selesai</p>
-                  <p className="text-sm text-gray-400 mt-2">
-                    Mulai kerjakan misi untuk mendapatkan XP dan naik level!
-                  </p>
-                </CardContent>
-              </Card>
-            )}
-          </TabsContent>
-        </Tabs>
+            <TabsContent value="completed" className="space-y-4">
+              {completedMilestones.length > 0 ? (
+                completedMilestones.map((milestone) => (
+                  <MilestoneCard
+                    key={milestone.id}
+                    milestone={milestone}
+                    onStart={handleStartMilestone}
+                    onCompleteTask={handleCompleteTask}
+                  />
+                ))
+              ) : (
+                <Card>
+                  <CardContent className="p-8 text-center">
+                    <p className="text-gray-500 dark:text-gray-400">Belum ada milestone yang selesai</p>
+                    <p className="text-sm text-gray-400 mt-2">
+                      Mulai kerjakan milestone untuk mendapatkan poin dan naik level!
+                    </p>
+                  </CardContent>
+                </Card>
+              )}
+            </TabsContent>
+          </Tabs>
+        )}
       </div>
     </div>
   );
