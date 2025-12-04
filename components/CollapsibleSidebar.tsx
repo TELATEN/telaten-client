@@ -63,19 +63,15 @@ export function CollapsibleSidebar() {
   const handleLogout = async () => {
     try {
       await logout();
-      clearAuth();
       toast({
         title: "Berhasil Logout",
         description: "Anda telah keluar dari sistem.",
       });
-      router.push("/");
     } catch (error: any) {
-      clearAuth();
       toast({
         title: "Logout",
         description: "Anda telah keluar dari sistem.",
       });
-      router.push("/");
     }
   };
 

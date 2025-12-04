@@ -20,7 +20,7 @@ import { Label } from "@/components/ui/label";
 import { Heart, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import useRegister from "@/hooks/services/auth/use-register";
-import Spinner from "@/components/Spinner";
+import { SimpleLoading } from "@/components/SimpleLoading";
 import { RegisterParams } from "@/types";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
 
@@ -98,7 +98,12 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 flex items-center justify-center p-4">
+    <>
+      <SimpleLoading 
+        isLoading={isPending} 
+        message="Membuat akun Anda..." 
+      />
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg overflow-hidden bg-white">
@@ -205,7 +210,6 @@ export default function RegisterPage() {
                 disabled={isPending}
                 className="w-full h-12 text-base font-semibold bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
               >
-                {isPending && <Spinner />}
                 Daftar Sekarang
               </Button>
             </form>
@@ -230,5 +234,6 @@ export default function RegisterPage() {
         </p>
       </div>
     </div>
+    </>
   );
 }

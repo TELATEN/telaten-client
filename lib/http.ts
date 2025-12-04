@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useAuthStore } from "@/hooks/stores/use-auth.store";
 
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -34,18 +35,33 @@ function getAuthToken() {
   let token: string | undefined = undefined;
 
   if (typeof window !== "undefined") {
+    // Try to get token from Zustand store first (most up-to-date)
+    try {
+      const storeToken = useAuthStore.getState().token;
+      console.log("[HTTP] Token from Zustand store:", storeToken ? `${storeToken.substring(0, 20)}...` : "null");
+      if (storeToken) {
+        return `Bearer ${storeToken}`;
+      }
+    } catch (error) {
+      console.error("[HTTP] Failed to get token from store:", error);
+    }
+    
+    // Fallback to localStorage
     const authStorage = localStorage.getItem("auth-storage");
+    console.log("[HTTP] localStorage auth-storage exists:", !!authStorage);
     if (authStorage) {
       try {
         const { state } = JSON.parse(authStorage);
         if (state?.token) {
+          console.log("[HTTP] Token from localStorage:", state.token.substring(0, 20) + "...");
           token = `Bearer ${state.token}`;
         }
       } catch (error) {
-        console.error("Failed to parse auth storage:", error);
+        console.error("[HTTP] Failed to parse auth storage:", error);
       }
     }
   }
 
+  console.log("[HTTP] Final token:", token ? "Bearer ***" : "undefined");
   return token;
 }
