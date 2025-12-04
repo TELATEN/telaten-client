@@ -8,23 +8,63 @@ export function useSendMessage() {
 
   const mutate = async (data: SendMessageParams) => {
     setIsStreaming(true);
-
-    const response = await httpStream("/chat/completion", {
-      body: JSON.stringify(data),
-      method: "POST",
+    setMessage({
+      id: (Date.now() + 1).toString(),
+      role: "assistant",
+      content: "",
+      created_at: new Date(),
     });
 
-    const reader = response.body?.getReader();
-    const decoder = new TextDecoder("utf-8");
+    try {
+      const response = await httpStream("/chat/completion", {
+        body: JSON.stringify(data),
+        method: "POST",
+      });
 
-    if (reader) {
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder("utf-8");
 
-        const chunk = decoder.decode(value, { stream: true });
-        console.log("chunk", chunk);
+      if (reader) {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split("\n");
+
+          for (const line of lines.filter((l) => l)) {
+            try {
+              const data = JSON.parse(line.replace("data: ", ""));
+
+              switch (data.type) {
+                case "token":
+                  setMessage(
+                    (prev) =>
+                      ({
+                        ...prev,
+                        content: prev?.content + data.data.text,
+                      }) as ChatMessage
+                  );
+                default:
+                  //
+                  break;
+              }
+            } catch (_) {
+              //
+            }
+          }
+        }
       }
+    } catch (err) {
+      setMessage(
+        (prev) =>
+          ({
+            ...prev,
+            is_error: true,
+            content:
+              (err as Error | undefined)?.message || "Assistant gagal merespon",
+          }) as ChatMessage
+      );
     }
 
     setMessage({

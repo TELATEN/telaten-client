@@ -11,6 +11,8 @@ import {
   MessageSquare,
   ArrowLeft,
   History,
+  Pause,
+  Loader2,
 } from "lucide-react";
 import CollapseChatSessionPanel from "@/components/chat/CollapseChatSessionPanel";
 import { ChatMessage, ChatSession } from "@/types";
@@ -39,6 +41,13 @@ export default function AssistantPage() {
     isStreaming,
   } = useSendMessage();
 
+  const scrollToBottom = () => {
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: "smooth",
+    });
+  };
+
   const handleSendMessage = async () => {
     if (messageInput.trim()) {
       const newMessage: ChatMessage = {
@@ -64,29 +73,36 @@ export default function AssistantPage() {
   useEffect(() => {
     if (chatMessages && chatMessages.length > 0) {
       setMessages(chatMessages);
+      setTimeout(scrollToBottom, 800);
     }
   }, [chatMessages]);
 
   useEffect(() => {
     if (selectedSession && !isLoading) {
       reloadMessages();
+    } else {
+      setMessages([]);
     }
   }, [reloadMessages, selectedSession, isLoading]);
 
   useEffect(() => {
-    const lastMessage = messages[messages.length - 1];
-
     if (isStreaming && assistantMessage) {
-      if (lastMessage?.role == "user") {
-        setMessages((prev) => [...prev, assistantMessage]);
-      } else {
-        setMessages((prev) => [
-          ...prev.slice(0, prev.length - 1),
-          assistantMessage,
-        ]);
-      }
+      setMessages((prevMessages) => {
+        const lastMessage = prevMessages[prevMessages.length - 1];
+
+        if (lastMessage?.role == "user") {
+          return [...prevMessages, assistantMessage!];
+        } else {
+          return [
+            ...prevMessages.slice(0, prevMessages.length - 1),
+            assistantMessage,
+          ];
+        }
+      });
+
+      scrollToBottom();
     }
-  }, [isStreaming, assistantMessage, messages, setMessages]);
+  }, [isStreaming, assistantMessage, setMessages]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -203,7 +219,8 @@ export default function AssistantPage() {
                       value={messageInput}
                       onChange={(e) => setMessageInput(e.target.value)}
                       placeholder="Tanyakan sesuatu..."
-                      className="flex-1 h-12 text-base bg-white dark:bg-gray-800"
+                      className="flex-1 h-12 text-base bg-white dark:bg-gray-800 focus:outline-none"
+                      disabled={isChatLoading}
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           handleSendMessage();
@@ -215,7 +232,11 @@ export default function AssistantPage() {
                       size="icon"
                       className="h-12 w-12 rounded-full bg-pink-500 hover:bg-pink-600 flex-shrink-0 shadow-lg"
                     >
-                      <Send className="w-5 h-5" />
+                      {isChatLoading ? (
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                      ) : (
+                        <Send className="w-5 h-5" />
+                      )}
                     </Button>
                   </div>
                 </CardContent>

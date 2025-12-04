@@ -44,7 +44,7 @@ export default function LoginPage() {
   useEffect(() => {
     // Redirect if already logged in
     if (token) {
-      router.replace('/dashboard');
+      router.replace("/dashboard");
     }
   }, [token, router]);
 
@@ -175,7 +175,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={isPending}
-                className="w-full h-12 text-base font-semibold bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
+                className="w-full h-12 text-base font-semibold bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 flex gap-2"
               >
                 {isPending && <Spinner />}
                 Masuk

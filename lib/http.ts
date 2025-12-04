@@ -17,6 +17,7 @@ export function http() {
 
 export function httpStream(url: string, opts?: RequestInit | undefined) {
   const headers: Record<string, any> = {
+    "Content-Type": "application/json",
     ...opts?.headers,
     Authorization: getAuthToken(),
   };

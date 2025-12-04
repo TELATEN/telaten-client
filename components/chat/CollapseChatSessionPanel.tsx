@@ -14,7 +14,7 @@ export default function CollapseChatSessionPanel({
   show: boolean;
   setShow: (val: boolean) => void;
   selectedSession?: ChatSession | null;
-  setSelectedSession?: (val: ChatSession) => void;
+  setSelectedSession?: (val?: ChatSession | null) => void;
 }) {
   const isDesktop = typeof window != "undefined" && window.innerWidth >= 1024;
   const { data: sessions } = useGetChatSessions();
@@ -30,6 +30,14 @@ export default function CollapseChatSessionPanel({
     }
 
     window.location.hash = session.id;
+  };
+
+  const newSession = () => {
+    if (setSelectedSession) {
+      setSelectedSession(null);
+
+      window.location.hash = "";
+    }
   };
 
   useEffect(() => {
@@ -70,7 +78,8 @@ export default function CollapseChatSessionPanel({
         <div className="p-3 space-y-1">
           <button
             type="button"
-            className="p-3 hover:bg-muted py-1.5 rounded transition flex items-center gap-2 group cursor-pointer w-full text-sm overflow-hidden"
+            className={`p-3 hover:bg-muted py-1.5 rounded transition flex items-center gap-2 group cursor-pointer w-full text-sm overflow-hidden ${!selectedSession?.id ? "bg-muted" : ""}`}
+            onClick={newSession}
           >
             <Plus className="h-4 w-4"></Plus>
             <div className="flex-1 min-w-0 overflow-hidden truncate text-left">
