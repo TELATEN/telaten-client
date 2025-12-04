@@ -12,11 +12,8 @@ export default function useRegister() {
     const registerRes = await http().post("/auth/register", params);
     const registerData = registerRes.data;
 
-    console.log("[REGISTER] Register response:", registerData);
-
     // Step 2: Auto-login to get token
     // Since register doesn't return token, we need to login
-    console.log("[REGISTER] Auto-login with credentials...");
     try {
       const loginRes = await axios.post(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
@@ -33,11 +30,8 @@ export default function useRegister() {
       );
       
       const loginData = loginRes.data;
-      console.log("[REGISTER] Login response:", loginData);
 
       if (loginData.access_token) {
-        console.log("[REGISTER] Token received:", loginData.access_token.substring(0, 20) + "...");
-        
         // Convert user data to match User type
         const user: User = {
           id: registerData.id,
@@ -48,7 +42,6 @@ export default function useRegister() {
 
         // Save auth with token
         setAuth(user, loginData.access_token);
-        console.log("[REGISTER] Auth saved successfully!");
         
         // Return combined data in RegisterResponse format
         return {
@@ -62,11 +55,9 @@ export default function useRegister() {
           access_token: loginData.access_token,
         };
       } else {
-        console.error("[REGISTER] No token in login response");
         throw new Error("Failed to get authentication token");
       }
     } catch (loginError) {
-      console.error("[REGISTER] Auto-login failed:", loginError);
       throw new Error("Registration successful but auto-login failed. Please login manually.");
     }
   };

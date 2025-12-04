@@ -25,18 +25,6 @@ export default function KeuanganPage() {
   const { data: summary, isLoading: isLoadingSummary, error: summaryError } = useFinancialSummary({ period: summaryPeriod });
   const createTransaction = useCreateTransaction();
 
-  // Debug logging
-  console.log('Finance Page Debug:', {
-    summary,
-    isLoadingSummary,
-    summaryError,
-    transactions,
-    isLoadingTransactions,
-    transactionsError,
-    filterParams,
-    summaryPeriod,
-  });
-
   const handleCreateTransaction = (data: CreateTransactionInput) => {
     createTransaction.mutate(data, {
       onSuccess: () => {
