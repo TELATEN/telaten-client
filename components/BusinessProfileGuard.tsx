@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useRef } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
-import { useAuthStore } from '@/hooks/stores/use-auth.store';
-import useBusinessProfile from '@/hooks/services/business/use-business-profile';
-import { useToast } from '@/hooks/use-toast';
-import Image from 'next/image';
+import { useEffect, useState, useRef } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { useAuthStore } from "@/hooks/stores/use-auth.store";
+import useBusinessProfile from "@/hooks/services/business/use-business-profile";
+import { useToast } from "@/hooks/use-toast";
+import Image from "next/image";
 
 interface BusinessProfileGuardProps {
   children: React.ReactNode;
@@ -13,28 +13,30 @@ interface BusinessProfileGuardProps {
 
 // Routes that don't require auth at all
 const publicRoutes = [
-  '/',
-  '/login',
-  '/register',
-  '/forgot-password',
-  '/unauthorized',
-  '/onboarding',
+  "/",
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/unauthorized",
+  "/onboarding",
 ];
 
 // Routes that require business profile check
 const businessProfileRequiredRoutes = [
-  '/dashboard',
-  '/assistant',
-  '/misi',
-  '/keuangan',
-  '/profil',
-  '/edit-business',
-  '/edit-profile',
-  '/settings',
-  '/help',
+  "/dashboard",
+  "/assistant",
+  "/misi",
+  "/keuangan",
+  "/profil",
+  "/edit-business",
+  "/edit-profile",
+  "/settings",
+  "/help",
 ];
 
-export default function BusinessProfileGuard({ children }: BusinessProfileGuardProps) {
+export default function BusinessProfileGuard({
+  children,
+}: BusinessProfileGuardProps) {
   const router = useRouter();
   const pathname = usePathname();
   const { toast } = useToast();
@@ -42,13 +44,19 @@ export default function BusinessProfileGuard({ children }: BusinessProfileGuardP
   const [isChecking, setIsChecking] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
   const hasRedirected = useRef(false);
+  const user = useAuthStore((state) => state.user);
 
   // Only fetch business profile if on a route that requires it
-  const shouldCheckProfile = businessProfileRequiredRoutes.some(route => 
+  const shouldCheckProfile = businessProfileRequiredRoutes.some((route) =>
     pathname.startsWith(route)
   );
 
-  const { data: businessProfile, isLoading, isError, error } = useBusinessProfile({
+  const {
+    data: businessProfile,
+    isLoading,
+    isError,
+    error,
+  } = useBusinessProfile({
     enabled: shouldCheckProfile && !!token,
   });
 
@@ -61,7 +69,7 @@ export default function BusinessProfileGuard({ children }: BusinessProfileGuardP
 
     // Skip check for public routes or if not logged in
     const isPublicRoute = publicRoutes.includes(pathname);
-    
+
     if (isPublicRoute || !token) {
       setIsChecking(false);
       return;
@@ -80,34 +88,56 @@ export default function BusinessProfileGuard({ children }: BusinessProfileGuardP
 
     // Check if business profile doesn't exist (404 error or no data)
     const errorStatus = (error as any)?.response?.status;
-    const hasNoBusinessProfile = (isError && errorStatus === 404) || (!isError && !businessProfile);
+    const hasNoBusinessProfile =
+      (isError && errorStatus === 404) || (!isError && !businessProfile);
 
-    if (hasNoBusinessProfile && !hasRedirected.current) {
+    if (
+      hasNoBusinessProfile &&
+      !hasRedirected.current &&
+      user?.role != "admin"
+    ) {
       hasRedirected.current = true;
-      
+
       toast({
-        title: 'Profil Bisnis Belum Lengkap',
-        description: 'Silakan lengkapi profil bisnis Anda terlebih dahulu.',
-        variant: 'destructive',
+        title: "Profil Bisnis Belum Lengkap",
+        description: "Silakan lengkapi profil bisnis Anda terlebih dahulu.",
+        variant: "destructive",
       });
-      
-      router.replace('/onboarding');
+
+      router.replace("/onboarding");
       return;
     }
 
     // If there's an error but not 404, let it pass (could be network issue)
     setIsChecking(false);
-  }, [businessProfile, isLoading, isError, error, pathname, token, router, toast, isMounted, shouldCheckProfile]);
+  }, [
+    businessProfile,
+    isLoading,
+    isError,
+    error,
+    pathname,
+    token,
+    router,
+    toast,
+    isMounted,
+    shouldCheckProfile,
+  ]);
 
   // Reset redirect flag when navigating to onboarding
   useEffect(() => {
-    if (pathname === '/onboarding') {
+    if (pathname === "/onboarding") {
       hasRedirected.current = false;
     }
   }, [pathname]);
 
   // Show loading state while checking
-  if (!isMounted || (isChecking && shouldCheckProfile && !publicRoutes.includes(pathname) && token)) {
+  if (
+    !isMounted ||
+    (isChecking &&
+      shouldCheckProfile &&
+      !publicRoutes.includes(pathname) &&
+      token)
+  ) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="text-center">
@@ -122,9 +152,18 @@ export default function BusinessProfileGuard({ children }: BusinessProfileGuardP
             />
           </div>
           <div className="flex gap-1 justify-center">
-            <div className="h-2 w-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-            <div className="h-2 w-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-            <div className="h-2 w-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+            <div
+              className="h-2 w-2 bg-pink-500 rounded-full animate-bounce"
+              style={{ animationDelay: "0ms" }}
+            ></div>
+            <div
+              className="h-2 w-2 bg-pink-500 rounded-full animate-bounce"
+              style={{ animationDelay: "150ms" }}
+            ></div>
+            <div
+              className="h-2 w-2 bg-pink-500 rounded-full animate-bounce"
+              style={{ animationDelay: "300ms" }}
+            ></div>
           </div>
         </div>
       </div>

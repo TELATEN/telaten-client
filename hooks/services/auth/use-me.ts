@@ -1,18 +1,18 @@
+import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import { http } from "@/lib/http";
 import { User } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 
-export interface MeResponse {
-  email: string;
-  name: string;
-  id: string;
-  created_at: string;
-}
-
 export default function useMe() {
-  const queryFn = async (): Promise<MeResponse> => {
+  const updateUser = useAuthStore((state) => state.updateUser);
+
+  const queryFn = async (): Promise<User> => {
     const res = await http().get("/auth/me");
-    return res.data as MeResponse;
+    const user = res.data as User;
+
+    updateUser(user);
+
+    return user;
   };
 
   return useQuery({
