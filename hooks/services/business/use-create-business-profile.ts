@@ -36,7 +36,11 @@ interface BusinessProfileResponse {
 const createBusinessProfile = async (
   payload: CreateBusinessProfilePayload
 ): Promise<BusinessProfileResponse> => {
-  const response = await http().post<BusinessProfileResponse>('/business/profile', payload);
+  console.log("[CREATE_BUSINESS] Sending request with payload:", payload);
+  const httpClient = http();
+  console.log("[CREATE_BUSINESS] HTTP client headers:", httpClient.defaults.headers);
+  const response = await httpClient.post<BusinessProfileResponse>('/business/profile', payload);
+  console.log("[CREATE_BUSINESS] Response received:", response.data);
   return response.data;
 };
 

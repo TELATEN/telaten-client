@@ -8,9 +8,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Store, MapPin, Package, ChevronRight, ChevronLeft, Target, CheckCircle2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import useCreateBusinessProfile from '@/hooks/services/business/use-create-business-profile';
+import useCountries from '@/hooks/services/countries/use-countries';
+import { LoadingOverlay } from '@/components/LoadingOverlay';
 import { useQueryClient } from '@tanstack/react-query';
 
 export default function OnboardingPage() {
@@ -19,6 +22,7 @@ export default function OnboardingPage() {
   const queryClient = useQueryClient();
   const [step, setStep] = useState(1);
   const createBusinessProfile = useCreateBusinessProfile();
+  const { data: countries, isLoading: isLoadingCountries } = useCountries();
 
   const [formData, setFormData] = useState({
     businessName: '',
@@ -152,46 +156,14 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 flex items-center justify-center p-4">
-      <div className="w-full max-w-lg">
-        {createBusinessProfile.isPending ? (
-          <Card className="shadow-2xl border-2 border-pink-100 dark:border-pink-900/30">
-            <CardContent className="p-12 text-center">
-              <div className="relative mb-8">
-                <Image 
-                  src="/images/logo-telaten.png" 
-                  alt="TELATEN Logo" 
-                  width={80} 
-                  height={80}
-                  className="mx-auto animate-pulse"
-                  priority
-                />
-              </div>
-              
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                Mempersiapkan Personalisasi
-              </h1>
-              <p className="text-gray-600 dark:text-gray-400 mb-8">
-                Mengatur preferensi dan rekomendasi khusus untuk bisnis Anda
-              </p>
-              
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-4 overflow-hidden">
-                <div 
-                  className="bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 h-3 rounded-full animate-progress"
-                  style={{ 
-                    animation: 'progress 2s ease-in-out infinite',
-                  }}
-                ></div>
-              </div>
-              
-              <div className="flex gap-1 justify-center">
-                <div className="h-2 w-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                <div className="h-2 w-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                <div className="h-2 w-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-              </div>
-            </CardContent>
-          </Card>
-        ) : (
+    <>
+      <LoadingOverlay 
+        isLoading={createBusinessProfile.isPending} 
+        message="Mempersiapkan personalisasi untuk bisnis Anda..." 
+      />
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 flex items-center justify-center p-4">
+        <div className="w-full max-w-lg">
+          {!createBusinessProfile.isPending && (
           <>
             <div className="text-center mb-8">
               <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg overflow-hidden bg-white">
@@ -355,13 +327,27 @@ export default function OnboardingPage() {
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="country">Negara</Label>
-                          <Input
-                            id="country"
+                          <Select
                             value={formData.country}
-                            onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                            className="h-12 border-2"
-                            disabled
-                          />
+                            onValueChange={(value) => setFormData({ ...formData, country: value })}
+                          >
+                            <SelectTrigger className="h-12 border-2">
+                              <SelectValue placeholder={isLoadingCountries ? "Memuat negara..." : "Pilih negara"} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {isLoadingCountries ? (
+                                <SelectItem value="loading" disabled>Memuat data negara...</SelectItem>
+                              ) : countries && countries.length > 0 ? (
+                                countries.map((country) => (
+                                  <SelectItem key={country.cca3} value={country.name.common}>
+                                    {country.flag} {country.name.common}
+                                  </SelectItem>
+                                ))
+                              ) : (
+                                <SelectItem value="no-data" disabled>Tidak ada data negara</SelectItem>
+                              )}
+                            </SelectContent>
+                          </Select>
                         </div>
                       </div>
                     </div>
@@ -525,7 +511,8 @@ export default function OnboardingPage() {
             </p>
           </>
         )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -68,19 +68,15 @@ export default function ProfilPage() {
   const handleLogout = async () => {
     try {
       await logout();
-      clearAuth();
       toast({
         title: 'Berhasil Logout',
         description: 'Anda telah keluar dari sistem.',
       });
-      router.push('/login');
     } catch (error: any) {
-      clearAuth();
       toast({
         title: 'Logout',
         description: 'Anda telah keluar dari sistem.',
       });
-      router.push('/login');
     }
   };
 

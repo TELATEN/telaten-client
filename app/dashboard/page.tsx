@@ -5,7 +5,7 @@ import { Switch } from '@/components/ui/switch';
 import { MissionCard } from '@/components/MissionCard';
 import { mockMissions } from '@/lib/mockData';
 import { useToast } from '@/hooks/use-toast';
-import { Sun, Moon, Store } from 'lucide-react';
+import { Sun, Moon, Trophy, Star } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import useMe from '@/hooks/services/auth/use-me';
 import useBusinessProfile from '@/hooks/services/business/use-business-profile';
@@ -86,41 +86,41 @@ export default function DashboardPage() {
           </div>
         </header>
 
-        {/* Business Info */}
+        {/* Level & Points Card */}
         {businessData && (
           <section className="mb-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Store className="w-5 h-5 text-pink-500" />
-                  Informasi Bisnis
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Kategori</span>
-                  <span className="font-medium text-gray-900 dark:text-white">{businessData.business_category}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Tahap</span>
-                  <span className="font-medium text-gray-900 dark:text-white">{businessData.business_stage}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Target Market</span>
-                  <span className="font-medium text-gray-900 dark:text-white">{businessData.target_market}</span>
-                </div>
-                {businessData.address && (
-                  <div className="flex justify-between">
-                    <span className="text-gray-600 dark:text-gray-400">Lokasi</span>
-                    <span className="font-medium text-gray-900 dark:text-white text-right">
-                      {businessData.address.city}, {businessData.address.state}
-                    </span>
+            <Card className="bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 border-0 shadow-lg">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <p className="text-pink-100 text-sm font-medium">Level Bisnis</p>
+                    <h3 className="text-white text-2xl font-bold">{businessData.level || 'Pemula'}</h3>
                   </div>
-                )}
+                  <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                    <Trophy className="w-8 h-8 text-white" fill="white" />
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between bg-white/20 backdrop-blur-sm rounded-lg p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center">
+                      <Star className="w-5 h-5 text-white" fill="white" />
+                    </div>
+                    <div>
+                      <p className="text-white text-sm">Total Points</p>
+                      <p className="text-white text-2xl font-bold">{businessData.total_points || 0}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-pink-100 text-xs">Terus kumpulkan</p>
+                    <p className="text-white text-sm font-semibold">points! 🎯</p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </section>
         )}
+
 
         <section>
           <div className="flex items-center justify-between mb-4">

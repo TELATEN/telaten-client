@@ -16,6 +16,8 @@ export interface BusinessProfile {
   business_stage: string;
   target_market: string;
   primary_goal: string;
+  total_points: number;
+  level: string;
   created_at: string;
   updated_at: string;
 }
@@ -28,6 +30,8 @@ export interface BusinessProfileResponse {
   business_stage: string;
   target_market: string;
   primary_goal: string;
+  total_points: number;
+  level: string;
   id: string;
   user_id: string;
   created_at: string;
