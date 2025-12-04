@@ -11,7 +11,6 @@ import {
   MessageSquare,
   ArrowLeft,
   History,
-  Pause,
   Loader2,
 } from "lucide-react";
 import CollapseChatSessionPanel from "@/components/chat/CollapseChatSessionPanel";
@@ -29,15 +28,14 @@ export default function AssistantPage() {
   const [selectedSession, setSelectedSession] = useState<ChatSession | null>();
   const [isChatLoading, setIsChatLoading] = useState(false);
 
-  const {
-    data: chatMessages,
-    refetch: reloadMessages,
-    isLoading,
-  } = useGetChatMessages(selectedSession?.id);
+  const { data: chatMessages, isFetching: isLoading } = useGetChatMessages(
+    selectedSession?.id
+  );
 
   const {
     mutate: sendMessage,
     message: assistantMessage,
+    session: newSession,
     isStreaming,
   } = useSendMessage();
 
@@ -71,19 +69,12 @@ export default function AssistantPage() {
   };
 
   useEffect(() => {
-    if (chatMessages && chatMessages.length > 0) {
-      setMessages(chatMessages);
-      setTimeout(scrollToBottom, 800);
-    }
-  }, [chatMessages]);
+    setMessages(chatMessages || []);
 
-  useEffect(() => {
-    if (selectedSession && !isLoading) {
-      reloadMessages();
-    } else {
-      setMessages([]);
+    if (!isLoading && chatMessages && chatMessages?.length > 0) {
+      setTimeout(scrollToBottom, 400);
     }
-  }, [reloadMessages, selectedSession, isLoading]);
+  }, [chatMessages, isLoading]);
 
   useEffect(() => {
     if (isStreaming && assistantMessage) {
@@ -249,6 +240,7 @@ export default function AssistantPage() {
           setShow={(val) => setShowSession(val)}
           selectedSession={selectedSession}
           setSelectedSession={(val) => setSelectedSession(val)}
+          newSession={newSession}
         />
       </div>
     </div>

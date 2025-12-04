@@ -13,5 +13,7 @@ export default function useGetChatMessages(sessionId?: string) {
     queryKey: ["get-chat-messages", sessionId],
     queryFn,
     enabled: !!sessionId,
+    staleTime: 0,
+    refetchOnMount: false,
   });
 }

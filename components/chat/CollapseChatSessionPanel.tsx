@@ -3,52 +3,79 @@
 import useGetChatSessions from "@/hooks/services/chat/session/use-get-sessions";
 import { ChatSession } from "@/types";
 import { MoreHorizontal, PanelRightClose, Plus } from "lucide-react";
-import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 export default function CollapseChatSessionPanel({
   show,
   setShow,
   selectedSession,
   setSelectedSession,
+  newSession,
 }: {
   show: boolean;
   setShow: (val: boolean) => void;
   selectedSession?: ChatSession | null;
   setSelectedSession?: (val?: ChatSession | null) => void;
+  newSession?: ChatSession | null;
 }) {
+  const router = useRouter();
   const isDesktop = typeof window != "undefined" && window.innerWidth >= 1024;
-  const { data: sessions } = useGetChatSessions();
-  const hashId = window.location.hash.slice(1);
+  const { data } = useGetChatSessions();
+  const [sessions, setSessions] = useState<ChatSession[]>([]);
 
   const handleSelect = (session: ChatSession) => {
-    if (setSelectedSession) {
-      setSelectedSession(session);
-    }
+    if (!setSelectedSession) return;
+
+    if (selectedSession?.id === session.id) return;
+
+    setSelectedSession(session);
 
     if (!isDesktop) {
       setShow(false);
     }
 
-    window.location.hash = session.id;
+    router.replace(`/assistant#${session.id}`);
   };
 
-  const newSession = () => {
-    if (setSelectedSession) {
-      setSelectedSession(null);
+  const createNewSession = () => {
+    if (!setSelectedSession) return;
 
-      window.location.hash = "";
-    }
+    setSelectedSession(null);
+
+    router.replace(`/assistant`);
   };
 
   useEffect(() => {
-    if (hashId && setSelectedSession) {
-      const session = sessions?.find((s) => s.id == hashId);
-
-      if (session) {
-        setSelectedSession(session);
-      }
+    if (data) {
+      setSessions(data);
     }
-  }, [hashId, setSelectedSession, sessions]);
+  }, [data]);
+
+  useEffect(() => {
+    if (!setSelectedSession || !sessions) return;
+
+    // Only run on initial mount
+    const hashId = window.location.hash.slice(1);
+
+    if (!hashId) {
+      setSelectedSession(null);
+      return;
+    }
+
+    const sessionFromHash = sessions.find((s: ChatSession) => s.id === hashId);
+    if (sessionFromHash && !selectedSession?.id) {
+      setSelectedSession(sessionFromHash);
+    }
+  }, [setSelectedSession, sessions, selectedSession]);
+
+  useEffect(() => {
+    if (newSession) {
+      setSessions((prev: ChatSession[]) => {
+        return [newSession, ...prev];
+      });
+    }
+  }, [newSession]);
 
   return (
     <>
@@ -79,14 +106,14 @@ export default function CollapseChatSessionPanel({
           <button
             type="button"
             className={`p-3 hover:bg-muted py-1.5 rounded transition flex items-center gap-2 group cursor-pointer w-full text-sm overflow-hidden ${!selectedSession?.id ? "bg-muted" : ""}`}
-            onClick={newSession}
+            onClick={createNewSession}
           >
             <Plus className="h-4 w-4"></Plus>
             <div className="flex-1 min-w-0 overflow-hidden truncate text-left">
               Chat Baru
             </div>
           </button>
-          {sessions?.map((session) => (
+          {sessions?.map((session: ChatSession) => (
             <div
               key={session.id}
               className={[

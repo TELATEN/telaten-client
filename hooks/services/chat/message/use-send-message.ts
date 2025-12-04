@@ -1,13 +1,15 @@
 import { httpStream } from "@/lib/http";
-import { ChatMessage, SendMessageParams } from "@/types";
+import { ChatMessage, ChatSession, SendMessageParams } from "@/types";
 import { useState } from "react";
 
 export function useSendMessage() {
   const [message, setMessage] = useState<ChatMessage | null>();
+  const [session, setSession] = useState<ChatSession | null>();
   const [isStreaming, setIsStreaming] = useState(false);
 
   const mutate = async (data: SendMessageParams) => {
     setIsStreaming(true);
+    setSession(null);
     setMessage({
       id: (Date.now() + 1).toString(),
       role: "assistant",
@@ -35,8 +37,14 @@ export function useSendMessage() {
           for (const line of lines.filter((l) => l)) {
             try {
               const data = JSON.parse(line.replace("data: ", ""));
-
               switch (data.type) {
+                case "session_created":
+                  setSession({
+                    id: data.data as string,
+                    title: data.message,
+                    business_id: "",
+                    created_at: new Date(),
+                  });
                 case "token":
                   setMessage(
                     (prev) =>
@@ -50,7 +58,7 @@ export function useSendMessage() {
                   break;
               }
             } catch (_) {
-              //
+              // json broken
             }
           }
         }
@@ -79,6 +87,7 @@ export function useSendMessage() {
 
   return {
     message,
+    session,
     mutate,
     isStreaming,
   };
