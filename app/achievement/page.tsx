@@ -5,29 +5,74 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import useGetAchievements from "@/hooks/services/achievements/use-get-achievements";
 import { Achievement } from "@/types";
-import Image from "next/image";
 import AchievementSkeletonCards from "@/components/achievement/AchievementSkeletonCards";
+import AchievementDialog from "@/components/achievement/AchievementDialog";
+import ConfirmDialog from "@/components/ui/confirm-dialog";
+import { useAuthStore } from "@/hooks/stores/use-auth.store";
+import { Button } from "@/components/ui/button";
+import { Plus, Edit, Trash2 } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+import useDeleteAchievement from "@/hooks/services/achievements/use-delete-achievement";
+import { toast } from "@/hooks/use-toast";
 
 export default function AchievementPage() {
   const { data: achievements, isLoading, isError } = useGetAchievements();
+  const user = useAuthStore((state) => state.user);
+  const queryClient = useQueryClient();
+  const deleteMutation = useDeleteAchievement();
+
+  const handleAchievementCallback = () => {
+    queryClient.invalidateQueries({ queryKey: ["get-achievements"] });
+  };
+
+  const handleDeleteAchievement = async (id: string) => {
+    try {
+      await deleteMutation.mutateAsync(id);
+      toast({
+        title: "Berhasil",
+        description: "Achievement berhasil dihapus.",
+      });
+    } catch (error) {
+      toast({
+        title: "Gagal",
+        description: "Terjadi kesalahan saat menghapus achievement.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-4xl mx-auto px-4 py-6 md:py-8">
-        <header className="mb-6">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center">
-              <span className="text-2xl">🏆</span>
-            </div>
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-                Achievement
-              </h1>
-              <p className="text-gray-600 dark:text-gray-400">
-                Kumpulkan pencapaian untuk naik level
-              </p>
+        <header className="mb-6 flex items-center justify-between">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center">
+                <span className="text-2xl">🏆</span>
+              </div>
+              <div>
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+                  Achievement
+                </h1>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Kumpulkan pencapaian untuk naik level
+                </p>
+              </div>
             </div>
           </div>
+
+          {user?.role == "admin" && (
+            <AchievementDialog
+              isEdit={false}
+              achievement={null}
+              callback={handleAchievementCallback}
+            >
+              <Button type="button" className="flex gap-2">
+                <Plus className="size-4"></Plus>
+                Tambah Pencapaian
+              </Button>
+            </AchievementDialog>
+          )}
         </header>
 
         {isLoading && <AchievementSkeletonCards />}
@@ -65,14 +110,40 @@ export default function AchievementPage() {
                     Poin dibutuhkan: {ach.required_points}
                   </div>
                 </div>
-                {ach.is_unlocked && (
-                  <Badge
-                    variant="default"
-                    className="ml-2 bg-yellow-400 text-yellow-900"
-                  >
-                    Selesai
-                  </Badge>
-                )}
+                <div className="flex items-center gap-2">
+                  {ach.is_unlocked && (
+                    <Badge
+                      variant="default"
+                      className="bg-yellow-400 text-yellow-900"
+                    >
+                      Selesai
+                    </Badge>
+                  )}
+                  {user?.role == "admin" && (
+                    <div className="flex gap-1">
+                      <AchievementDialog
+                        isEdit={true}
+                        achievement={ach}
+                        callback={handleAchievementCallback}
+                      >
+                        <Button variant="ghost" size="sm">
+                          <Edit className="size-4" />
+                        </Button>
+                      </AchievementDialog>
+                      <ConfirmDialog
+                        title="Hapus Achievement"
+                        description={`Apakah Anda yakin ingin menghapus achievement "${ach.title}"? Tindakan ini tidak dapat dibatalkan.`}
+                        onConfirm={() => handleDeleteAchievement(ach.id)}
+                        variant="destructive"
+                        confirmText="Hapus"
+                      >
+                        <Button variant="ghost" size="sm">
+                          <Trash2 className="size-4" />
+                        </Button>
+                      </ConfirmDialog>
+                    </div>
+                  )}
+                </div>
               </Card>
             ))}
         </div>
