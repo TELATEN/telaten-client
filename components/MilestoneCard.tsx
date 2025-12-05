@@ -19,6 +19,7 @@ import {
   ChevronUp,
   Clock,
   CheckCircle2,
+  Check,
   Loader2,
 } from "lucide-react";
 import type { Milestone, MilestoneTask } from "@/types/entity";
@@ -165,7 +166,7 @@ export function MilestoneCard({
           </Button>
 
           {isExpanded && (
-            <div className="space-y-2 pl-2">
+            <div className="space-y-3 pl-2">
               {isLoadingDetail && tasks.length === 0 ? (
                 <div className="flex items-center justify-center py-6">
                   <Loader2 className="w-6 h-6 animate-spin text-pink-500" />
@@ -186,26 +187,18 @@ export function MilestoneCard({
                           : "bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700"
                       )}
                     >
-                      <Checkbox
-                        checked={task.is_completed}
-                        onCheckedChange={() =>
-                          !task.is_completed && onCompleteTask?.(task.id)
-                        }
-                        disabled={
-                          task.is_completed ||
-                          milestone.status !== "in_progress"
-                        }
-                        className="mt-0.5"
-                      />
+                      {!task.is_completed && (
+                        <Checkbox
+                          checked={task.is_completed}
+                          onCheckedChange={() =>
+                            !task.is_completed && onCompleteTask?.(task.id)
+                          }
+                          disabled={milestone.status !== "in_progress"}
+                          className="mt-0.5"
+                        />
+                      )}
                       <div className="flex-1">
-                        <p
-                          className={cn(
-                            "text-sm",
-                            task.is_completed
-                              ? "line-through text-gray-500 dark:text-gray-400"
-                              : "text-gray-900 dark:text-white"
-                          )}
-                        >
+                        <p className="text-sm text-gray-900 dark:text-white">
                           {index + 1}. {task.title}
                         </p>
                         {task.reward_points > 0 && (
@@ -215,6 +208,29 @@ export function MilestoneCard({
                           </div>
                         )}
                       </div>
+                      
+                      {/* Complete Button */}
+                      {task.is_completed ? (
+                        <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-0 flex-shrink-0">
+                          <CheckCircle2 className="w-3 h-3 mr-1" />
+                          Selesai
+                        </Badge>
+                      ) : (
+                        <Button
+                          size="sm"
+                          onClick={() => onCompleteTask?.(task.id)}
+                          disabled={milestone.status !== 'in_progress'}
+                          className={cn(
+                            'h-8 px-3 text-xs font-semibold flex-shrink-0',
+                            milestone.status === 'in_progress'
+                              ? 'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white'
+                              : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          )}
+                        >
+                          <Check className="w-3 h-3 mr-1" />
+                          Selesai
+                        </Button>
+                      )}
                     </div>
                   ))
               ) : (

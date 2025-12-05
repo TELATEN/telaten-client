@@ -22,6 +22,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
   const router = useRouter();
   const pathname = usePathname();
   const token = useAuthStore((state) => state.token);
+  const isLoggingOut = useAuthStore((state) => state.isLoggingOut);
   const [isChecking, setIsChecking] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -41,6 +42,11 @@ export default function AuthGuard({ children }: AuthGuardProps) {
         return;
       }
 
+      // Don't redirect if user is in the process of logging out
+      if (isLoggingOut) {
+        return;
+      }
+
       // Protected routes require authentication
       if (!token) {
         router.replace('/unauthorized');
@@ -54,7 +60,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     const timer = setTimeout(checkAuth, 100);
 
     return () => clearTimeout(timer);
-  }, [token, pathname, router, isMounted]);
+  }, [token, pathname, router, isMounted, isLoggingOut]);
 
   if (!isMounted || isChecking) {
     return (

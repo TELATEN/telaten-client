@@ -4,6 +4,7 @@ import { User } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 
 export default function useMe() {
+  const token = useAuthStore((state) => state.token);
   const updateUser = useAuthStore((state) => state.updateUser);
   const clearAuth = useAuthStore((state) => state.clearAuth);
 
@@ -25,5 +26,7 @@ export default function useMe() {
     queryKey: ["me"],
     queryFn,
     staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: false, // Don't retry on failure
+    enabled: !!token, // Only run if token exists
   });
 }

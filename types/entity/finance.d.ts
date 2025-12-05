@@ -30,8 +30,18 @@ export interface FinancialSummary {
 export interface GetTransactionsParams {
   start_date?: string;
   end_date?: string;
+  page?: number;
+  size?: number;
 }
 
 export interface GetSummaryParams {
   period?: 'day' | 'week' | 'month' | 'year';
+}
+
+export interface PaginatedTransactions {
+  items: Transaction[];
+  total: number;
+  page: number;
+  size: number;
+  pages: number;
 }

@@ -2,23 +2,53 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
-import { TrendingUp, TrendingDown, Calendar, Tag } from 'lucide-react';
+import { TrendingUp, TrendingDown, Calendar, Tag, Trash2, Loader2 } from 'lucide-react';
 import type { Transaction } from '@/types/entity/finance';
 import { cn } from '@/lib/utils';
+import { useState } from 'react';
 
 interface TransactionListProps {
   transactions: Transaction[];
+  onDelete?: (transactionId: string) => void;
+  isDeleting?: boolean;
 }
 
-export function TransactionList({ transactions }: TransactionListProps) {
+export function TransactionList({ transactions, onDelete, isDeleting }: TransactionListProps) {
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('id-ID', {
       style: 'currency',
       currency: 'IDR',
       minimumFractionDigits: 0,
     }).format(amount);
+  };
+
+  const handleDeleteClick = (transaction: Transaction) => {
+    setSelectedTransaction(transaction);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedTransaction && onDelete) {
+      onDelete(selectedTransaction.id);
+      setDeleteDialogOpen(false);
+      setSelectedTransaction(null);
+    }
   };
 
   // Safety check: ensure transactions is an array
@@ -48,73 +78,131 @@ export function TransactionList({ transactions }: TransactionListProps) {
   }
 
   return (
-    <div className="space-y-3">
-      {transactions.map((transaction) => (
-        <Card
-          key={transaction.id}
-          className={cn(
-            'border-l-4 transition-all hover:shadow-md',
-            transaction.type === 'income'
-              ? 'border-l-green-500 bg-green-50/50 dark:bg-green-900/10'
-              : 'border-l-red-500 bg-red-50/50 dark:bg-red-900/10'
-          )}
-        >
-          <CardContent className="p-4">
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1 min-w-0">
-                {/* Type Icon & Description */}
-                <div className="flex items-start gap-2 mb-2">
-                  {transaction.type === 'income' ? (
-                    <TrendingUp className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  ) : (
-                    <TrendingDown className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-gray-900 dark:text-white truncate">
-                      {transaction.description}
-                    </p>
+    <>
+      <div className="space-y-3">
+        {transactions.map((transaction) => (
+          <Card
+            key={transaction.id}
+            className={cn(
+              'border-l-4 transition-all hover:shadow-md',
+              transaction.type === 'income'
+                ? 'border-l-green-500 bg-green-50/50 dark:bg-green-900/10'
+                : 'border-l-red-500 bg-red-50/50 dark:bg-red-900/10'
+            )}
+          >
+            <CardContent className="p-4">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  {/* Type Icon & Description */}
+                  <div className="flex items-start gap-2 mb-2">
+                    {transaction.type === 'income' ? (
+                      <TrendingUp className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    ) : (
+                      <TrendingDown className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-gray-900 dark:text-white truncate">
+                        {transaction.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Category & Date */}
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
+                    <Badge
+                      variant="secondary"
+                      className={cn(
+                        'flex items-center gap-1',
+                        transaction.type === 'income'
+                          ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                          : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                      )}
+                    >
+                      <Tag className="w-3 h-3" />
+                      {transaction.category}
+                    </Badge>
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      {format(new Date(transaction.transaction_date), 'dd MMM yyyy, HH:mm', {
+                        locale: id,
+                      })}
+                    </span>
                   </div>
                 </div>
 
-                {/* Category & Date */}
-                <div className="flex flex-wrap items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
-                  <Badge
-                    variant="secondary"
-                    className={cn(
-                      'flex items-center gap-1',
-                      transaction.type === 'income'
-                        ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                        : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-                    )}
-                  >
-                    <Tag className="w-3 h-3" />
-                    {transaction.category}
-                  </Badge>
-                  <span className="flex items-center gap-1">
-                    <Calendar className="w-3 h-3" />
-                    {format(new Date(transaction.transaction_date), 'dd MMM yyyy, HH:mm', {
-                      locale: id,
-                    })}
-                  </span>
+                {/* Amount & Actions */}
+                <div className="flex items-start gap-2 flex-shrink-0">
+                  <div className="text-right">
+                    <p
+                      className={cn(
+                        'text-lg font-bold',
+                        transaction.type === 'income' ? 'text-green-700' : 'text-red-700'
+                      )}
+                    >
+                      {transaction.type === 'income' ? '+' : '-'}
+                      {formatCurrency(transaction.amount)}
+                    </p>
+                  </div>
+                  {onDelete && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
+                      onClick={() => handleDeleteClick(transaction)}
+                      disabled={isDeleting}
+                    >
+                      {isDeleting ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="w-4 h-4" />
+                      )}
+                    </Button>
+                  )}
                 </div>
               </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
 
-              {/* Amount */}
-              <div className="text-right flex-shrink-0">
-                <p
-                  className={cn(
-                    'text-lg font-bold',
-                    transaction.type === 'income' ? 'text-green-700' : 'text-red-700'
-                  )}
-                >
-                  {transaction.type === 'income' ? '+' : '-'}
-                  {formatCurrency(transaction.amount)}
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Hapus Transaksi?</AlertDialogTitle>
+            <AlertDialogDescription asChild>
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground">
+                  Apakah Anda yakin ingin menghapus transaksi ini?
+                </p>
+                {selectedTransaction && (
+                  <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <p className="font-semibold text-gray-900 dark:text-white">
+                      {selectedTransaction.description}
+                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      {selectedTransaction.type === 'income' ? 'Pemasukan' : 'Pengeluaran'}:{' '}
+                      {formatCurrency(selectedTransaction.amount)}
+                    </p>
+                  </div>
+                )}
+                <p className="text-sm text-muted-foreground">
+                  Tindakan ini tidak dapat dibatalkan.
                 </p>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleConfirmDelete}
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+            >
+              Hapus
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }

@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { Wallet, Loader2, Plus, List, AlertCircle, Info } from 'lucide-react';
+import { Wallet, Loader2, Plus, List, AlertCircle, Info, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
 import { CreateTransactionForm } from '@/components/finance/CreateTransactionForm';
 import { TransactionList } from '@/components/finance/TransactionList';
 import { FinancialSummaryCard } from '@/components/finance/FinancialSummaryCard';
@@ -11,6 +12,7 @@ import { TransactionFilter } from '@/components/finance/TransactionFilter';
 import useTransactions from '@/hooks/services/finance/use-transactions';
 import useFinancialSummary from '@/hooks/services/finance/use-financial-summary';
 import useCreateTransaction from '@/hooks/services/finance/use-create-transaction';
+import useDeleteTransaction from '@/hooks/services/finance/use-delete-transaction';
 import type { CreateTransactionInput } from '@/types/entity/finance';
 
 export default function KeuanganPage() {
@@ -18,12 +20,18 @@ export default function KeuanganPage() {
   const [filterParams, setFilterParams] = useState<{
     start_date?: string;
     end_date?: string;
-  }>({});
+    page?: number;
+    size?: number;
+  }>({
+    page: 1,
+    size: 20,
+  });
   const [summaryPeriod, setSummaryPeriod] = useState<'day' | 'week' | 'month' | 'year'>('month');
 
-  const { data: transactions, isLoading: isLoadingTransactions, error: transactionsError } = useTransactions(filterParams);
+  const { data: transactionsData, isLoading: isLoadingTransactions, error: transactionsError } = useTransactions(filterParams);
   const { data: summary, isLoading: isLoadingSummary, error: summaryError } = useFinancialSummary({ period: summaryPeriod });
   const createTransaction = useCreateTransaction();
+  const deleteTransaction = useDeleteTransaction();
 
   const handleCreateTransaction = (data: CreateTransactionInput) => {
     createTransaction.mutate(data, {
@@ -46,12 +54,34 @@ export default function KeuanganPage() {
   const handleFilterChange = (startDate?: string, endDate?: string, period?: string) => {
     if (period && period !== 'custom') {
       setSummaryPeriod(period as 'day' | 'week' | 'month' | 'year');
-      setFilterParams({});
+      setFilterParams({ page: 1, size: 20 });
     } else if (startDate && endDate) {
-      setFilterParams({ start_date: startDate, end_date: endDate });
+      setFilterParams({ start_date: startDate, end_date: endDate, page: 1, size: 20 });
     } else {
-      setFilterParams({});
+      setFilterParams({ page: 1, size: 20 });
     }
+  };
+
+  const handleDeleteTransaction = (transactionId: string) => {
+    deleteTransaction.mutate(transactionId, {
+      onSuccess: () => {
+        toast({
+          title: 'Transaksi Berhasil Dihapus!',
+          description: 'Transaksi telah dihapus dari sistem.',
+        });
+      },
+      onError: (error: any) => {
+        toast({
+          title: 'Gagal Menghapus Transaksi',
+          description: error?.response?.data?.message || 'Terjadi kesalahan',
+          variant: 'destructive',
+        });
+      },
+    });
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setFilterParams((prev) => ({ ...prev, page: newPage }));
   };
 
   return (
@@ -157,8 +187,46 @@ export default function KeuanganPage() {
                     </div>
                   </div>
                 </div>
-              ) : transactions ? (
-                <TransactionList transactions={transactions} />
+              ) : transactionsData && transactionsData.items.length > 0 ? (
+                <>
+                  <TransactionList
+                    transactions={transactionsData.items}
+                    onDelete={handleDeleteTransaction}
+                    isDeleting={deleteTransaction.isPending}
+                  />
+                  
+                  {/* Pagination */}
+                  {transactionsData.pages > 1 && (
+                    <div className="flex items-center justify-between mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                        Halaman {transactionsData.page} dari {transactionsData.pages}
+                        <span className="ml-2">
+                          ({transactionsData.total} transaksi)
+                        </span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handlePageChange(transactionsData.page - 1)}
+                          disabled={transactionsData.page === 1}
+                        >
+                          <ChevronLeft className="w-4 h-4 mr-1" />
+                          Sebelumnya
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handlePageChange(transactionsData.page + 1)}
+                          disabled={transactionsData.page >= transactionsData.pages}
+                        >
+                          Selanjutnya
+                          <ChevronRight className="w-4 h-4 ml-1" />
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6">
                   <div className="flex items-center gap-2">

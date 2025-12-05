@@ -81,6 +81,12 @@ export default function BusinessProfileGuard({
       return;
     }
 
+    // Admin users don't need business profile check
+    if (user?.role === "admin") {
+      setIsChecking(false);
+      return;
+    }
+
     // Wait for business profile query to complete
     if (isLoading) {
       return;
@@ -91,11 +97,7 @@ export default function BusinessProfileGuard({
     const hasNoBusinessProfile =
       (isError && errorStatus === 404) || (!isError && !businessProfile);
 
-    if (
-      hasNoBusinessProfile &&
-      !hasRedirected.current &&
-      user?.role != "admin"
-    ) {
+    if (hasNoBusinessProfile && !hasRedirected.current) {
       hasRedirected.current = true;
 
       toast({
@@ -121,6 +123,7 @@ export default function BusinessProfileGuard({
     toast,
     isMounted,
     shouldCheckProfile,
+    user,
   ]);
 
   // Reset redirect flag when navigating to onboarding

@@ -26,19 +26,36 @@ export function http() {
   instance.interceptors.response.use(
     (res) => res,
     async (err) => {
+      const originalRequest = err.config;
+      
       if (
-        err.response.status == 401 &&
+        err.response?.status === 401 &&
+        !originalRequest._retry &&
         !err.response.request.responseURL.includes("/auth/refresh") &&
+        !err.response.request.responseURL.includes("/auth/logout") &&
         !isRefreshing
       ) {
+        originalRequest._retry = true;
         isRefreshing = true;
-        const result = await http().post("/auth/refresh");
-        const newToken = (result.data as LoginResponse).access_token;
+        
+        try {
+          const result = await http().post("/auth/refresh");
+          const newToken = (result.data as LoginResponse).access_token;
 
-        if (!newToken) return;
-
-        useAuthStore((state) => state.updateToken)(newToken);
+          if (newToken) {
+            useAuthStore.getState().updateToken(newToken);
+            originalRequest.headers.Authorization = `Bearer ${newToken}`;
+            isRefreshing = false;
+            return instance(originalRequest);
+          }
+        } catch (refreshError) {
+          isRefreshing = false;
+          useAuthStore.getState().clearAuth();
+          return Promise.reject(refreshError);
+        }
       }
+      
+      return Promise.reject(err);
     }
   );
 
