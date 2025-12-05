@@ -7,7 +7,9 @@ import axios from "axios";
 export default function useRegister() {
   const setAuth = useAuthStore((state) => state.setAuth);
 
-  const mutationFn = async (params: RegisterParams): Promise<RegisterResponse> => {
+  const mutationFn = async (
+    params: RegisterParams
+  ): Promise<RegisterResponse> => {
     // Step 1: Register the user
     const registerRes = await http().post("/auth/register", params);
     const registerData = registerRes.data;
@@ -28,7 +30,7 @@ export default function useRegister() {
           },
         }
       );
-      
+
       const loginData = loginRes.data;
 
       if (loginData.access_token) {
@@ -37,12 +39,13 @@ export default function useRegister() {
           id: registerData.id,
           email: registerData.email,
           name: registerData.name,
+          role: "user",
           created_at: new Date(registerData.created_at),
         };
 
         // Save auth with token
         setAuth(user, loginData.access_token);
-        
+
         // Return combined data in RegisterResponse format
         return {
           user: {
@@ -58,7 +61,9 @@ export default function useRegister() {
         throw new Error("Failed to get authentication token");
       }
     } catch (loginError) {
-      throw new Error("Registration successful but auto-login failed. Please login manually.");
+      throw new Error(
+        "Registration successful but auto-login failed. Please login manually."
+      );
     }
   };
 
