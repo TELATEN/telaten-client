@@ -37,18 +37,22 @@ export default function CurrentLevelLeaderBoard({ businessProfile }: Props) {
                 <HoverCardTrigger asChild>
                   <div className="flex flex-col items-center min-w-[72px] pl-2 cursor-pointer">
                     <div
-                      className={`w-16 h-16 relative hover:scale-105 transition rounded-full flex items-center justify-center shadow text-center mb-2 ${level.required_points <= (businessProfile?.total_points || 0) ? `bg-card` : `bg-border`}`}
+                      className={`w-16 h-16 relative hover:scale-105 transition rounded-full flex items-center justify-center shadow text-center mb-2 ${level.required_points <= (businessProfile?.total_points || 0) ? `bg-card` : `bg-card`}`}
                     >
                       {level.required_points <=
-                        (businessProfile?.total_points || 0) && (
+                      (businessProfile?.total_points || 0) ? (
                         <>
                           <div className="absolute -right-1 -bottom-1 -left-1 -top-1 scale-105 border border-green-500 rounded-full"></div>
                           <div className="absolute right-0 bottom-0 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white">
                             <Check className="h-4 w-4"></Check>
                           </div>
+                          <span className="text-3xl">{level.icon}</span>
                         </>
+                      ) : (
+                        <span className="text-3xl opacity-30">
+                          {level.icon}
+                        </span>
                       )}
-                      <span className="text-3xl">{level.icon}</span>
                     </div>
                     <span className="text-sm font-medium truncate w-16 text-center text-foreground">
                       {level.name}
