@@ -1,50 +1,50 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { ArrowLeft, User, Mail, Phone, Camera } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
-import useMe from '@/hooks/services/auth/use-me';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { ArrowLeft, User, Mail, Phone, Camera } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { useAuthStore } from "@/hooks/stores/use-auth.store";
 
 export default function EditProfilePage() {
   const router = useRouter();
   const { toast } = useToast();
-  const { data: userData } = useMe();
-  
+  const userData = useAuthStore((state) => state.user);
+
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
+    name: "",
+    email: "",
+    phone: "",
   });
 
   // Populate form when data is loaded
   useEffect(() => {
     if (userData) {
       setFormData({
-        name: userData.name || '',
-        email: userData.email || '',
-        phone: '',
+        name: userData.name || "",
+        email: userData.email || "",
+        phone: "",
       });
     }
   }, [userData]);
 
   const handleSave = () => {
     toast({
-      title: 'Profil Disimpan',
-      description: 'Perubahan profil Anda telah berhasil disimpan.',
+      title: "Profil Disimpan",
+      description: "Perubahan profil Anda telah berhasil disimpan.",
     });
     router.back();
   };
 
   const handleAvatarChange = () => {
     toast({
-      title: 'Fitur Upload Foto',
-      description: 'Fitur ini akan segera tersedia.',
+      title: "Fitur Upload Foto",
+      description: "Fitur ini akan segera tersedia.",
     });
   };
 
@@ -75,7 +75,9 @@ export default function EditProfilePage() {
               <div className="relative mb-4">
                 <Avatar className="w-24 h-24 border-4 border-white shadow-lg">
                   <AvatarFallback className="text-2xl font-bold bg-gradient-to-br from-pink-400 to-purple-500 text-white">
-                    {formData.name ? formData.name.charAt(0).toUpperCase() : 'U'}
+                    {formData.name
+                      ? formData.name.charAt(0).toUpperCase()
+                      : "U"}
                   </AvatarFallback>
                 </Avatar>
                 <Button
@@ -107,7 +109,9 @@ export default function EditProfilePage() {
               <Input
                 id="name"
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 placeholder="Masukkan nama lengkap"
                 className="h-12"
               />
@@ -118,7 +122,9 @@ export default function EditProfilePage() {
                 id="email"
                 type="email"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
                 placeholder="nama@email.com"
                 className="h-12"
               />
@@ -129,7 +135,9 @@ export default function EditProfilePage() {
                 id="phone"
                 type="tel"
                 value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, phone: e.target.value })
+                }
                 placeholder="08xx xxxx xxxx"
                 className="h-12"
               />
@@ -145,17 +153,28 @@ export default function EditProfilePage() {
           <CardContent>
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">User ID</span>
-                <span className="font-mono text-gray-900 dark:text-white text-xs">{userData?.id}</span>
+                <span className="text-gray-600 dark:text-gray-400">
+                  User ID
+                </span>
+                <span className="font-mono text-gray-900 dark:text-white text-xs">
+                  {userData?.id}
+                </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Bergabung sejak</span>
+                <span className="text-gray-600 dark:text-gray-400">
+                  Bergabung sejak
+                </span>
                 <span className="text-gray-900 dark:text-white">
-                  {userData?.created_at ? new Date(userData.created_at).toLocaleDateString('id-ID', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
-                  }) : '-'}
+                  {userData?.created_at
+                    ? new Date(userData.created_at).toLocaleDateString(
+                        "id-ID",
+                        {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        }
+                      )
+                    : "-"}
                 </span>
               </div>
             </div>

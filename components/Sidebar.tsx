@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils";
 import NavProfile from "./NavProfile";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import UserAvatar from "./UserAvatar";
-import useMe from '@/hooks/services/auth/use-me';
 import useLogout from "@/hooks/services/auth/use-logout";
 import { useToast } from "@/hooks/use-toast";
 
@@ -16,7 +15,7 @@ export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { toast } = useToast();
-  const { data: userData } = useMe();
+  const userData = useAuthStore((state) => state.user);
   const avatarUser = userData
     ? { ...userData, created_at: new Date(userData.created_at) }
     : undefined;

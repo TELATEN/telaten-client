@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Switch } from '@/components/ui/switch';
-import { MilestoneCard } from '@/components/MilestoneCard';
-import { useToast } from '@/hooks/use-toast';
-import { Sun, Moon, Trophy, Star, Target as TargetIcon } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import useMe from '@/hooks/services/auth/use-me';
-import useBusinessProfile from '@/hooks/services/business/use-business-profile';
-import useMilestones from '@/hooks/services/milestone/use-milestones';
-import useStartMilestone from '@/hooks/services/milestone/use-start-milestone';
-import useCompleteTask from '@/hooks/services/milestone/use-complete-task';
+import { useState } from "react";
+import { Switch } from "@/components/ui/switch";
+import { MilestoneCard } from "@/components/MilestoneCard";
+import { useToast } from "@/hooks/use-toast";
+import { Sun, Moon, Trophy, Star, Target as TargetIcon } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import useBusinessProfile from "@/hooks/services/business/use-business-profile";
+import useMilestones from "@/hooks/services/milestone/use-milestones";
+import useStartMilestone from "@/hooks/services/milestone/use-start-milestone";
+import useCompleteTask from "@/hooks/services/milestone/use-complete-task";
+import { useAuthStore } from "@/hooks/stores/use-auth.store";
 
 export default function DashboardPage() {
-  const { data: userData } = useMe();
+  const userData = useAuthStore((state) => state.user);
   const { data: businessData } = useBusinessProfile();
   const { data: milestones } = useMilestones();
   const startMilestone = useStartMilestone();
@@ -22,19 +22,19 @@ export default function DashboardPage() {
   const { toast } = useToast();
 
   // Get current active milestone (in_progress) or first pending
-  const currentMilestone = 
-    milestones?.find((m) => m.status === 'in_progress') ||
-    milestones?.find((m) => m.status === 'pending');
+  const currentMilestone =
+    milestones?.find((m) => m.status === "in_progress") ||
+    milestones?.find((m) => m.status === "pending");
 
   const handleToggleBusiness = () => {
     const newStatus = !isBusinessOpen;
     setIsBusinessOpen(newStatus);
 
     toast({
-      title: newStatus ? 'Warung Dibuka' : 'Warung Ditutup',
+      title: newStatus ? "Warung Dibuka" : "Warung Ditutup",
       description: newStatus
-        ? 'Semangat berjualan hari ini!'
-        : 'Semoga dapat istirahat yang cukup!',
+        ? "Semangat berjualan hari ini!"
+        : "Semoga dapat istirahat yang cukup!",
     });
   };
 
@@ -42,15 +42,15 @@ export default function DashboardPage() {
     startMilestone.mutate(milestoneId, {
       onSuccess: (data) => {
         toast({
-          title: 'Milestone Dimulai!',
+          title: "Milestone Dimulai!",
           description: `Anda mulai mengerjakan: ${data.title}`,
         });
       },
       onError: (error: any) => {
         toast({
-          title: 'Gagal Memulai Milestone',
-          description: error?.response?.data?.message || 'Terjadi kesalahan',
-          variant: 'destructive',
+          title: "Gagal Memulai Milestone",
+          description: error?.response?.data?.message || "Terjadi kesalahan",
+          variant: "destructive",
         });
       },
     });
@@ -60,15 +60,15 @@ export default function DashboardPage() {
     completeTask.mutate(taskId, {
       onSuccess: (data) => {
         toast({
-          title: 'Tugas Selesai!',
+          title: "Tugas Selesai!",
           description: `+${data.reward_points} poin`,
         });
       },
       onError: (error: any) => {
         toast({
-          title: 'Gagal Menyelesaikan Tugas',
-          description: error?.response?.data?.message || 'Terjadi kesalahan',
-          variant: 'destructive',
+          title: "Gagal Menyelesaikan Tugas",
+          description: error?.response?.data?.message || "Terjadi kesalahan",
+          variant: "destructive",
         });
       },
     });
@@ -81,9 +81,11 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-                Selamat Datang, {userData?.name || 'User'}!
+                Selamat Datang, {userData?.name || "User"}!
               </h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-1">{businessData?.business_name || 'Belum ada bisnis'}</p>
+              <p className="text-gray-600 dark:text-gray-400 mt-1">
+                {businessData?.business_name || "Belum ada bisnis"}
+              </p>
             </div>
           </div>
 
@@ -100,9 +102,11 @@ export default function DashboardPage() {
                   </div>
                 )}
                 <div>
-                  <p className="font-semibold text-gray-900 dark:text-white">Status Warung</p>
+                  <p className="font-semibold text-gray-900 dark:text-white">
+                    Status Warung
+                  </p>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {isBusinessOpen ? 'Buka' : 'Tutup'}
+                    {isBusinessOpen ? "Buka" : "Tutup"}
                   </p>
                 </div>
               </div>
@@ -122,8 +126,12 @@ export default function DashboardPage() {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-pink-100 text-sm font-medium">Level Bisnis</p>
-                    <h3 className="text-white text-2xl font-bold">{businessData.level || 'Pemula'}</h3>
+                    <p className="text-pink-100 text-sm font-medium">
+                      Level Bisnis
+                    </p>
+                    <h3 className="text-white text-2xl font-bold">
+                      {businessData.level || "Pemula"}
+                    </h3>
                   </div>
                   <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
                     <Trophy className="w-8 h-8 text-white" fill="white" />
@@ -137,7 +145,9 @@ export default function DashboardPage() {
                     </div>
                     <div>
                       <p className="text-white text-sm">Total Points</p>
-                      <p className="text-white text-2xl font-bold">{businessData.total_points || 0}</p>
+                      <p className="text-white text-2xl font-bold">
+                        {businessData.total_points || 0}
+                      </p>
                     </div>
                   </div>
                   <div className="text-right">
@@ -153,12 +163,14 @@ export default function DashboardPage() {
           </section>
         )}
 
-
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Milestone Saat Ini</h2>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+              Milestone Saat Ini
+            </h2>
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              {milestones?.filter((m) => m.status === 'pending').length || 0} milestone tersedia
+              {milestones?.filter((m) => m.status === "pending").length || 0}{" "}
+              milestone tersedia
             </span>
           </div>
 
@@ -170,7 +182,9 @@ export default function DashboardPage() {
             />
           ) : (
             <div className="bg-white dark:bg-gray-800 rounded-lg p-8 text-center dark:border dark:border-gray-700/30">
-              <p className="text-gray-500 dark:text-gray-400">Belum ada milestone baru hari ini.</p>
+              <p className="text-gray-500 dark:text-gray-400">
+                Belum ada milestone baru hari ini.
+              </p>
               <p className="text-sm text-gray-400 mt-2">
                 Periksa kembali nanti atau selesaikan milestone yang sudah ada.
               </p>
