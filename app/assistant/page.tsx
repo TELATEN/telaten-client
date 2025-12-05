@@ -1,7 +1,7 @@
 "use client";
 
 import Markdown from "react-markdown";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import {
   History,
   Loader2,
   Plus,
+  ArrowDown,
 } from "lucide-react";
 import CollapseChatSessionPanel from "@/components/chat/CollapseChatSessionPanel";
 import { ChatMessage, ChatSession } from "@/types";
@@ -23,12 +24,14 @@ import { useSendMessage } from "@/hooks/services/chat/message/use-send-message";
 
 export default function AssistantPage() {
   const router = useRouter();
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const [messageInput, setMessageInput] = useState("");
   const [showSession, setShowSession] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [selectedSession, setSelectedSession] = useState<ChatSession | null>();
   const [isChatLoading, setIsChatLoading] = useState(false);
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
   const { data: chatMessages, isFetching: isLoading } = useGetChatMessages(
     selectedSession?.id
@@ -42,10 +45,17 @@ export default function AssistantPage() {
   } = useSendMessage();
 
   const scrollToBottom = () => {
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: "smooth",
-    });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  };
+
+  const handleScroll = () => {
+    if (chatContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+      const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+      setShowScrollButton(!isNearBottom);
+    }
   };
 
   const handleSendMessage = async () => {
@@ -98,10 +108,11 @@ export default function AssistantPage() {
   }, [isStreaming, assistantMessage, setMessages]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="flex">
-        <div className="flex-1 min-w-0">
-          <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200/50 dark:border-gray-700/50 z-10">
+    <div className="h-screen bg-gray-50 dark:bg-gray-900 flex flex-col overflow-hidden">
+      <div className="flex flex-1 overflow-hidden">
+        <div className="flex-1 min-w-0 flex flex-col">
+          {/* Fixed Header */}
+          <div className="bg-white dark:bg-gray-800 border-b border-gray-200/50 dark:border-gray-700/50 z-10 flex-shrink-0">
             <div className="flex items-center justify-between px-4 py-3 gap-2">
               <Button
                 variant="ghost"
@@ -143,77 +154,99 @@ export default function AssistantPage() {
             </div>
           </div>
 
-          <div className="max-w-3xl mx-auto px-4 py-6 md:py-8 min-h-[calc(100vh-80px)] md:min-h-[calc(100vh-0px)] flex flex-col w-full">
-            {isLoading ? (
-              <div
-                className="flex w-full justify-center"
-                style={{ marginTop: "15vh" }}
-              >
-                <Spinner></Spinner>
-              </div>
-            ) : (
-              <>
-                {messages.length == 0 && (
-                  <header className="mb-6 max-w-2xl mx-auto">
-                    <div
-                      className="flex justify-center"
-                      style={{ marginTop: "15vh" }}
-                    >
-                      <div className="w-14 h-14 bg-gradient-to-br from-pink-400 via-purple-400 to-cyan-400 rounded-xl flex items-center justify-center">
-                        <Sparkles className="w-6 h-6 text-white" />
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3 mb-4 text-center mt-5">
-                      <div>
-                        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-                          TELATEN Assistant
-                        </h1>
-                        <p className="text-gray-600 dark:text-gray-400">
-                          Maju pelan-pelan, usaha jadi mapan!
-                        </p>
-                      </div>
-                    </div>
-                  </header>
-                )}
-
-                <div className="space-y-4 mb-6 max-w-2xl mx-auto flex-1 w-full min-w-0">
-                  {messages.map((message) => (
-                    <div
-                      key={message.id}
-                      className={`w-full flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
-                    >
-                      <div
-                        className={`max-w-[80%] rounded-2xl p-4 ${
-                          message.role === "user"
-                            ? "bg-gradient-to-br from-pink-500 to-purple-500 text-white"
-                            : "bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700/30 text-gray-900 dark:text-white"
-                        }`}
-                      >
-                        {message.role === "assistant" && (
-                          <div className="flex items-center gap-2 mb-2">
-                            <MessageSquare className="w-4 h-4 text-pink-500" />
-                            <span className="text-xs font-semibold text-pink-600">
-                              ASSISTANT
-                            </span>
-                          </div>
-                        )}
-                        <p className="text-base leading-relaxed space-y-5 markdown">
-                          <Markdown>{message.content}</Markdown>
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                  {isChatLoading && (
-                    <div className="w-full flex justify-start pl-2 text-primary mt-3">
-                      <Spinner />
-                    </div>
-                  )}
+          {/* Scrollable Chat Area */}
+          <div 
+            ref={chatContainerRef} 
+            className="flex-1 overflow-y-auto scroll-smooth relative"
+            onScroll={handleScroll}
+          >
+            <div className="max-w-3xl mx-auto px-4 py-6 md:py-8 w-full">
+              {isLoading ? (
+                <div
+                  className="flex w-full justify-center"
+                  style={{ marginTop: "15vh" }}
+                >
+                  <Spinner></Spinner>
                 </div>
-              </>
-            )}
+              ) : (
+                <>
+                  {messages.length == 0 && (
+                    <header className="mb-6 max-w-2xl mx-auto w-full">
+                      <div
+                        className="flex justify-center"
+                        style={{ marginTop: "15vh" }}
+                      >
+                        <div className="w-14 h-14 bg-gradient-to-br from-pink-400 via-purple-400 to-cyan-400 rounded-xl flex items-center justify-center">
+                          <Sparkles className="w-6 h-6 text-white" />
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-center gap-3 mb-4 text-center mt-5 w-full">
+                        <div>
+                          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+                            TELATEN Assistant
+                          </h1>
+                          <p className="text-gray-600 dark:text-gray-400">
+                            Maju pelan-pelan, usaha jadi mapan!
+                          </p>
+                        </div>
+                      </div>
+                    </header>
+                  )}
 
-            {/* Sticky Input at Bottom */}
-            <div className="sticky bottom-0 pb-4 mt-auto">
+                  <div className="space-y-4 mb-6 max-w-2xl mx-auto w-full min-w-0">
+                    {messages.map((message) => (
+                      <div
+                        key={message.id}
+                        className={`w-full flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
+                      >
+                        <div
+                          className={`max-w-[80%] rounded-2xl p-4 ${
+                            message.role === "user"
+                              ? "bg-gradient-to-br from-pink-500 to-purple-500 text-white"
+                              : "bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700/30 text-gray-900 dark:text-white"
+                          }`}
+                        >
+                          {message.role === "assistant" && (
+                            <div className="flex items-center gap-2 mb-2">
+                              <MessageSquare className="w-4 h-4 text-pink-500" />
+                              <span className="text-xs font-semibold text-pink-600">
+                                ASSISTANT
+                              </span>
+                            </div>
+                          )}
+                          <div className="text-base leading-relaxed markdown prose prose-sm max-w-none dark:prose-invert">
+                            <Markdown>{message.content}</Markdown>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                    {isChatLoading && (
+                      <div className="w-full flex justify-start pl-2 text-primary mt-3">
+                        <Spinner />
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Scroll to Bottom Button - Floating above input */}
+          {showScrollButton && (
+            <div className="absolute bottom-32 left-0 right-0 flex justify-center pointer-events-none z-20">
+              <Button
+                onClick={scrollToBottom}
+                size="icon"
+                className="pointer-events-auto rounded-full shadow-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600 h-10 w-10 transition-all hover:scale-110"
+              >
+                <ArrowDown className="h-5 w-5" />
+              </Button>
+            </div>
+          )}
+
+          {/* Fixed Input at Bottom */}
+          <div className="flex-shrink-0 border-t border-gray-200/50 dark:border-gray-700/50 bg-gray-50 dark:bg-gray-900">
+            <div className="max-w-3xl mx-auto px-4 py-4 w-full">
               <Card className="shadow-lg border-2 border-pink-200 dark:border-pink-800/30 bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20">
                 <CardContent className="p-4">
                   <div className="flex items-center gap-4">
