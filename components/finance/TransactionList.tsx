@@ -21,6 +21,20 @@ export function TransactionList({ transactions }: TransactionListProps) {
     }).format(amount);
   };
 
+  // Safety check: ensure transactions is an array
+  if (!Array.isArray(transactions)) {
+    console.error('TransactionList: transactions prop is not an array', transactions);
+    return (
+      <Card>
+        <CardContent className="p-8 text-center">
+          <p className="text-gray-500 dark:text-gray-400">
+            Terjadi kesalahan dalam memuat data transaksi.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
   if (transactions.length === 0) {
     return (
       <Card>
