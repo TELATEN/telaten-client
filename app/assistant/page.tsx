@@ -32,6 +32,7 @@ export default function AssistantPage() {
   const [selectedSession, setSelectedSession] = useState<ChatSession | null>();
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const { data: chatMessages, isFetching: isLoading } = useGetChatMessages(
     selectedSession?.id
@@ -57,6 +58,35 @@ export default function AssistantPage() {
       setShowScrollButton(!isNearBottom);
     }
   };
+
+  // Handle keyboard appearance on mobile
+  useEffect(() => {
+    const handleResize = () => {
+      if (typeof window !== 'undefined' && window.visualViewport) {
+        const viewport = window.visualViewport;
+        const windowHeight = window.innerHeight;
+        const viewportHeight = viewport.height;
+        const diff = windowHeight - viewportHeight;
+        
+        // Only apply on mobile (when keyboard appears, viewport height changes significantly)
+        if (diff > 150) {
+          setKeyboardHeight(diff);
+        } else {
+          setKeyboardHeight(0);
+        }
+      }
+    };
+
+    if (typeof window !== 'undefined' && window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleResize);
+      window.visualViewport.addEventListener('scroll', handleResize);
+      
+      return () => {
+        window.visualViewport?.removeEventListener('resize', handleResize);
+        window.visualViewport?.removeEventListener('scroll', handleResize);
+      };
+    }
+  }, []);
 
   const handleSendMessage = async () => {
     if (messageInput.trim()) {
@@ -155,9 +185,9 @@ export default function AssistantPage() {
           </div>
 
           {/* Scrollable Chat Area */}
-          <div 
-            ref={chatContainerRef} 
-            className="flex-1 overflow-y-auto scroll-smooth relative"
+          <div
+            ref={chatContainerRef}
+            className="flex-1 overflow-y-auto scroll-smooth relative pb-20 md:pb-0"
             onScroll={handleScroll}
           >
             <div className="max-w-3xl mx-auto px-4 py-6 md:py-8 w-full">
@@ -180,12 +210,12 @@ export default function AssistantPage() {
                           <Sparkles className="w-6 h-6 text-white" />
                         </div>
                       </div>
-                      <div className="flex flex-col items-center gap-3 mb-4 text-center mt-5 w-full">
+                      <div className="flex flex-col items-center gap-1 md:gap-3 mb-4 text-center mt-5 w-full">
                         <div>
-                          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+                          <h1 className="text-xl md:text-3xl font-bold text-gray-900 dark:text-white">
                             TELATEN Assistant
                           </h1>
-                          <p className="text-gray-600 dark:text-gray-400">
+                          <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">
                             Maju pelan-pelan, usaha jadi mapan!
                           </p>
                         </div>
@@ -200,11 +230,10 @@ export default function AssistantPage() {
                         className={`w-full flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
                       >
                         <div
-                          className={`max-w-[80%] rounded-2xl p-4 ${
-                            message.role === "user"
-                              ? "bg-gradient-to-br from-pink-500 to-purple-500 text-white"
-                              : "bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700/30 text-gray-900 dark:text-white"
-                          }`}
+                          className={`max-w-[80%] rounded-2xl p-4 ${message.role === "user"
+                            ? "bg-gradient-to-br from-pink-500 to-purple-500 text-white"
+                            : "bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700/30 text-gray-900 dark:text-white"
+                            }`}
                         >
                           {message.role === "assistant" && (
                             <div className="flex items-center gap-2 mb-2">
@@ -233,7 +262,7 @@ export default function AssistantPage() {
 
           {/* Scroll to Bottom Button - Floating above input */}
           {showScrollButton && (
-            <div className="absolute bottom-32 left-0 right-0 flex justify-center pointer-events-none z-20">
+            <div className="absolute bottom-32 md:bottom-24 left-0 right-0 flex justify-center pointer-events-none z-20">
               <Button
                 onClick={scrollToBottom}
                 size="icon"
@@ -244,8 +273,8 @@ export default function AssistantPage() {
             </div>
           )}
 
-          {/* Fixed Input at Bottom */}
-          <div className="flex-shrink-0 border-t border-gray-200/50 dark:border-gray-700/50 bg-gray-50 dark:bg-gray-900">
+          {/* Fixed Input at Bottom - Desktop Only */}
+          <div className="hidden md:block flex-shrink-0">
             <div className="max-w-3xl mx-auto px-4 py-4 w-full">
               <Card className="shadow-lg border-2 border-pink-200 dark:border-pink-800/30 bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20">
                 <CardContent className="p-4">
@@ -266,6 +295,47 @@ export default function AssistantPage() {
                       onClick={handleSendMessage}
                       size="icon"
                       className="h-12 w-12 rounded-full bg-pink-500 hover:bg-pink-600 flex-shrink-0 shadow-lg"
+                      disabled={isChatLoading}
+                    >
+                      {isChatLoading ? (
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                      ) : (
+                        <Send className="w-5 h-5" />
+                      )}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Fixed Input at Bottom - Mobile Only (Like BottomNav) */}
+          <div 
+            className="fixed left-0 right-0 z-50 md:hidden transition-all duration-150"
+            style={{ 
+              bottom: keyboardHeight > 0 ? `${keyboardHeight}px` : '0px'
+            }}
+          >
+            <div className="px-4 pb-4">
+              <Card className="shadow-lg border-2 border-pink-200 dark:border-pink-800/30 bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20">
+                <CardContent className="p-3">
+                  <div className="flex items-center gap-3">
+                    <Input
+                      value={messageInput}
+                      onChange={(e) => setMessageInput(e.target.value)}
+                      placeholder="Tanyakan sesuatu..."
+                      className="flex-1 h-11 text-base bg-white dark:bg-gray-800 focus:outline-none"
+                      disabled={isChatLoading}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleSendMessage();
+                        }
+                      }}
+                    />
+                    <Button
+                      onClick={handleSendMessage}
+                      size="icon"
+                      className="h-11 w-11 rounded-full bg-pink-500 hover:bg-pink-600 flex-shrink-0 shadow-lg"
                       disabled={isChatLoading}
                     >
                       {isChatLoading ? (
