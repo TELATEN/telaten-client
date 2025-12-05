@@ -29,7 +29,9 @@ export default function RootLayout({
     pathname === "/unauthorized" ||
     pathname === "/";
 
-  const shouldShowBottomNav = !isAuthPage && pathname !== "/assistant";
+  const shouldShowBottomNav =
+    !isAuthPage &&
+    ["/dashboard", "/misi", "/keuangan", "/profil"].includes(pathname);
   return (
     <QueryProvider>
       <html lang="id" suppressHydrationWarning className="overflow-x-hidden">

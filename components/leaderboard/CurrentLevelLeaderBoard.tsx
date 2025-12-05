@@ -42,8 +42,8 @@ export default function CurrentLevelLeaderBoard({ businessProfile }: Props) {
                       {level.required_points <=
                       (businessProfile?.total_points || 0) ? (
                         <>
-                          <div className="absolute -right-1 -bottom-1 -left-1 -top-1 scale-105 border border-green-500 rounded-full"></div>
-                          <div className="absolute right-0 bottom-0 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white">
+                          <div className="absolute -right-0 -bottom-0 -left-0 -top-0 scale-105 border border-accent border-l-primary border-t-primary rounded-full"></div>
+                          <div className="absolute right-0 bottom-0 w-5 h-5 bg-primary rounded-full flex items-center justify-center text-white">
                             <Check className="h-4 w-4"></Check>
                           </div>
                           <span className="text-3xl">{level.icon}</span>

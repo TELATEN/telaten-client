@@ -9,7 +9,7 @@ import {
 import BusinessLevelDialog from "@/components/business-level/BusinessLevelDialog";
 import ConfirmDialog from "@/components/ui/confirm-dialog";
 import { toast } from "@/hooks/use-toast";
-import { Edit, Trash } from "lucide-react";
+import { Edit, Rocket, Trash } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function BusinessLevelPage() {
@@ -42,7 +42,9 @@ export default function BusinessLevelPage() {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 mb-2">
               <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-purple-400 rounded-xl flex items-center justify-center">
-                <span className="text-2xl">🏢</span>
+                <span className="text-2xl">
+                  <Rocket className="text-white"></Rocket>
+                </span>
               </div>
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">

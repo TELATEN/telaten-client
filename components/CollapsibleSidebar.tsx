@@ -61,7 +61,7 @@ export function CollapsibleSidebar() {
     {
       href: "/business-level",
       label: "Level Bisnis",
-      icon: Globe,
+      icon: Rocket,
       hidden: user?.role != "admin",
     },
     {

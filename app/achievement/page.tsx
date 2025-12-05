@@ -47,14 +47,14 @@ export default function AchievementPage() {
         <header className="mb-6 flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-pink-400 to-purple-500 rounded-xl flex items-center justify-center">
                 <span className="text-2xl">
                   <Trophy className="text-white" />
                 </span>
               </div>
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-                  Achievement
+                  Pencapaian
                 </h1>
                 <p className="text-gray-600 dark:text-gray-400">
                   Kumpulkan pencapaian untuk naik level
@@ -89,19 +89,23 @@ export default function AchievementPage() {
             achievements.map((ach: Achievement) => (
               <Card
                 key={ach.id}
-                className={`flex overflow-hidden relative items-center gap-4 transition hover:scale-105 p-4 bg-card border border-border ${ach.is_unlocked ? "!border-yellow-400" : ""}`}
+                className={`flex overflow-hidden relative items-center gap-4 transition hover:scale-105 p-4 bg-card border border-border ${ach.is_unlocked ? "!border-primary" : ""}`}
               >
                 {ach.is_unlocked && (
-                  <div className="absolute top-0 bottom-0 right-0 left-0 bg-yellow-400/10 dark:bg-yellow-500/10 -z-1"></div>
+                  <div className="absolute top-0 bottom-0 right-0 left-0 bg-gradient-to-br from-primary/5 to-accent/10 -z-1"></div>
                 )}
                 <div
-                  className={`w-16 relative h-16 text-2xl flex items-center justify-center bg-gray-200 dark:bg-gray-700 to-yellow-400/50 rounded-full ${ach.is_unlocked ? "ring-2 ring-yellow-400 bg-yellow-400/20" : ""}`}
+                  className={`w-16 relative h-16 text-2xl flex items-center justify-center bg-muted rounded-full ${ach.is_unlocked ? "opacity-100 ring-1 ring-primary !bg-gradient-to-br from-accent/50 to-white" : ""}`}
                 >
-                  {ach.badge_icon}
+                  <span
+                    className={ach.is_unlocked ? "opacity-100" : "opacity-50"}
+                  >
+                    {ach.badge_icon}
+                  </span>
                 </div>
                 <div className="flex-1 relative">
                   <div
-                    className={`font-semibold text-lg mb-1 ${ach.is_unlocked ? "text-yellow-700 dark:text-yellow-200" : "text-gray-900 dark:text-white"}`}
+                    className={`font-semibold text-lg mb-1 ${ach.is_unlocked ? "text-primary" : "text-gray-900 dark:text-white"}`}
                   >
                     {ach.title}
                   </div>
@@ -109,14 +113,17 @@ export default function AchievementPage() {
                     {ach.description}
                   </div>
                   <div className="text-xs text-gray-500 dark:text-gray-400">
-                    Poin dibutuhkan: {ach.required_points}
+                    Poin dibutuhkan:
+                    <span className="text-yellow-500 ml-2">
+                      {ach.required_points}
+                    </span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   {ach.is_unlocked && (
                     <Badge
                       variant="default"
-                      className="bg-yellow-400 text-yellow-900"
+                      className="bg-accent/10 text-accent border border-accent"
                     >
                       Selesai
                     </Badge>

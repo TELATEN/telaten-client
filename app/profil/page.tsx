@@ -20,11 +20,13 @@ import {
   Edit,
   Mail,
   Calendar,
+  Globe,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import useBusinessProfile from "@/hooks/services/business/use-business-profile";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import useLogout from "@/hooks/services/auth/use-logout";
+import Link from "next/link";
 
 export default function ProfilPage() {
   const router = useRouter();
@@ -212,6 +214,34 @@ export default function ProfilPage() {
               </Button>
             </CardContent>
           </Card>
+
+          <Link href="/achievement" className="block">
+            <Card>
+              <CardContent className="p-0">
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start h-14 px-5 text-base"
+                >
+                  <Trophy className="w-5 h-5 mr-3 text-gray-600 dark:text-gray-400" />
+                  Pencapaian
+                </Button>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/leaderboard" className="block">
+            <Card>
+              <CardContent className="p-0">
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start h-14 px-5 text-base"
+                >
+                  <Globe className="w-5 h-5 mr-3 text-gray-600 dark:text-gray-400" />
+                  Level Saya
+                </Button>
+              </CardContent>
+            </Card>
+          </Link>
 
           <Card>
             <CardContent className="p-0">
