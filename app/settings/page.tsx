@@ -20,6 +20,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import useLogout from "@/hooks/services/auth/use-logout";
+import { AppConfig } from "@/lib/constants/app";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -118,7 +119,7 @@ export default function SettingsPage() {
                 <div>
                   <p className="font-medium dark:text-white">Notifikasi</p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Terima notifikasi dari TELATEN
+                    Terima notifikasi dari {AppConfig.appName.toUpperCase()}
                   </p>
                 </div>
               </div>
@@ -213,10 +214,10 @@ export default function SettingsPage() {
         <Card className="dark:bg-gray-800 dark:border-gray-700">
           <CardContent className="p-6 text-center">
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-              TELATEN v1.0.0
+              {AppConfig.appName} v{AppConfig.appVersion}
             </p>
             <p className="text-xs text-gray-400 dark:text-gray-500">
-              Maju Pelan-pelan, Usaha Jadi Mapapan.
+              {AppConfig.appSlogan}
             </p>
           </CardContent>
         </Card>

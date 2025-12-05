@@ -1,11 +1,12 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { FileQuestion, Home, ArrowLeft } from 'lucide-react';
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { FileQuestion, Home, ArrowLeft } from "lucide-react";
+import { AppConfig } from "@/lib/constants/app";
 
 export default function NotFoundPage() {
   const router = useRouter();
@@ -23,8 +24,12 @@ export default function NotFoundPage() {
               className="object-cover"
             />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">TELATEN</h1>
-          <p className="text-gray-600 dark:text-gray-400">Maju Pelan-pelan, Usaha Jadi Mapapan</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            {AppConfig.appName.toUpperCase()}
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            {AppConfig.appSlogan}
+          </p>
         </div>
 
         <Card className="shadow-xl border-2 border-purple-100 dark:border-purple-900/30">
@@ -40,7 +45,8 @@ export default function NotFoundPage() {
               Halaman Tidak Ditemukan
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Maaf, halaman yang Anda cari tidak dapat ditemukan atau telah dipindahkan.
+              Maaf, halaman yang Anda cari tidak dapat ditemukan atau telah
+              dipindahkan.
             </p>
 
             <div className="space-y-3">
@@ -54,7 +60,7 @@ export default function NotFoundPage() {
               </Button>
 
               <Button
-                onClick={() => router.push('/')}
+                onClick={() => router.push("/")}
                 className="w-full h-12 text-base font-semibold bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
               >
                 <Home className="w-5 h-5 mr-2" />

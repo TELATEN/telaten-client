@@ -21,6 +21,7 @@ import { ChatMessage, ChatSession } from "@/types";
 import Spinner from "@/components/Spinner";
 import useGetChatMessages from "@/hooks/services/chat/message/use-get-messages";
 import { useSendMessage } from "@/hooks/services/chat/message/use-send-message";
+import { AppConfig } from "@/lib/constants/app";
 
 export default function AssistantPage() {
   const router = useRouter();
@@ -47,13 +48,15 @@ export default function AssistantPage() {
 
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   };
 
   const handleScroll = () => {
     if (chatContainerRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+      const { scrollTop, scrollHeight, clientHeight } =
+        chatContainerRef.current;
       const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
       setShowScrollButton(!isNearBottom);
     }
@@ -62,12 +65,12 @@ export default function AssistantPage() {
   // Handle keyboard appearance on mobile
   useEffect(() => {
     const handleResize = () => {
-      if (typeof window !== 'undefined' && window.visualViewport) {
+      if (typeof window !== "undefined" && window.visualViewport) {
         const viewport = window.visualViewport;
         const windowHeight = window.innerHeight;
         const viewportHeight = viewport.height;
         const diff = windowHeight - viewportHeight;
-        
+
         // Only apply on mobile (when keyboard appears, viewport height changes significantly)
         if (diff > 150) {
           setKeyboardHeight(diff);
@@ -77,13 +80,13 @@ export default function AssistantPage() {
       }
     };
 
-    if (typeof window !== 'undefined' && window.visualViewport) {
-      window.visualViewport.addEventListener('resize', handleResize);
-      window.visualViewport.addEventListener('scroll', handleResize);
-      
+    if (typeof window !== "undefined" && window.visualViewport) {
+      window.visualViewport.addEventListener("resize", handleResize);
+      window.visualViewport.addEventListener("scroll", handleResize);
+
       return () => {
-        window.visualViewport?.removeEventListener('resize', handleResize);
-        window.visualViewport?.removeEventListener('scroll', handleResize);
+        window.visualViewport?.removeEventListener("resize", handleResize);
+        window.visualViewport?.removeEventListener("scroll", handleResize);
       };
     }
   }, []);
@@ -157,7 +160,9 @@ export default function AssistantPage() {
                 <div className="w-9 h-9 bg-gradient-to-br from-pink-400 via-purple-400 to-cyan-400 rounded-xl flex items-center justify-center">
                   <Sparkles className="w-6 h-6 text-white" />
                 </div>
-                <h1 className="text-lg font-semibold">TELATEN Assistant</h1>
+                <h1 className="text-lg font-semibold">
+                  {AppConfig.appName} Assistant
+                </h1>
               </div>
 
               <Button
@@ -213,10 +218,10 @@ export default function AssistantPage() {
                       <div className="flex flex-col items-center gap-1 md:gap-3 mb-4 text-center mt-5 w-full">
                         <div>
                           <h1 className="text-xl md:text-3xl font-bold text-gray-900 dark:text-white">
-                            TELATEN Assistant
+                            {AppConfig.appName} Assistant
                           </h1>
                           <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">
-                            Maju pelan-pelan, usaha jadi mapan!
+                            {AppConfig.appSlogan}
                           </p>
                         </div>
                       </div>
@@ -230,10 +235,11 @@ export default function AssistantPage() {
                         className={`w-full flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
                       >
                         <div
-                          className={`max-w-[80%] rounded-2xl p-4 ${message.role === "user"
-                            ? "bg-gradient-to-br from-pink-500 to-purple-500 text-white"
-                            : "bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700/30 text-gray-900 dark:text-white"
-                            }`}
+                          className={`max-w-[80%] rounded-2xl p-4 ${
+                            message.role === "user"
+                              ? "bg-gradient-to-br from-pink-500 to-purple-500 text-white"
+                              : "bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700/30 text-gray-900 dark:text-white"
+                          }`}
                         >
                           {message.role === "assistant" && (
                             <div className="flex items-center gap-2 mb-2">
@@ -310,10 +316,10 @@ export default function AssistantPage() {
           </div>
 
           {/* Fixed Input at Bottom - Mobile Only (Like BottomNav) */}
-          <div 
+          <div
             className="fixed left-0 right-0 z-50 md:hidden transition-all duration-150"
-            style={{ 
-              bottom: keyboardHeight > 0 ? `${keyboardHeight}px` : '0px'
+            style={{
+              bottom: keyboardHeight > 0 ? `${keyboardHeight}px` : "0px",
             }}
           >
             <div className="px-4 pb-4">

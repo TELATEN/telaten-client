@@ -20,6 +20,7 @@ import NavProfile from "./NavProfile";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import UserAvatar from "./UserAvatar";
 import { NavItem } from "@/types";
+import { AppConfig } from "@/lib/constants/app";
 
 const SIDEBAR_STATE_KEY = "telaten-sidebar-collapsed";
 
@@ -118,7 +119,7 @@ export function CollapsibleSidebar() {
                 />
               </div>
               <span className="text-sm font-semibold text-gray-900 dark:text-white whitespace-nowrap">
-                TELATEN
+                {AppConfig.appName}
               </span>
             </Link>
             <button

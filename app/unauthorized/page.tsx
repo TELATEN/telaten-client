@@ -1,12 +1,13 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ShieldAlert, ArrowLeft, LogIn } from 'lucide-react';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ShieldAlert, ArrowLeft, LogIn } from "lucide-react";
+import { AppConfig } from "@/lib/constants/app";
 
 export default function UnauthorizedPage() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function UnauthorizedPage() {
   useEffect(() => {
     // Auto redirect after 5 seconds
     const timer = setTimeout(() => {
-      router.push('/login');
+      router.push("/login");
     }, 5000);
 
     return () => clearTimeout(timer);
@@ -33,8 +34,12 @@ export default function UnauthorizedPage() {
               className="object-cover"
             />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">TELATEN</h1>
-          <p className="text-gray-600 dark:text-gray-400">Maju Pelan-pelan, Usaha Jadi Mapapan</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            {AppConfig.appName.toUpperCase()}
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            {AppConfig.appSlogan}
+          </p>
         </div>
 
         <Card className="shadow-xl border-2 border-red-100 dark:border-red-900/30">
@@ -52,7 +57,7 @@ export default function UnauthorizedPage() {
 
             <div className="space-y-3">
               <Button
-                onClick={() => router.push('/login')}
+                onClick={() => router.push("/login")}
                 className="w-full h-12 text-base font-semibold bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
               >
                 <LogIn className="w-5 h-5 mr-2" />
@@ -61,7 +66,7 @@ export default function UnauthorizedPage() {
 
               <Button
                 variant="outline"
-                onClick={() => router.push('/')}
+                onClick={() => router.push("/")}
                 className="w-full h-12 text-base font-medium border-2"
               >
                 <ArrowLeft className="w-5 h-5 mr-2" />
@@ -70,7 +75,7 @@ export default function UnauthorizedPage() {
             </div>
 
             <div className="mt-6 text-sm text-gray-500 dark:text-gray-400">
-              Belum punya akun?{' '}
+              Belum punya akun?{" "}
               <Link
                 href="/register"
                 className="text-pink-600 dark:text-pink-400 hover:text-pink-700 dark:hover:text-pink-300 font-semibold"

@@ -85,7 +85,7 @@ export default function UserDashboard() {
               type: "achievement",
               title: data.unlocked_achievement.title,
               points: data.unlocked_achievement.required_points,
-              level: businessData?.level,
+              level: businessData?.level_name,
               message: `${data.unlocked_achievement.badge_icon} ${data.unlocked_achievement.description}`,
             });
           }, 2000);
@@ -93,20 +93,23 @@ export default function UserDashboard() {
 
         // Check if all tasks in current milestone are completed after a delay
         // This gives time for the query to refetch and update
-        setTimeout(() => {
-          const milestone = milestones?.find(
-            (m) => m.status === "completed" && m.id === currentMilestone?.id
-          );
-          if (milestone) {
-            setCelebrationData({
-              type: "milestone",
-              title: milestone.title,
-              points: milestone.reward_points,
-              level: businessData?.level_name,
-              message: "Luar biasa! Kamu telah menyelesaikan milestone ini!",
-            });
-          }
-        }, data.unlocked_achievement ? 4000 : 1500);
+        setTimeout(
+          () => {
+            const milestone = milestones?.find(
+              (m) => m.status === "completed" && m.id === currentMilestone?.id
+            );
+            if (milestone) {
+              setCelebrationData({
+                type: "milestone",
+                title: milestone.title,
+                points: milestone.reward_points,
+                level: businessData?.level_name,
+                message: "Luar biasa! Kamu telah menyelesaikan milestone ini!",
+              });
+            }
+          },
+          data.unlocked_achievement ? 4000 : 1500
+        );
       },
       onError: (error: any) => {
         toast({
