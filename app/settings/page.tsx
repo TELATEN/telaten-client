@@ -157,31 +157,6 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        {/* Language */}
-        <Card className="mb-4 dark:bg-gray-800 dark:border-gray-700">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 dark:text-white">
-              <Globe className="w-5 h-5" />
-              Bahasa
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <Label className="dark:text-gray-300">Bahasa Aplikasi</Label>
-              <select
-                value={settings.language}
-                onChange={(e) =>
-                  handleSettingChange("language", e.target.value)
-                }
-                className="w-full h-12 px-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white"
-              >
-                <option value="id">Bahasa Indonesia</option>
-                <option value="en">English</option>
-              </select>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Privacy */}
         <Card className="mb-4 dark:bg-gray-800 dark:border-gray-700">
           <CardContent className="p-0">
