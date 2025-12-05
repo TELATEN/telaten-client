@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { MilestoneCard } from "@/components/MilestoneCard";
+import MilestoneSkeletonCards from "@/components/milestone/MilestoneSkeletonCards";
 import CelebrationModal from "@/components/CelebrationModal";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import { Target, CheckCircle2, Clock, Loader2 } from "lucide-react";
+import { Target, CheckCircle2, Clock } from "lucide-react";
 import useMilestones from "@/hooks/services/milestone/use-milestones";
 import useStartMilestone from "@/hooks/services/milestone/use-start-milestone";
 import useCompleteTask from "@/hooks/services/milestone/use-complete-task";
@@ -178,9 +179,7 @@ export default function MisiPage() {
           </div>
 
           {isLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <Loader2 className="w-8 h-8 animate-spin text-pink-500" />
-            </div>
+            <MilestoneSkeletonCards />
           ) : (
             <Tabs defaultValue="in_progress" className="w-full">
               <TabsList className="grid w-full grid-cols-3 mb-6">

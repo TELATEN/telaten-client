@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { MilestoneCard } from "@/components/MilestoneCard";
 import CelebrationModal from "@/components/CelebrationModal";
+import { UserDashboardSkeleton } from "@/components/dashboard/DashboardSkeleton";
 import { useToast } from "@/hooks/use-toast";
 import { Trophy, Star, Target as TargetIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,8 +22,8 @@ interface CelebrationData {
 }
 
 export default function UserDashboard() {
-  const { data: businessData } = useBusinessProfile();
-  const { data: milestones } = useMilestones();
+  const { data: businessData, isLoading: isLoadingBusiness } = useBusinessProfile();
+  const { data: milestones, isLoading: isLoadingMilestones } = useMilestones();
   const startMilestone = useStartMilestone();
   const completeTask = useCompleteTask();
   const [celebrationData, setCelebrationData] =
@@ -107,6 +108,8 @@ export default function UserDashboard() {
     });
   };
 
+  const isLoading = isLoadingBusiness || isLoadingMilestones;
+
   return (
     <>
       <CelebrationModal
@@ -119,7 +122,10 @@ export default function UserDashboard() {
         message={celebrationData?.message}
       />
 
-      <div className="space-y-6">
+      {isLoading ? (
+        <UserDashboardSkeleton />
+      ) : (
+        <div className="space-y-6">
         {/* Level & Points Card */}
         {businessData && (
           <Link href="/leaderboard" className="block">
@@ -194,6 +200,7 @@ export default function UserDashboard() {
           )}
         </div>
       </div>
+      )}
     </>
   );
 }

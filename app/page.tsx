@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,7 @@ import {
   Zap,
   Shield,
   BarChart3,
+  ChevronUp,
 } from "lucide-react";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import NavProfile from "@/components/NavProfile";
@@ -20,6 +22,28 @@ import { AppConfig } from "@/lib/constants/app";
 
 export default function LandingPage() {
   const user = useAuthStore((state) => state.user);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // Show/hide scroll to top button based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   const features = [
     {
@@ -302,7 +326,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="py-20 md:py-32 bg-gradient-to-br from-gray-50 to-pink-50 dark:from-gray-900 dark:to-gray-900">
+      <section
+        id="pricing"
+        className="py-20 md:py-32 bg-gradient-to-br from-gray-50 to-pink-50 dark:from-gray-900 dark:to-gray-900"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
@@ -368,7 +395,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="py-20 md:py-32 bg-white dark:bg-gray-950">
+      <section
+        id="testimonials"
+        className="py-20 md:py-32 bg-white dark:bg-gray-950"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
@@ -409,7 +439,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="py-20 md:py-32 bg-gradient-to-br from-pink-600 via-purple-600 to-cyan-600 dark:from-pink-700 dark:via-purple-700 dark:to-cyan-700 text-white">
+      <section
+        id="cta"
+        className="py-20 md:py-32 bg-gradient-to-br from-pink-600 via-purple-600 to-cyan-600 dark:from-pink-700 dark:via-purple-700 dark:to-cyan-700 text-white"
+      >
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
             Siap Kelola Usaha dengan Lebih Baik?
@@ -527,6 +560,19 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      {/* Scroll to Top Button */}
+      <button
+        onClick={scrollToTop}
+        className={`fixed bottom-8 right-8 z-50 p-4 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 ${
+          showScrollTop
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-16 pointer-events-none"
+        }`}
+        aria-label="Scroll to top"
+      >
+        <ChevronUp className="w-6 h-6" />
+      </button>
     </div>
   );
 }

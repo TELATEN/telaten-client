@@ -180,9 +180,9 @@ export function TransactionList({ transactions, onDelete, isDeleting }: Transact
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent className="w-[calc(100%-2rem)] max-w-sm sm:max-w-[400px] gap-3 p-4 sm:p-6">
-          <DialogHeader className="space-y-1.5">
-            <DialogTitle className="text-lg">Hapus Transaksi?</DialogTitle>
+        <DialogContent className="max-w-[400px] gap-3 p-6">
+          <DialogHeader>
+            <DialogTitle>Hapus Transaksi?</DialogTitle>
             <DialogDescription>
               Apakah Anda yakin ingin menghapus transaksi ini?
             </DialogDescription>
@@ -200,12 +200,11 @@ export function TransactionList({ transactions, onDelete, isDeleting }: Transact
             </div>
           )}
           
-          <DialogFooter className="gap-2 sm:gap-2">
+          <DialogFooter>
             <Button
               type="button"
               variant="outline"
               onClick={() => setDeleteDialogOpen(false)}
-              className="flex-1 sm:flex-initial"
               disabled={isDeleting}
             >
               Batal
@@ -215,7 +214,6 @@ export function TransactionList({ transactions, onDelete, isDeleting }: Transact
               variant="destructive"
               onClick={handleConfirmDelete}
               disabled={isDeleting}
-              className="flex-1 sm:flex-initial"
             >
               {isDeleting ? (
                 <>

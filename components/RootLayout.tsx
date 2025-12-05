@@ -54,11 +54,11 @@ export default function RootLayout({
                     </>
                   ) : (
                     <>
-                      <div className="flex min-h-screen">
+                      <div className="flex h-screen overflow-hidden">
                         <CollapsibleSidebar />
                         <main
                           className={[
-                            "flex-1 md:pb-0 min-w-0 max-w-screen",
+                            "flex-1 min-w-0 w-full overflow-y-auto overflow-x-hidden",
                             shouldShowBottomNav ? "pb-16" : "",
                           ].join(" ")}
                         >

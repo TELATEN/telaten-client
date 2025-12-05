@@ -217,7 +217,7 @@ export function CategoryManager() {
 
       {/* Create Category Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Tambah Kategori Baru</DialogTitle>
             <DialogDescription>
@@ -307,7 +307,7 @@ export function CategoryManager() {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Hapus Kategori?</DialogTitle>
             <DialogDescription>
