@@ -7,8 +7,6 @@ interface Props {
 }
 
 export default function SeoMeta({ title, description }: Props) {
-  console.log("seo meta");
-
   return (
     <Head>
       <title>
