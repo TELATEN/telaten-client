@@ -3,7 +3,6 @@
 import { useState } from "react";
 import {
   Wallet,
-  Loader2,
   Plus,
   List,
   AlertCircle,
@@ -21,6 +20,7 @@ import { FinancialSummaryCard } from "@/components/finance/FinancialSummaryCard"
 import { TransactionFilter } from "@/components/finance/TransactionFilter";
 import { SummaryPeriodFilter } from "@/components/finance/SummaryPeriodFilter";
 import { CategoryManager } from "@/components/finance/CategoryManager";
+import { FinancialSummarySkeleton, TransactionListSkeleton } from "@/components/finance/FinancialSkeleton";
 import CelebrationModal from "@/components/CelebrationModal";
 import useTransactions from "@/hooks/services/finance/use-transactions";
 import useFinancialSummary from "@/hooks/services/finance/use-financial-summary";
@@ -173,12 +173,7 @@ export default function KeuanganPage() {
 
             {/* Financial Summary */}
             {isLoadingSummary ? (
-              <div className="flex items-center justify-center py-8">
-                <Loader2 className="w-6 h-6 animate-spin text-cyan-500" />
-                <span className="ml-2 text-sm text-gray-500">
-                  Memuat ringkasan keuangan...
-                </span>
-              </div>
+              <FinancialSummarySkeleton />
             ) : summaryError ? (
               <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
                 <div className="flex items-start gap-2">
@@ -247,12 +242,7 @@ export default function KeuanganPage() {
                   Riwayat Transaksi
                 </h2>
                 {isLoadingTransactions ? (
-                  <div className="flex items-center justify-center py-12">
-                    <Loader2 className="w-8 h-8 animate-spin text-cyan-500" />
-                    <span className="ml-2 text-sm text-gray-500">
-                      Memuat transaksi...
-                    </span>
-                  </div>
+                  <TransactionListSkeleton />
                 ) : transactionsError ? (
                   <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
                     <div className="flex items-start gap-2">
