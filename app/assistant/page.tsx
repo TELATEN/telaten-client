@@ -9,12 +9,12 @@ import { Input } from "@/components/ui/input";
 import {
   Send,
   Sparkles,
-  MessageSquare,
   ArrowLeft,
   History,
   Loader2,
   Plus,
   ArrowDown,
+  Bot,
 } from "lucide-react";
 import CollapseChatSessionPanel from "@/components/chat/CollapseChatSessionPanel";
 import { ChatMessage, ChatSession } from "@/types";
@@ -34,6 +34,7 @@ export default function AssistantPage() {
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const { data: chatMessages, isFetching: isLoading } = useGetChatMessages(
     selectedSession?.id
@@ -111,6 +112,8 @@ export default function AssistantPage() {
 
       setMessageInput("");
       setIsChatLoading(false);
+      inputRef.current?.focus();
+      setTimeout(scrollToBottom, 100);
     }
   };
 
@@ -142,6 +145,12 @@ export default function AssistantPage() {
       setTimeout(scrollToBottom, 100);
     }
   }, [isStreaming, assistantMessage, setMessages]);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   return (
     <div className="h-screen bg-gray-50 dark:bg-gray-900 flex flex-col overflow-hidden">
@@ -238,21 +247,21 @@ export default function AssistantPage() {
                         className={`w-full flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
                       >
                         <div
-                          className={`max-w-[80%] rounded-2xl p-4 ${
+                          className={`rounded-2xl md:p-4 p-3 ${
                             message.role === "user"
-                              ? "bg-gradient-to-br from-pink-500 to-purple-500 text-white"
-                              : "bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700/30 text-gray-900 dark:text-white"
+                              ? "bg-gradient-to-br from-pink-500 to-purple-500 text-white max-w-[80%]"
+                              : "bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700/30 text-gray-900 dark:text-white max-w-[95%]"
                           }`}
                         >
                           {message.role === "assistant" && (
                             <div className="flex items-center gap-2 mb-2">
-                              <MessageSquare className="w-4 h-4 text-pink-500" />
+                              <Bot className="w-4 h-4 text-pink-500" />
                               <span className="text-xs font-semibold text-pink-600">
                                 ASSISTANT
                               </span>
                             </div>
                           )}
-                          <div className="text-base leading-relaxed markdown prose prose-sm max-w-none dark:prose-invert">
+                          <div className="md:text-base text-sm leading-relaxed markdown prose prose-sm max-w-none dark:prose-invert">
                             <Markdown>{message.content}</Markdown>
                           </div>
                           {message.role == "assistant" &&
@@ -296,6 +305,7 @@ export default function AssistantPage() {
                       placeholder="Tanyakan sesuatu..."
                       className="flex-1 h-12 text-base bg-white dark:bg-gray-800 focus:outline-none"
                       disabled={isChatLoading}
+                      ref={inputRef}
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           handleSendMessage();
@@ -334,6 +344,7 @@ export default function AssistantPage() {
                     <Input
                       value={messageInput}
                       onChange={(e) => setMessageInput(e.target.value)}
+                      ref={inputRef}
                       placeholder="Tanyakan sesuatu..."
                       className="flex-1 h-11 text-base bg-white dark:bg-gray-800 focus:outline-none"
                       disabled={isChatLoading}
