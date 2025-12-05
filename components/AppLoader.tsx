@@ -16,7 +16,7 @@ export function AppLoader({ children }: AppLoaderProps) {
     if (!isFetching) {
       setTimeout(() => {
         setIsLoading(false);
-      }, 800);
+      }, 500);
     }
   }, [isFetching]);
 

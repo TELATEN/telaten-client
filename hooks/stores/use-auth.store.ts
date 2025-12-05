@@ -8,6 +8,7 @@ interface AuthState {
   setAuth: (user: User, token: string) => void;
   clearAuth: () => void;
   updateUser: (user: User) => void;
+  updateToken: (token: string) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -20,10 +21,11 @@ export const useAuthStore = create<AuthState>()(
       },
       clearAuth: () => set({ user: null, token: null }),
       updateUser: (user) => set({ user }),
+      updateToken: (token) => set({ token }),
     }),
     {
       name: "auth-storage",
       storage: createJSONStorage(() => localStorage),
-    },
-  ),
+    }
+  )
 );

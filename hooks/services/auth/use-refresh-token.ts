@@ -3,7 +3,7 @@ import { LoginResponse } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 
 export default function useRefreshToken() {
-  const mutationFn = async (): Promise<LoginResponse> => {
+  const mutationFn = async (_: any): Promise<LoginResponse> => {
     const res = await http().post("/auth/refresh");
     return res.data;
   };

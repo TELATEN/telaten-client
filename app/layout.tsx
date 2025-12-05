@@ -43,32 +43,34 @@ export default function RootLayout({
             enableSystem={false}
             disableTransitionOnChange
           >
-            <AuthGuard>
-              <BusinessProfileGuard>
-                {isAuthPage ? (
-                  <>
-                    {children}
-                    <Toaster />
-                  </>
-                ) : (
-                  <AppLoader>
-                    <div className="flex min-h-screen">
-                      <CollapsibleSidebar />
-                      <main
-                        className={[
-                          "flex-1 md:pb-0",
-                          shouldShowBottomNav ? "pb-16" : "",
-                        ].join(" ")}
-                      >
-                        {children}
-                      </main>
-                    </div>
-                    {shouldShowBottomNav && <BottomNav />}
-                    <Toaster />
-                  </AppLoader>
-                )}
-              </BusinessProfileGuard>
-            </AuthGuard>
+            <AppLoader>
+              <AuthGuard>
+                <BusinessProfileGuard>
+                  {isAuthPage ? (
+                    <>
+                      {children}
+                      <Toaster />
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex min-h-screen">
+                        <CollapsibleSidebar />
+                        <main
+                          className={[
+                            "flex-1 md:pb-0",
+                            shouldShowBottomNav ? "pb-16" : "",
+                          ].join(" ")}
+                        >
+                          {children}
+                        </main>
+                      </div>
+                      {shouldShowBottomNav && <BottomNav />}
+                      <Toaster />
+                    </>
+                  )}
+                </BusinessProfileGuard>
+              </AuthGuard>
+            </AppLoader>
           </ThemeProvider>
         </body>
       </html>

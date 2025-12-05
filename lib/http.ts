@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
+import useRefreshToken from "@/hooks/services/auth/use-refresh-token";
+import { LoginResponse } from "@/types";
 
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -10,10 +12,35 @@ export function http() {
     Authorization: getAuthToken(),
   };
 
-  return axios.create({
+  const instance = axios.create({
     baseURL,
     headers,
   });
+
+  instance.interceptors.request.use((config) => {
+    config.headers.Authorization = getAuthToken();
+
+    return config;
+  });
+
+  instance.interceptors.response.use(
+    (res) => res,
+    async (err) => {
+      if (
+        err.response.status == 401 &&
+        !err.response.request.responseURL.includes("/auth/refresh")
+      ) {
+        const result = await http().post("/auth/refresh");
+        const newToken = (result.data as LoginResponse).access_token;
+
+        if (!newToken) return;
+
+        useAuthStore((state) => state.updateToken)(newToken);
+      }
+    }
+  );
+
+  return instance;
 }
 
 export function httpStream(url: string, opts?: RequestInit | undefined) {
