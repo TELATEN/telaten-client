@@ -7,7 +7,7 @@ export default function AchievementSkeletonCards() {
       {Array.from({ length: 5 }).map((_, index) => (
         <Card
           key={index}
-          className={`flex items-center gap-4 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700`}
+          className={`flex items-center gap-4 p-4 border border-border bg-card`}
         >
           <Skeleton className="w-16 h-16 rounded-full"></Skeleton>
           <div className="flex-1">

@@ -89,7 +89,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm dark:border dark:border-gray-700/30">
+          <div className="bg-card border border-border rounded-lg p-4 shadow-sm">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 {isBusinessOpen ? (
@@ -181,7 +181,7 @@ export default function DashboardPage() {
               onCompleteTask={handleCompleteTask}
             />
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-8 text-center dark:border dark:border-gray-700/30">
+            <div className="bg-card rounded-lg p-8 text-center border border-border">
               <p className="text-gray-500 dark:text-gray-400">
                 Belum ada milestone baru hari ini.
               </p>

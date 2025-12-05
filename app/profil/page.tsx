@@ -31,57 +31,7 @@ export default function ProfilPage() {
   const { toast } = useToast();
   const userData = useAuthStore((state) => state.user);
   const { data: businessData } = useBusinessProfile();
-  const clearAuth = useAuthStore((state) => state.clearAuth);
   const { mutateAsync: logout } = useLogout();
-
-  const completedMissions = mockMissions.filter(
-    (m) => m.status === "completed"
-  ).length;
-
-  const achievements = [
-    {
-      id: 1,
-      name: "Pedagang Pemula",
-      icon: Trophy,
-      unlocked: true,
-      description: "Mendaftarkan usaha pertama",
-    },
-    {
-      id: 2,
-      name: "Rajin Mencatat",
-      icon: Target,
-      unlocked: completedMissions >= 3,
-      description: "Menyelesaikan 3 misi pertama",
-    },
-    {
-      id: 3,
-      name: "Bisnis Terdaftar",
-      icon: Crown,
-      unlocked: !!businessData,
-      description: "Mendaftarkan informasi bisnis",
-    },
-    {
-      id: 4,
-      name: "Bisnis Stabil",
-      icon: Sparkles,
-      unlocked: false,
-      description: "Beroperasi selama 30 hari",
-    },
-    {
-      id: 5,
-      name: "Pelanggan Setia",
-      icon: User,
-      unlocked: false,
-      description: "Mendapatkan 50 ulasan positif",
-    },
-    {
-      id: 6,
-      name: "Pengusaha Handal",
-      icon: Store,
-      unlocked: false,
-      description: "Mencapai level 10",
-    },
-  ];
 
   const handleBusinessInfo = () => {
     router.push("/edit-business");
@@ -236,46 +186,6 @@ export default function ProfilPage() {
           </Card>
         )}
 
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Crown className="w-5 h-5 text-yellow-500" />
-              Pencapaian
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {achievements.map((achievement) => {
-                const Icon = achievement.icon;
-                return (
-                  <div
-                    key={achievement.id}
-                    className={`p-4 rounded-lg text-center transition-all ${
-                      achievement.unlocked
-                        ? "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/30 dark:to-orange-900/30 border-2 border-yellow-300 dark:border-yellow-700"
-                        : "bg-gray-100 dark:bg-gray-800 opacity-50"
-                    }`}
-                  >
-                    <Icon
-                      className={`w-8 h-8 mx-auto mb-2 ${
-                        achievement.unlocked
-                          ? "text-yellow-600 dark:text-yellow-500"
-                          : "text-gray-400 dark:text-gray-600"
-                      }`}
-                    />
-                    <p className="text-sm font-medium text-gray-900 dark:text-gray-200 mb-1">
-                      {achievement.name}
-                    </p>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
-                      {achievement.description}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
-
         <div className="space-y-3">
           <Card>
             <CardContent className="p-0">
@@ -298,7 +208,7 @@ export default function ProfilPage() {
                 className="w-full justify-start h-14 px-5 text-base"
               >
                 <Store className="w-5 h-5 mr-3 text-gray-600 dark:text-gray-400" />
-                Informasi Usaha
+                Edit Informasi Bisnis
               </Button>
             </CardContent>
           </Card>

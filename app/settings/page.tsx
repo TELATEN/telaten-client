@@ -1,16 +1,25 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useTheme } from 'next-themes';
-import { ArrowLeft, Bell, Moon, Sun, Globe, Shield, HelpCircle, LogOut } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
-import { useAuthStore } from '@/hooks/stores/use-auth.store';
-import useLogout from '@/hooks/services/auth/use-logout';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
+import {
+  ArrowLeft,
+  Bell,
+  Moon,
+  Sun,
+  Globe,
+  Shield,
+  HelpCircle,
+  LogOut,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
+import { useAuthStore } from "@/hooks/stores/use-auth.store";
+import useLogout from "@/hooks/services/auth/use-logout";
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -21,7 +30,7 @@ export default function SettingsPage() {
   const [mounted, setMounted] = useState(false);
   const [settings, setSettings] = useState({
     notifications: true,
-    language: 'id',
+    language: "id",
     privacy: true,
   });
 
@@ -30,18 +39,18 @@ export default function SettingsPage() {
   }, []);
 
   const handleSettingChange = (key: string, value: boolean | string) => {
-    setSettings(prev => ({ ...prev, [key]: value }));
+    setSettings((prev) => ({ ...prev, [key]: value }));
     toast({
-      title: 'Pengaturan Disimpan',
-      description: 'Perubahan pengaturan telah disimpan.',
+      title: "Pengaturan Disimpan",
+      description: "Perubahan pengaturan telah disimpan.",
     });
   };
 
   const handleThemeToggle = (checked: boolean) => {
-    setTheme(checked ? 'dark' : 'light');
+    setTheme(checked ? "dark" : "light");
     toast({
-      title: checked ? 'Mode Gelap Aktif' : 'Mode Terang Aktif',
-      description: `Tema aplikasi diubah ke mode ${checked ? 'gelap' : 'terang'}.`,
+      title: checked ? "Mode Gelap Aktif" : "Mode Terang Aktif",
+      description: `Tema aplikasi diubah ke mode ${checked ? "gelap" : "terang"}.`,
     });
   };
 
@@ -49,13 +58,13 @@ export default function SettingsPage() {
     try {
       await logout();
       toast({
-        title: 'Berhasil Logout',
-        description: 'Anda telah keluar dari sistem.',
+        title: "Berhasil Logout",
+        description: "Anda telah keluar dari sistem.",
       });
     } catch (error: any) {
       toast({
-        title: 'Logout',
-        description: 'Anda telah keluar dari sistem.',
+        title: "Logout",
+        description: "Anda telah keluar dari sistem.",
       });
     }
   };
@@ -64,7 +73,7 @@ export default function SettingsPage() {
     return null;
   }
 
-  const isDarkMode = theme === 'dark';
+  const isDarkMode = theme === "dark";
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -78,7 +87,6 @@ export default function SettingsPage() {
             className="flex items-center gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
-            Kembali
           </Button>
           <h1 className="text-lg font-semibold dark:text-white">Pengaturan</h1>
           <div className="w-16" /> {/* Spacer for centering */}
@@ -95,9 +103,10 @@ export default function SettingsPage() {
             className="flex items-center gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
-            Kembali
           </Button>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Pengaturan</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Pengaturan
+          </h1>
         </div>
 
         {/* Notifications */}
@@ -108,12 +117,16 @@ export default function SettingsPage() {
                 <Bell className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                 <div>
                   <p className="font-medium dark:text-white">Notifikasi</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Terima notifikasi dari TELATEN</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Terima notifikasi dari TELATEN
+                  </p>
                 </div>
               </div>
               <Switch
                 checked={settings.notifications}
-                onCheckedChange={(checked) => handleSettingChange('notifications', checked)}
+                onCheckedChange={(checked) =>
+                  handleSettingChange("notifications", checked)
+                }
               />
             </div>
           </CardContent>
@@ -131,7 +144,9 @@ export default function SettingsPage() {
                 )}
                 <div>
                   <p className="font-medium dark:text-white">Mode Gelap</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Aktifkan tampilan gelap</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Aktifkan tampilan gelap
+                  </p>
                 </div>
               </div>
               <Switch
@@ -155,7 +170,9 @@ export default function SettingsPage() {
               <Label className="dark:text-gray-300">Bahasa Aplikasi</Label>
               <select
                 value={settings.language}
-                onChange={(e) => handleSettingChange('language', e.target.value)}
+                onChange={(e) =>
+                  handleSettingChange("language", e.target.value)
+                }
                 className="w-full h-12 px-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white"
               >
                 <option value="id">Bahasa Indonesia</option>
@@ -173,12 +190,16 @@ export default function SettingsPage() {
                 <Shield className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                 <div>
                   <p className="font-medium dark:text-white">Privasi Data</p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Lindungi data pribadi Anda</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Lindungi data pribadi Anda
+                  </p>
                 </div>
               </div>
               <Switch
                 checked={settings.privacy}
-                onCheckedChange={(checked) => handleSettingChange('privacy', checked)}
+                onCheckedChange={(checked) =>
+                  handleSettingChange("privacy", checked)
+                }
               />
             </div>
           </CardContent>
@@ -190,7 +211,7 @@ export default function SettingsPage() {
             <Button
               variant="ghost"
               className="w-full justify-start h-14 px-5 text-base dark:text-white dark:hover:bg-gray-700"
-              onClick={() => router.push('/help')}
+              onClick={() => router.push("/help")}
             >
               <HelpCircle className="w-5 h-5 mr-3 text-gray-600 dark:text-gray-400" />
               Pusat Bantuan
@@ -208,7 +229,7 @@ export default function SettingsPage() {
               className="w-full justify-start h-14 px-5 text-base text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
             >
               <LogOut className="w-5 h-5 mr-3" />
-              {isPending ? 'Logging out...' : 'Keluar dari Akun'}
+              {isPending ? "Logging out..." : "Keluar dari Akun"}
             </Button>
           </CardContent>
         </Card>
@@ -216,8 +237,12 @@ export default function SettingsPage() {
         {/* App Info */}
         <Card className="dark:bg-gray-800 dark:border-gray-700">
           <CardContent className="p-6 text-center">
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">TELATEN v1.0.0</p>
-            <p className="text-xs text-gray-400 dark:text-gray-500">Maju Pelan-pelan, Usaha Jadi Mapapan.</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+              TELATEN v1.0.0
+            </p>
+            <p className="text-xs text-gray-400 dark:text-gray-500">
+              Maju Pelan-pelan, Usaha Jadi Mapapan.
+            </p>
           </CardContent>
         </Card>
       </div>

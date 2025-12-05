@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { MilestoneCard } from '@/components/MilestoneCard';
-import { useToast } from '@/hooks/use-toast';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent } from '@/components/ui/card';
-import { Target, CheckCircle2, Clock, Loader2 } from 'lucide-react';
-import useMilestones from '@/hooks/services/milestone/use-milestones';
-import useStartMilestone from '@/hooks/services/milestone/use-start-milestone';
-import useCompleteTask from '@/hooks/services/milestone/use-complete-task';
+import { MilestoneCard } from "@/components/MilestoneCard";
+import { useToast } from "@/hooks/use-toast";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import { Target, CheckCircle2, Clock, Loader2 } from "lucide-react";
+import useMilestones from "@/hooks/services/milestone/use-milestones";
+import useStartMilestone from "@/hooks/services/milestone/use-start-milestone";
+import useCompleteTask from "@/hooks/services/milestone/use-complete-task";
 
 export default function MisiPage() {
   const { toast } = useToast();
@@ -15,23 +15,26 @@ export default function MisiPage() {
   const startMilestone = useStartMilestone();
   const completeTask = useCompleteTask();
 
-  const pendingMilestones = milestones?.filter((m) => m.status === 'pending') || [];
-  const inProgressMilestones = milestones?.filter((m) => m.status === 'in_progress') || [];
-  const completedMilestones = milestones?.filter((m) => m.status === 'completed') || [];
+  const pendingMilestones =
+    milestones?.filter((m) => m.status === "pending") || [];
+  const inProgressMilestones =
+    milestones?.filter((m) => m.status === "in_progress") || [];
+  const completedMilestones =
+    milestones?.filter((m) => m.status === "completed") || [];
 
   const handleStartMilestone = (milestoneId: string) => {
     startMilestone.mutate(milestoneId, {
       onSuccess: (data) => {
         toast({
-          title: 'Milestone Dimulai!',
+          title: "Milestone Dimulai!",
           description: `Anda mulai mengerjakan: ${data.title}`,
         });
       },
       onError: (error: any) => {
         toast({
-          title: 'Gagal Memulai Milestone',
-          description: error?.response?.data?.message || 'Terjadi kesalahan',
-          variant: 'destructive',
+          title: "Gagal Memulai Milestone",
+          description: error?.response?.data?.message || "Terjadi kesalahan",
+          variant: "destructive",
         });
       },
     });
@@ -41,15 +44,15 @@ export default function MisiPage() {
     completeTask.mutate(taskId, {
       onSuccess: (data) => {
         toast({
-          title: 'Tugas Selesai!',
+          title: "Tugas Selesai!",
           description: `+${data.reward_points} poin`,
         });
       },
       onError: (error: any) => {
         toast({
-          title: 'Gagal Menyelesaikan Tugas',
-          description: error?.response?.data?.message || 'Terjadi kesalahan',
-          variant: 'destructive',
+          title: "Gagal Menyelesaikan Tugas",
+          description: error?.response?.data?.message || "Terjadi kesalahan",
+          variant: "destructive",
         });
       },
     });
@@ -64,8 +67,12 @@ export default function MisiPage() {
               <Target className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Misi Saya</h1>
-              <p className="text-gray-600 dark:text-gray-400">Selesaikan misi untuk naik level</p>
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+                Misi Saya
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400">
+                Selesaikan misi untuk naik level
+              </p>
             </div>
           </div>
         </header>
@@ -75,27 +82,33 @@ export default function MisiPage() {
             <CardContent className="p-4 text-center">
               <Clock className="w-6 h-6 text-yellow-500 mx-auto mb-2" />
               <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                {isLoading ? '-' : pendingMilestones.length}
+                {isLoading ? "-" : pendingMilestones.length}
               </p>
-              <p className="text-xs text-gray-600 dark:text-gray-400">Belum Mulai</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
+                Belum Mulai
+              </p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <Target className="w-6 h-6 text-blue-500 mx-auto mb-2" />
               <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                {isLoading ? '-' : inProgressMilestones.length}
+                {isLoading ? "-" : inProgressMilestones.length}
               </p>
-              <p className="text-xs text-gray-600 dark:text-gray-400">Sedang Berjalan</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
+                Sedang Berjalan
+              </p>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-4 text-center">
               <CheckCircle2 className="w-6 h-6 text-green-500 mx-auto mb-2" />
               <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                {isLoading ? '-' : completedMilestones.length}
+                {isLoading ? "-" : completedMilestones.length}
               </p>
-              <p className="text-xs text-gray-600 dark:text-gray-400">Selesai</p>
+              <p className="text-xs text-gray-600 dark:text-gray-400">
+                Selesai
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -125,7 +138,9 @@ export default function MisiPage() {
               ) : (
                 <Card>
                   <CardContent className="p-8 text-center">
-                    <p className="text-gray-500 dark:text-gray-400">Tidak ada milestone tersedia</p>
+                    <p className="text-gray-500 dark:text-gray-400">
+                      Tidak ada milestone tersedia
+                    </p>
                   </CardContent>
                 </Card>
               )}
@@ -144,7 +159,9 @@ export default function MisiPage() {
               ) : (
                 <Card>
                   <CardContent className="p-8 text-center">
-                    <p className="text-gray-500 dark:text-gray-400">Tidak ada milestone yang sedang berjalan</p>
+                    <p className="text-gray-500 dark:text-gray-400">
+                      Tidak ada milestone yang sedang berjalan
+                    </p>
                   </CardContent>
                 </Card>
               )}
@@ -163,9 +180,12 @@ export default function MisiPage() {
               ) : (
                 <Card>
                   <CardContent className="p-8 text-center">
-                    <p className="text-gray-500 dark:text-gray-400">Belum ada milestone yang selesai</p>
+                    <p className="text-gray-500 dark:text-gray-400">
+                      Belum ada milestone yang selesai
+                    </p>
                     <p className="text-sm text-gray-400 mt-2">
-                      Mulai kerjakan milestone untuk mendapatkan poin dan naik level!
+                      Mulai kerjakan milestone untuk mendapatkan poin dan naik
+                      level!
                     </p>
                   </CardContent>
                 </Card>

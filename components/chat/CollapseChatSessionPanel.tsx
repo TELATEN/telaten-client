@@ -15,8 +15,8 @@ export default function CollapseChatSessionPanel({
 }: {
   show: boolean;
   setShow: (val: boolean) => void;
-  selectedSession?: ChatSession | null;
-  setSelectedSession?: (val?: ChatSession | null) => void;
+  selectedSession: ChatSession | null | undefined;
+  setSelectedSession: (val?: ChatSession | null) => void;
   newSession?: ChatSession | null;
 }) {
   const router = useRouter();

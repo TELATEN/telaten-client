@@ -1,15 +1,29 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Trophy, Star, ChevronDown, ChevronUp, Clock, CheckCircle2, Loader2 } from 'lucide-react';
-import type { Milestone, MilestoneTask } from '@/types/entity';
-import { cn } from '@/lib/utils';
-import useMilestone from '@/hooks/services/milestone/use-milestone';
+import { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Trophy,
+  Star,
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  CheckCircle2,
+  Loader2,
+} from "lucide-react";
+import type { Milestone, MilestoneTask } from "@/types/entity";
+import { cn } from "@/lib/utils";
+import useMilestone from "@/hooks/services/milestone/use-milestone";
 
 interface MilestoneCardProps {
   milestone: Milestone;
@@ -17,11 +31,17 @@ interface MilestoneCardProps {
   onCompleteTask?: (taskId: string) => void;
 }
 
-export function MilestoneCard({ milestone, onStart, onCompleteTask }: MilestoneCardProps) {
+export function MilestoneCard({
+  milestone,
+  onStart,
+  onCompleteTask,
+}: MilestoneCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [shouldFetchDetail, setShouldFetchDetail] = useState(false);
-  const [cachedTasks, setCachedTasks] = useState<MilestoneTask[]>(milestone.tasks || []);
-  
+  const [cachedTasks, setCachedTasks] = useState<MilestoneTask[]>(
+    milestone.tasks || []
+  );
+
   // Fetch milestone detail only when needed (when expanded and tasks not available)
   const { data: milestoneDetail, isLoading: isLoadingDetail } = useMilestone(
     shouldFetchDetail ? milestone.id : null
@@ -52,18 +72,19 @@ export function MilestoneCard({ milestone, onStart, onCompleteTask }: MilestoneC
 
   const statusConfig = {
     pending: {
-      label: 'Belum Mulai',
-      color: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
+      label: "Belum Mulai",
+      color: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
       icon: Clock,
     },
     in_progress: {
-      label: 'Sedang Berjalan',
-      color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+      label: "Sedang Berjalan",
+      color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
       icon: Star,
     },
     completed: {
-      label: 'Selesai',
-      color: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+      label: "Selesai",
+      color:
+        "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
       icon: CheckCircle2,
     },
   };
@@ -77,7 +98,7 @@ export function MilestoneCard({ milestone, onStart, onCompleteTask }: MilestoneC
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
-              <Badge className={cn('text-xs font-medium', status.color)}>
+              <Badge className={cn("text-xs font-medium", status.color)}>
                 <StatusIcon className="w-3 h-3 mr-1" />
                 {status.label}
               </Badge>
@@ -85,15 +106,23 @@ export function MilestoneCard({ milestone, onStart, onCompleteTask }: MilestoneC
                 Level {milestone.level}
               </Badge>
             </div>
-            <CardTitle className="text-lg md:text-xl mb-1">{milestone.title}</CardTitle>
-            <CardDescription className="text-sm">{milestone.description}</CardDescription>
+            <CardTitle className="text-lg md:text-xl mb-1">
+              {milestone.title}
+            </CardTitle>
+            <CardDescription className="text-sm">
+              {milestone.description}
+            </CardDescription>
           </div>
           <div className="flex flex-col items-end gap-1">
             <div className="flex items-center gap-1 text-yellow-600 dark:text-yellow-500">
               <Trophy className="w-4 h-4" />
-              <span className="font-bold text-sm">{milestone.reward_points}</span>
+              <span className="font-bold text-sm">
+                {milestone.reward_points}
+              </span>
             </div>
-            <span className="text-xs text-gray-500 dark:text-gray-400">poin</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              poin
+            </span>
           </div>
         </div>
       </CardHeader>
@@ -122,7 +151,9 @@ export function MilestoneCard({ milestone, onStart, onCompleteTask }: MilestoneC
             disabled={isLoadingDetail}
           >
             <span className="text-sm font-medium">
-              {totalTasks > 0 ? `Daftar Tugas (${completedTasks}/${totalTasks})` : 'Lihat Detail Tugas'}
+              {totalTasks > 0
+                ? `Daftar Tugas (${completedTasks}/${totalTasks})`
+                : "Lihat Detail Tugas"}
             </span>
             {isLoadingDetail ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -138,7 +169,9 @@ export function MilestoneCard({ milestone, onStart, onCompleteTask }: MilestoneC
               {isLoadingDetail && tasks.length === 0 ? (
                 <div className="flex items-center justify-center py-6">
                   <Loader2 className="w-6 h-6 animate-spin text-pink-500" />
-                  <span className="ml-2 text-sm text-gray-500">Memuat detail tugas...</span>
+                  <span className="ml-2 text-sm text-gray-500">
+                    Memuat detail tugas...
+                  </span>
                 </div>
               ) : tasks.length > 0 ? (
                 tasks
@@ -147,25 +180,30 @@ export function MilestoneCard({ milestone, onStart, onCompleteTask }: MilestoneC
                     <div
                       key={task.id}
                       className={cn(
-                        'flex items-start gap-3 p-3 rounded-lg border transition-colors',
+                        "flex items-start gap-3 p-3 rounded-lg border transition-colors",
                         task.is_completed
-                          ? 'bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-800'
-                          : 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700'
+                          ? "bg-green-50 dark:bg-green-900/10 border-green-200 dark:border-green-800"
+                          : "bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700"
                       )}
                     >
                       <Checkbox
                         checked={task.is_completed}
-                        onCheckedChange={() => !task.is_completed && onCompleteTask?.(task.id)}
-                        disabled={task.is_completed || milestone.status !== 'in_progress'}
+                        onCheckedChange={() =>
+                          !task.is_completed && onCompleteTask?.(task.id)
+                        }
+                        disabled={
+                          task.is_completed ||
+                          milestone.status !== "in_progress"
+                        }
                         className="mt-0.5"
                       />
                       <div className="flex-1">
                         <p
                           className={cn(
-                            'text-sm',
+                            "text-sm",
                             task.is_completed
-                              ? 'line-through text-gray-500 dark:text-gray-400'
-                              : 'text-gray-900 dark:text-white'
+                              ? "line-through text-gray-500 dark:text-gray-400"
+                              : "text-gray-900 dark:text-white"
                           )}
                         >
                           {index + 1}. {task.title}
@@ -190,7 +228,7 @@ export function MilestoneCard({ milestone, onStart, onCompleteTask }: MilestoneC
 
         {/* Action Button */}
         <div className="flex gap-2 pt-2">
-          {milestone.status === 'pending' && (
+          {milestone.status === "pending" && (
             <Button
               onClick={() => onStart?.(milestone.id)}
               className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
@@ -198,12 +236,12 @@ export function MilestoneCard({ milestone, onStart, onCompleteTask }: MilestoneC
               Mulai Milestone
             </Button>
           )}
-          {milestone.status === 'in_progress' && (
+          {milestone.status === "in_progress" && (
             <Button variant="outline" className="w-full" disabled>
               Sedang Dikerjakan
             </Button>
           )}
-          {milestone.status === 'completed' && (
+          {milestone.status === "completed" && (
             <Button variant="outline" className="w-full" disabled>
               <CheckCircle2 className="w-4 h-4 mr-2" />
               Selesai
@@ -215,10 +253,16 @@ export function MilestoneCard({ milestone, onStart, onCompleteTask }: MilestoneC
         {(milestone.started_at || milestone.completed_at) && (
           <div className="text-xs text-gray-500 dark:text-gray-400 space-y-1 pt-2 border-t dark:border-gray-700">
             {milestone.started_at && (
-              <p>Dimulai: {new Date(milestone.started_at).toLocaleDateString('id-ID')}</p>
+              <p>
+                Dimulai:{" "}
+                {new Date(milestone.started_at).toLocaleDateString("id-ID")}
+              </p>
             )}
             {milestone.completed_at && (
-              <p>Selesai: {new Date(milestone.completed_at).toLocaleDateString('id-ID')}</p>
+              <p>
+                Selesai:{" "}
+                {new Date(milestone.completed_at).toLocaleDateString("id-ID")}
+              </p>
             )}
           </div>
         )}

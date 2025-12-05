@@ -87,7 +87,7 @@ export default function AchievementPage() {
             achievements.map((ach: Achievement) => (
               <Card
                 key={ach.id}
-                className={`flex overflow-hidden relative items-center gap-4 p-4 bg-card border border-border ${ach.is_unlocked ? "ring-2 ring-yellow-400" : ""}`}
+                className={`flex overflow-hidden relative items-center gap-4 p-4 bg-card border border-border ${ach.is_unlocked ? "!border-yellow-400" : ""}`}
               >
                 {ach.is_unlocked && (
                   <div className="absolute top-0 bottom-0 right-0 left-0 bg-yellow-400/10 dark:bg-yellow-500/20 -z-1"></div>
