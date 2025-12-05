@@ -103,6 +103,7 @@ export default function AssistantPage() {
       setMessages((prev) => [...prev, newMessage]);
       setIsChatLoading(true);
 
+      await new Promise((res) => setTimeout(res, 100));
       await sendMessage({
         content: messageInput,
         session_id: selectedSession?.id,
@@ -114,7 +115,9 @@ export default function AssistantPage() {
   };
 
   useEffect(() => {
-    setMessages(chatMessages || []);
+    if (!isChatLoading) {
+      setMessages(chatMessages || []);
+    }
 
     if (!isLoading && chatMessages && chatMessages?.length > 0) {
       setTimeout(scrollToBottom, 400);
@@ -143,7 +146,7 @@ export default function AssistantPage() {
   return (
     <div className="h-screen bg-gray-50 dark:bg-gray-900 flex flex-col overflow-hidden">
       <div className="flex flex-1 overflow-hidden">
-        <div className="flex-1 min-w-0 flex flex-col">
+        <div className="flex-1 min-w-0 flex flex-col relative">
           {/* Fixed Header */}
           <div className="bg-white dark:bg-gray-800 border-b border-gray-200/50 dark:border-gray-700/50 z-10 flex-shrink-0">
             <div className="flex items-center justify-between px-4 py-3 gap-2">
@@ -196,7 +199,7 @@ export default function AssistantPage() {
             onScroll={handleScroll}
           >
             <div className="max-w-3xl mx-auto px-4 py-6 md:py-8 w-full">
-              {isLoading ? (
+              {isLoading && !isChatLoading ? (
                 <div
                   className="flex w-full justify-center"
                   style={{ marginTop: "15vh" }}
