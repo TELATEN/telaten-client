@@ -1,3 +1,5 @@
+import type { Achievement } from './achievement';
+
 export type TransactionType = 'income' | 'expense';
 
 export interface Transaction {
@@ -9,6 +11,7 @@ export interface Transaction {
   id: string;
   business_id: string;
   created_at: string;
+  unlocked_achievement?: Achievement;
 }
 
 export interface CreateTransactionInput {

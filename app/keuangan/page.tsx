@@ -9,11 +9,21 @@ import { CreateTransactionForm } from '@/components/finance/CreateTransactionFor
 import { TransactionList } from '@/components/finance/TransactionList';
 import { FinancialSummaryCard } from '@/components/finance/FinancialSummaryCard';
 import { TransactionFilter } from '@/components/finance/TransactionFilter';
+import CelebrationModal from '@/components/CelebrationModal';
 import useTransactions from '@/hooks/services/finance/use-transactions';
 import useFinancialSummary from '@/hooks/services/finance/use-financial-summary';
 import useCreateTransaction from '@/hooks/services/finance/use-create-transaction';
 import useDeleteTransaction from '@/hooks/services/finance/use-delete-transaction';
+import useBusinessProfile from '@/hooks/services/business/use-business-profile';
 import type { CreateTransactionInput } from '@/types/entity/finance';
+
+interface CelebrationData {
+  type: "task" | "milestone" | "achievement";
+  title: string;
+  points: number;
+  level?: string;
+  message?: string;
+}
 
 export default function KeuanganPage() {
   const { toast } = useToast();
@@ -27,19 +37,34 @@ export default function KeuanganPage() {
     size: 20,
   });
   const [summaryPeriod, setSummaryPeriod] = useState<'day' | 'week' | 'month' | 'year'>('month');
+  const [celebrationData, setCelebrationData] = useState<CelebrationData | null>(null);
 
   const { data: transactionsData, isLoading: isLoadingTransactions, error: transactionsError } = useTransactions(filterParams);
   const { data: summary, isLoading: isLoadingSummary, error: summaryError } = useFinancialSummary({ period: summaryPeriod });
+  const { data: businessData } = useBusinessProfile();
   const createTransaction = useCreateTransaction();
   const deleteTransaction = useDeleteTransaction();
 
   const handleCreateTransaction = (data: CreateTransactionInput) => {
     createTransaction.mutate(data, {
-      onSuccess: () => {
+      onSuccess: (response: any) => {
         toast({
           title: 'Transaksi Berhasil Disimpan!',
           description: `${data.type === 'income' ? 'Pemasukan' : 'Pengeluaran'} sebesar Rp ${data.amount.toLocaleString('id-ID')} telah dicatat.`,
         });
+
+        // Check if achievement was unlocked
+        if (response.unlocked_achievement) {
+          setTimeout(() => {
+            setCelebrationData({
+              type: "achievement",
+              title: response.unlocked_achievement.title,
+              points: response.unlocked_achievement.required_points,
+              level: businessData?.level,
+              message: `${response.unlocked_achievement.badge_icon} ${response.unlocked_achievement.description}`,
+            });
+          }, 500);
+        }
       },
       onError: (error: any) => {
         toast({
@@ -85,8 +110,19 @@ export default function KeuanganPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-4xl mx-auto px-4 py-6 md:py-8">
+    <>
+      <CelebrationModal
+        isOpen={!!celebrationData}
+        onClose={() => setCelebrationData(null)}
+        type={celebrationData?.type || "achievement"}
+        title={celebrationData?.title || ""}
+        points={celebrationData?.points || 0}
+        level={celebrationData?.level}
+        message={celebrationData?.message}
+      />
+      
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-4xl mx-auto px-4 py-6 md:py-8">
         {/* Header */}
         <header className="mb-6">
           <div className="flex items-center gap-3 mb-4">
@@ -248,7 +284,8 @@ export default function KeuanganPage() {
             />
           </TabsContent>
         </Tabs>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

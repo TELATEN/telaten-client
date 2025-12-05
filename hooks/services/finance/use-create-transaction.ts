@@ -14,6 +14,8 @@ export default function useCreateTransaction() {
       // Invalidate transactions and summary to refetch
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
       queryClient.invalidateQueries({ queryKey: ['financial-summary'] });
+      queryClient.invalidateQueries({ queryKey: ['business-profile'] });
+      queryClient.invalidateQueries({ queryKey: ['get-achievements'] });
     },
   });
 }

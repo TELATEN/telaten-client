@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { MilestoneCard } from "@/components/MilestoneCard";
+import CelebrationModal from "@/components/CelebrationModal";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
@@ -8,12 +10,23 @@ import { Target, CheckCircle2, Clock, Loader2 } from "lucide-react";
 import useMilestones from "@/hooks/services/milestone/use-milestones";
 import useStartMilestone from "@/hooks/services/milestone/use-start-milestone";
 import useCompleteTask from "@/hooks/services/milestone/use-complete-task";
+import useBusinessProfile from "@/hooks/services/business/use-business-profile";
+
+interface CelebrationData {
+  type: "task" | "milestone" | "achievement";
+  title: string;
+  points: number;
+  level?: string;
+  message?: string;
+}
 
 export default function MisiPage() {
   const { toast } = useToast();
   const { data: milestones, isLoading } = useMilestones();
+  const { data: businessData } = useBusinessProfile();
   const startMilestone = useStartMilestone();
   const completeTask = useCompleteTask();
+  const [celebrationData, setCelebrationData] = useState<CelebrationData | null>(null);
 
   const pendingMilestones =
     milestones?.filter((m) => m.status === "pending") || [];
@@ -42,11 +55,45 @@ export default function MisiPage() {
 
   const handleCompleteTask = (taskId: string) => {
     completeTask.mutate(taskId, {
-      onSuccess: (data) => {
-        toast({
-          title: "Tugas Selesai!",
-          description: `+${data.reward_points} poin`,
+      onSuccess: (data: any) => {
+        // Show task celebration modal
+        setCelebrationData({
+          type: "task",
+          title: data.title,
+          points: data.reward_points,
+          level: businessData?.level,
+          message: "Kerja bagus! Terus semangat menyelesaikan misi!",
         });
+
+        // Check if achievement was unlocked
+        if (data.unlocked_achievement) {
+          setTimeout(() => {
+            setCelebrationData({
+              type: "achievement",
+              title: data.unlocked_achievement.title,
+              points: data.unlocked_achievement.required_points,
+              level: businessData?.level,
+              message: `${data.unlocked_achievement.badge_icon} ${data.unlocked_achievement.description}`,
+            });
+          }, 2000);
+        }
+
+        // Check if milestone is completed
+        setTimeout(() => {
+          const completedMilestone = milestones?.find(
+            (m) => m.status === "completed" && m.tasks?.some((t) => t.id === taskId)
+          );
+          
+          if (completedMilestone) {
+            setCelebrationData({
+              type: "milestone",
+              title: completedMilestone.title,
+              points: completedMilestone.reward_points,
+              level: businessData?.level,
+              message: "Luar biasa! Kamu telah menyelesaikan milestone ini!",
+            });
+          }
+        }, data.unlocked_achievement ? 4000 : 1500);
       },
       onError: (error: any) => {
         toast({
@@ -59,8 +106,19 @@ export default function MisiPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-4xl mx-auto px-4 py-6 md:py-8">
+    <>
+      <CelebrationModal
+        isOpen={!!celebrationData}
+        onClose={() => setCelebrationData(null)}
+        type={celebrationData?.type || "task"}
+        title={celebrationData?.title || ""}
+        points={celebrationData?.points || 0}
+        level={celebrationData?.level}
+        message={celebrationData?.message}
+      />
+      
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-4xl mx-auto px-4 py-6 md:py-8">
         <header className="mb-6">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-12 h-12 bg-gradient-to-br from-pink-400 to-purple-500 rounded-xl flex items-center justify-center">
@@ -193,7 +251,8 @@ export default function MisiPage() {
             </TabsContent>
           </Tabs>
         )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

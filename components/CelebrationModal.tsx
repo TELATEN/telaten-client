@@ -64,7 +64,7 @@ export default function CelebrationModal({
     <Dialog open={isOpen} onOpenChange={onClose} modal={true}>
       <DialogContent
         className={cn(
-          "max-w-md overflow-hidden border-0 p-0",
+          "w-[calc(100%-2rem)] max-w-md overflow-hidden border-0 p-0",
           "bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400"
         )}
         onOpenAutoFocus={(e) => e.preventDefault()}
@@ -123,7 +123,7 @@ export default function CelebrationModal({
         )}
 
         {/* Content */}
-        <div className="relative z-10 p-8 text-center">
+        <div className="relative z-10 p-6 sm:p-8 text-center">
           {/* Icon */}
           <div
             className={cn(
@@ -162,7 +162,7 @@ export default function CelebrationModal({
           {/* Title */}
           <h2
             className={cn(
-              "text-3xl font-bold text-white mb-2 transition-all duration-500 delay-100",
+              "text-2xl sm:text-3xl font-bold text-white mb-2 transition-all duration-500 delay-100",
               showContent
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-4"
@@ -174,7 +174,7 @@ export default function CelebrationModal({
           {/* Task/Milestone Name */}
           <p
             className={cn(
-              "text-white/90 text-lg mb-4 transition-all duration-500 delay-200",
+              "text-white/90 text-base sm:text-lg mb-4 transition-all duration-500 delay-200",
               showContent
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-4"
@@ -187,7 +187,7 @@ export default function CelebrationModal({
           {points > 0 && (
             <div
               className={cn(
-                "bg-white/20 backdrop-blur-md rounded-2xl p-6 mb-4",
+                "bg-white/20 backdrop-blur-md rounded-2xl p-4 sm:p-6 mb-4",
                 "border border-white/30 transition-all duration-500 delay-300",
                 showContent
                   ? "opacity-100 translate-y-0"
@@ -195,14 +195,14 @@ export default function CelebrationModal({
               )}
             >
               <div className="flex items-center justify-center gap-3">
-                <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center animate-pulse">
-                  <Star className="w-6 h-6 text-white" fill="white" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-yellow-400 rounded-full flex items-center justify-center animate-pulse">
+                  <Star className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="white" />
                 </div>
                 <div>
-                  <p className="text-white/80 text-sm font-medium">
+                  <p className="text-white/80 text-xs sm:text-sm font-medium">
                     Points Earned
                   </p>
-                  <p className="text-4xl font-bold text-white">+{points}</p>
+                  <p className="text-3xl sm:text-4xl font-bold text-white">+{points}</p>
                 </div>
               </div>
 
@@ -237,7 +237,7 @@ export default function CelebrationModal({
           <Button
             onClick={onClose}
             className={cn(
-              "w-full bg-white text-purple-600 hover:bg-white/90 font-bold py-6 rounded-xl",
+              "w-full bg-white text-purple-600 hover:bg-white/90 font-bold py-5 sm:py-6 rounded-xl text-sm sm:text-base",
               "shadow-lg hover:shadow-xl transition-all duration-300",
               "hover:scale-105",
               showContent
