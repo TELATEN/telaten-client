@@ -237,7 +237,7 @@ export default function ProfilPage() {
                   className="w-full justify-start h-14 px-5 text-base"
                 >
                   <Globe className="w-5 h-5 mr-3 text-gray-600 dark:text-gray-400" />
-                  Level Saya
+                  Leaderboard
                 </Button>
               </CardContent>
             </Card>

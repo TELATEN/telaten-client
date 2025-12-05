@@ -134,8 +134,8 @@ export default function UserDashboard() {
                       {businessData.level_name || "Pemula"}
                     </h3>
                   </div>
-                  <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                    <Trophy className="w-8 h-8 text-white" fill="white" />
+                  <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center backdrop-blur-sm text-2xl">
+                    {businessData.level_icon || "🏆"}
                   </div>
                 </div>
 

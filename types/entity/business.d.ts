@@ -18,6 +18,7 @@ export interface BusinessProfile {
   primary_goal: string;
   total_points: number;
   level_name: string;
+  level_icon?: string;
   created_at: string;
   updated_at: string;
 }
@@ -32,6 +33,7 @@ export interface BusinessProfileResponse {
   primary_goal: string;
   total_points: number;
   level_name: string;
+  level_icon?: string;
   id: string;
   user_id: string;
   created_at: string;
