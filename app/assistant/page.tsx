@@ -139,7 +139,7 @@ export default function AssistantPage() {
         }
       });
 
-      scrollToBottom();
+      setTimeout(scrollToBottom, 100);
     }
   }, [isStreaming, assistantMessage, setMessages]);
 
@@ -232,7 +232,7 @@ export default function AssistantPage() {
                   )}
 
                   <div className="space-y-4 mb-6 max-w-2xl mx-auto w-full min-w-0">
-                    {messages.map((message) => (
+                    {messages.map((message, i) => (
                       <div
                         key={message.id}
                         className={`w-full flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
@@ -255,14 +255,16 @@ export default function AssistantPage() {
                           <div className="text-base leading-relaxed markdown prose prose-sm max-w-none dark:prose-invert">
                             <Markdown>{message.content}</Markdown>
                           </div>
+                          {message.role == "assistant" &&
+                            isChatLoading &&
+                            i == messages.length - 1 && (
+                              <div className="w-full flex justify-start text-primary mt-5">
+                                <Spinner />
+                              </div>
+                            )}
                         </div>
                       </div>
                     ))}
-                    {isChatLoading && (
-                      <div className="w-full flex justify-start pl-2 text-primary mt-3">
-                        <Spinner />
-                      </div>
-                    )}
                   </div>
                 </>
               )}
