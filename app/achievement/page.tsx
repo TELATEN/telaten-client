@@ -95,7 +95,7 @@ export default function AchievementPage() {
                   <div className="absolute top-0 bottom-0 right-0 left-0 bg-gradient-to-br from-primary/5 to-accent/10 -z-1"></div>
                 )}
                 <div
-                  className={`w-16 relative h-16 text-2xl flex items-center justify-center bg-muted rounded-full ${ach.is_unlocked ? "opacity-100 ring-1 ring-primary !bg-gradient-to-br from-accent/50 to-white" : ""}`}
+                  className={`w-16 relative h-16 text-2xl flex items-center justify-center bg-muted rounded-full ${ach.is_unlocked ? "opacity-100 ring-1 ring-primary !bg-gradient-to-br from-primary/30 to-background" : ""}`}
                 >
                   <span
                     className={ach.is_unlocked ? "opacity-100" : "opacity-50"}

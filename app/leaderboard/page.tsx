@@ -1,27 +1,26 @@
 "use client";
 
 import useBusinessProfile from "@/hooks/services/business/use-business-profile";
-import { BusinessAddress } from "@/types/entity/business";
 import UserAvatar from "@/components/UserAvatar";
 import Image from "next/image";
-import { useAuthStore } from "@/hooks/stores/use-auth.store";
-import { Dot, Globe, User } from "lucide-react";
+import { Globe, User } from "lucide-react";
 import CurrentLevelLeaderBoard from "@/components/leaderboard/CurrentLevelLeaderBoard";
 import { Button } from "@/components/ui/button";
 import useLeaderboard from "@/hooks/services/leaderboard/use-leaderboard";
-
-function formatAddress(address: BusinessAddress | undefined) {
-  if (!address) return "-";
-  const { street, city, state, zip_code, country } = address;
-  return [street, city, state, zip_code, country].filter(Boolean).join(", ");
-}
+import LeaderBoardSkeletonLoading from "@/components/leaderboard/LeaderBoardSkeletonLoading";
 
 export default function LeaderboardPage() {
   const { data: businessProfile, isLoading: loadingProfile } =
     useBusinessProfile();
-  const user = useAuthStore((state) => state.user);
   const { data: leaderboardData = [], isLoading: loadingLeaderboard } =
     useLeaderboard();
+
+  const scrollToMe = () => {
+    const element = document.getElementById("me");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 md:py-8 min-h-screen space-y-5">
@@ -50,7 +49,7 @@ export default function LeaderboardPage() {
       <section className="pt-5">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-lg font-semibold mb-4">Leaderboard Pengalaman</h2>
-          <Button type="button" size="sm">
+          <Button type="button" size="sm" onClick={scrollToMe}>
             <User className="h-4 w-4 mr-3"></User>
             Skor saya
           </Button>
@@ -62,7 +61,7 @@ export default function LeaderboardPage() {
             <div className="text-right font-mono text-yellow-400">XP</div>
           </div>
           {loadingLeaderboard ? (
-            <div className="text-center py-8">Loading leaderboard...</div>
+            <LeaderBoardSkeletonLoading />
           ) : (
             leaderboardData.map((item, i) => {
               const isCurrentUser = item.is_current_user;
@@ -70,16 +69,17 @@ export default function LeaderboardPage() {
                 <div key={item.business_id}>
                   {i > 0 && item.rank - leaderboardData[i - 1].rank > 1 && (
                     <div className="flex justify-center items-center gap-1 py-4 pb-8">
-                      {Array.from({ length: 3 }).map((_, j) => (
+                      {Array.from({ length: 4 }).map((_, j) => (
                         <div
                           key={j}
-                          className="rounded-full h-2 w-2 bg-muted"
+                          className="rounded-full h-1.5 w-1.5 bg-foreground"
                         ></div>
                       ))}
                     </div>
                   )}
                   <div
                     className={`grid grid-cols-10 border border-border overflow-hidden bg-card rounded-lg relative items-center py-4 hover:scale-105 transition-all duration-300 after:content-[''] after:absolute after:top-0 after:right-0 after:left-0 after:bottom-0  ${isCurrentUser ? "ring-1 !ring-primary after:!bg-gradient-to-br after:!from-primary/5 after:!to-accent/10 shadow-lg scale-[102%]" : ""} ${i < 3 ? "ring-1 after:bg-yellow-500/5 ring-yellow-400/60" : ""}`}
+                    id={isCurrentUser ? "me" : ""}
                   >
                     <div className="col-span-1 text-center">
                       {item.rank <= 3 ? (
