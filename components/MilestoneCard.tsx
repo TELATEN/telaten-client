@@ -199,27 +199,29 @@ export function MilestoneCard({
                         )}
                       </div>
                       
-                      {/* Complete Button */}
-                      {task.is_completed ? (
+                      {/* Complete Button - Only show for in_progress milestones */}
+                      {milestone.status === 'in_progress' && (
+                        task.is_completed ? (
+                          <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-0 flex-shrink-0">
+                            <CheckCircle2 className="w-3 h-3 mr-1" />
+                            Selesai
+                          </Badge>
+                        ) : (
+                          <Button
+                            size="sm"
+                            onClick={() => onCompleteTask?.(task.id)}
+                            className="h-8 px-3 text-xs font-semibold flex-shrink-0 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white"
+                          >
+                            <Check className="w-3 h-3 mr-1" />
+                            Selesai
+                          </Button>
+                        )
+                      )}
+                      {milestone.status === 'completed' && task.is_completed && (
                         <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-0 flex-shrink-0">
                           <CheckCircle2 className="w-3 h-3 mr-1" />
                           Selesai
                         </Badge>
-                      ) : (
-                        <Button
-                          size="sm"
-                          onClick={() => onCompleteTask?.(task.id)}
-                          disabled={milestone.status !== 'in_progress'}
-                          className={cn(
-                            'h-8 px-3 text-xs font-semibold flex-shrink-0',
-                            milestone.status === 'in_progress'
-                              ? 'bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white'
-                              : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                          )}
-                        >
-                          <Check className="w-3 h-3 mr-1" />
-                          Selesai
-                        </Button>
                       )}
                     </div>
                   ))

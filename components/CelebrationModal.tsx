@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 import { Button } from "@/components/ui/button";
-import { Trophy, Star, Sparkles, CheckCircle2, Zap } from "lucide-react";
+import { Trophy, Star, Sparkles, CheckCircle2, Zap, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface CelebrationModalProps {
@@ -65,10 +65,29 @@ export default function CelebrationModal({
       <DialogContent
         className={cn(
           "w-[calc(100%-2rem)] max-w-md overflow-hidden border-0 p-0",
-          "bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400"
+          "bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400",
+          "[&>button[class*='opacity-70']]:hidden" // Hide only default close button, not custom ones
         )}
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
+        {/* Custom Close Button - More Visible */}
+        <button
+          onClick={onClose}
+          className={cn(
+            "absolute right-4 top-4 z-50",
+            "rounded-full p-2",
+            "bg-white/20 hover:bg-white/30 backdrop-blur-sm",
+            "border border-white/30",
+            "transition-all duration-200",
+            "hover:scale-110 hover:rotate-90",
+            "focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent",
+            "group"
+          )}
+          aria-label="Close"
+        >
+          <X className="h-5 w-5 text-white group-hover:text-white transition-colors" />
+        </button>
+
         <VisuallyHidden.Root>
           <DialogTitle>
             {isAchievement ? "Achievement Unlocked" : isMilestone ? "Milestone Selesai" : "Task Selesai"}

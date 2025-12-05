@@ -87,7 +87,7 @@ export default function HelpPage() {
 
   const filteredFAQs = faqs.filter(faq => {
     const matchesSearch = faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         faq.answer.toLowerCase().includes(searchQuery.toLowerCase());
+      faq.answer.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'Semua' || faq.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -108,7 +108,6 @@ export default function HelpPage() {
             className="flex items-center gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
-            Kembali
           </Button>
           <h1 className="text-lg font-semibold dark:text-white">Pusat Bantuan</h1>
           <div className="w-16" />
@@ -125,7 +124,6 @@ export default function HelpPage() {
             className="flex items-center gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
-            Kembali
           </Button>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Pusat Bantuan</h1>
         </div>
@@ -140,7 +138,7 @@ export default function HelpPage() {
             <p className="text-gray-600 dark:text-gray-300 mb-6">
               Cari jawaban dari pertanyaan yang sering ditanyakan atau hubungi tim support kami
             </p>
-            
+
             {/* Search Bar */}
             <div className="relative max-w-xl mx-auto">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -163,8 +161,8 @@ export default function HelpPage() {
               variant={selectedCategory === category ? 'default' : 'outline'}
               size="sm"
               onClick={() => setSelectedCategory(category)}
-              className={selectedCategory === category 
-                ? 'bg-pink-500 hover:bg-pink-600' 
+              className={selectedCategory === category
+                ? 'bg-pink-500 hover:bg-pink-600'
                 : 'dark:border-gray-600 dark:text-gray-300'
               }
             >
