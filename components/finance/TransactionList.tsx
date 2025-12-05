@@ -13,8 +13,8 @@ import {
 } from '@/components/ui/dialog';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
-import { TrendingUp, TrendingDown, Calendar, Tag, Trash2, Loader2 } from 'lucide-react';
-import type { Transaction } from '@/types/entity/finance';
+import { TrendingUp, TrendingDown, Calendar, Tag, Trash2, Loader2, Wallet } from 'lucide-react';
+import type { Transaction, PaymentMethod } from '@/types/entity/finance';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
@@ -34,6 +34,17 @@ export function TransactionList({ transactions, onDelete, isDeleting }: Transact
       currency: 'IDR',
       minimumFractionDigits: 0,
     }).format(amount);
+  };
+
+  const getPaymentMethodLabel = (method: PaymentMethod): string => {
+    const labels: Record<PaymentMethod, string> = {
+      CASH: '💵 Tunai',
+      BANK_TRANSFER: '🏦 Transfer',
+      E_WALLET: '📱 E-Wallet',
+      DEBIT_CARD: '💳 Debit',
+      CREDIT_CARD: '💳 Kredit',
+    };
+    return labels[method] || method;
   };
 
   const handleDeleteClick = (transaction: Transaction) => {
@@ -105,7 +116,7 @@ export function TransactionList({ transactions, onDelete, isDeleting }: Transact
                     </div>
                   </div>
 
-                  {/* Category & Date */}
+                  {/* Category, Payment Method & Date */}
                   <div className="flex flex-wrap items-center gap-2 text-xs text-gray-600 dark:text-gray-400">
                     <Badge
                       variant="secondary"
@@ -117,11 +128,15 @@ export function TransactionList({ transactions, onDelete, isDeleting }: Transact
                       )}
                     >
                       <Tag className="w-3 h-3" />
-                      {transaction.category}
+                      {transaction.category_name || transaction.category}
+                    </Badge>
+                    <Badge variant="outline" className="flex items-center gap-1">
+                      <Wallet className="w-3 h-3" />
+                      {getPaymentMethodLabel(transaction.payment_method)}
                     </Badge>
                     <span className="flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
-                      {format(new Date(transaction.transaction_date), 'dd MMM yyyy, HH:mm', {
+                      {format(new Date(transaction.transaction_date), 'dd MMM yyyy', {
                         locale: id,
                       })}
                     </span>

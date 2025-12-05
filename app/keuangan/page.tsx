@@ -10,6 +10,7 @@ import {
   Info,
   ChevronLeft,
   ChevronRight,
+  FolderKanban,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -18,6 +19,8 @@ import { CreateTransactionForm } from "@/components/finance/CreateTransactionFor
 import { TransactionList } from "@/components/finance/TransactionList";
 import { FinancialSummaryCard } from "@/components/finance/FinancialSummaryCard";
 import { TransactionFilter } from "@/components/finance/TransactionFilter";
+import { SummaryPeriodFilter } from "@/components/finance/SummaryPeriodFilter";
+import { CategoryManager } from "@/components/finance/CategoryManager";
 import CelebrationModal from "@/components/CelebrationModal";
 import useTransactions from "@/hooks/services/finance/use-transactions";
 import useFinancialSummary from "@/hooks/services/finance/use-financial-summary";
@@ -96,15 +99,11 @@ export default function KeuanganPage() {
     });
   };
 
-  const handleFilterChange = (
+  const handleTransactionFilterChange = (
     startDate?: string,
-    endDate?: string,
-    period?: string
+    endDate?: string
   ) => {
-    if (period && period !== "custom") {
-      setSummaryPeriod(period as "day" | "week" | "month" | "year");
-      setFilterParams({ page: 1, size: 20 });
-    } else if (startDate && endDate) {
+    if (startDate && endDate) {
       setFilterParams({
         start_date: startDate,
         end_date: endDate,
@@ -114,6 +113,10 @@ export default function KeuanganPage() {
     } else {
       setFilterParams({ page: 1, size: 20 });
     }
+  };
+
+  const handleSummaryPeriodChange = (period: "day" | "week" | "month" | "year") => {
+    setSummaryPeriod(period);
   };
 
   const handleDeleteTransaction = (transactionId: string) => {
@@ -212,21 +215,31 @@ export default function KeuanganPage() {
 
           {/* Tabs */}
           <Tabs defaultValue="list" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsList className="grid w-full grid-cols-3 mb-6">
               <TabsTrigger value="list" className="flex items-center gap-2">
                 <List className="w-4 h-4" />
-                Daftar Transaksi
+                Transaksi
               </TabsTrigger>
               <TabsTrigger value="create" className="flex items-center gap-2">
                 <Plus className="w-4 h-4" />
-                Tambah Transaksi
+                Tambah
+              </TabsTrigger>
+              <TabsTrigger value="category" className="flex items-center gap-2">
+                <FolderKanban className="w-4 h-4" />
+                Kategori
               </TabsTrigger>
             </TabsList>
 
             {/* Transaction List Tab */}
             <TabsContent value="list" className="space-y-4">
-              {/* Filter */}
-              <TransactionFilter onFilterChange={handleFilterChange} />
+              {/* Filters */}
+              <div className="grid gap-4 md:grid-cols-2">
+                <SummaryPeriodFilter 
+                  period={summaryPeriod}
+                  onPeriodChange={handleSummaryPeriodChange}
+                />
+                <TransactionFilter onFilterChange={handleTransactionFilterChange} />
+              </div>
 
               {/* Transaction List */}
               <div>
@@ -326,6 +339,11 @@ export default function KeuanganPage() {
                 onSubmit={handleCreateTransaction}
                 isLoading={createTransaction.isPending}
               />
+            </TabsContent>
+
+            {/* Category Management Tab */}
+            <TabsContent value="category">
+              <CategoryManager />
             </TabsContent>
           </Tabs>
         </div>

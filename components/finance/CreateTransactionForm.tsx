@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,63 +10,72 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, Plus, DollarSign, ArrowDownCircle } from 'lucide-react';
+import { CalendarIcon, Plus, DollarSign, ArrowDownCircle, Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
-import type { CreateTransactionInput } from '@/types/entity/finance';
+import useCategories from '@/hooks/services/finance/use-categories';
+import type { CreateTransactionInput, PaymentMethod } from '@/types/entity/finance';
 
 interface CreateTransactionFormProps {
   onSubmit: (data: CreateTransactionInput) => void;
   isLoading?: boolean;
 }
 
-const INCOME_CATEGORIES = [
-  'Penjualan',
-  'Jasa',
-  'Investasi',
-  'Lainnya',
-];
-
-const EXPENSE_CATEGORIES = [
-  'Bahan Baku',
-  'Operasional',
-  'Gaji',
-  'Sewa',
-  'Utilitas',
-  'Pemasaran',
-  'Transport',
-  'Lainnya',
+const PAYMENT_METHODS: { value: PaymentMethod; label: string }[] = [
+  { value: 'CASH', label: '💵 Tunai' },
+  { value: 'BANK_TRANSFER', label: '🏦 Transfer Bank' },
+  { value: 'E_WALLET', label: '📱 E-Wallet' },
+  { value: 'DEBIT_CARD', label: '💳 Kartu Debit' },
+  { value: 'CREDIT_CARD', label: '💳 Kartu Kredit' },
 ];
 
 export function CreateTransactionForm({ onSubmit, isLoading }: CreateTransactionFormProps) {
   const [date, setDate] = useState<Date>(new Date());
   const [transactionType, setTransactionType] = useState<'income' | 'expense'>('income');
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod>('CASH');
   
-  const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm<CreateTransactionInput>({
+  const { data: allCategories, isLoading: categoriesLoading } = useCategories();
+  
+  const { register, handleSubmit, formState: { errors }, reset, setValue, watch } = useForm<CreateTransactionInput>({
     defaultValues: {
       type: 'income',
       transaction_date: new Date().toISOString(),
+      payment_method: 'CASH',
     },
   });
 
-  const categories = transactionType === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES;
+  const categories = allCategories?.filter((c) => c.type === transactionType) || [];
 
   const handleFormSubmit = (data: CreateTransactionInput) => {
-    const submitData = {
-      ...data,
+    const selectedCategory = categories.find((c) => c.id === selectedCategoryId);
+    
+    if (!selectedCategory) {
+      return;
+    }
+
+    const submitData: CreateTransactionInput = {
       amount: Number(data.amount),
+      type: transactionType,
+      category_id: selectedCategory.id,
+      category_name: selectedCategory.name,
+      payment_method: selectedPaymentMethod,
+      description: data.description,
       transaction_date: date.toISOString(),
     };
+    
     onSubmit(submitData);
     reset();
     setDate(new Date());
+    setSelectedCategoryId('');
+    setSelectedPaymentMethod('CASH');
   };
 
   const handleTypeChange = (value: 'income' | 'expense') => {
     setTransactionType(value);
     setValue('type', value);
-    setValue('category', ''); // Reset category when type changes
+    setSelectedCategoryId(''); // Reset category when type changes
   };
 
   return (
@@ -124,21 +133,50 @@ export function CreateTransactionForm({ onSubmit, isLoading }: CreateTransaction
           {/* Category */}
           <div className="space-y-2">
             <Label htmlFor="category">Kategori</Label>
-            <Select onValueChange={(value) => setValue('category', value)}>
+            <Select 
+              value={selectedCategoryId} 
+              onValueChange={setSelectedCategoryId}
+              disabled={categoriesLoading}
+            >
               <SelectTrigger>
-                <SelectValue placeholder="Pilih kategori" />
+                <SelectValue placeholder={categoriesLoading ? "Memuat kategori..." : "Pilih kategori"} />
               </SelectTrigger>
               <SelectContent>
                 {categories.map((cat) => (
-                  <SelectItem key={cat} value={cat}>
-                    {cat}
+                  <SelectItem key={cat.id} value={cat.id}>
+                    <span className="flex items-center gap-2">
+                      <span>{cat.icon}</span>
+                      <span>{cat.name}</span>
+                    </span>
+                  </SelectItem>
+                ))}
+                {categories.length === 0 && !categoriesLoading && (
+                  <div className="px-2 py-1.5 text-sm text-muted-foreground">
+                    Belum ada kategori
+                  </div>
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Payment Method */}
+          <div className="space-y-2">
+            <Label htmlFor="payment_method">Metode Pembayaran</Label>
+            <Select 
+              value={selectedPaymentMethod} 
+              onValueChange={(value: PaymentMethod) => setSelectedPaymentMethod(value)}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {PAYMENT_METHODS.map((method) => (
+                  <SelectItem key={method.value} value={method.value}>
+                    {method.label}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            {errors.category && (
-              <p className="text-xs text-red-500">{errors.category.message}</p>
-            )}
           </div>
 
           {/* Description */}
@@ -186,9 +224,16 @@ export function CreateTransactionForm({ onSubmit, isLoading }: CreateTransaction
           <Button
             type="submit"
             className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600"
-            disabled={isLoading}
+            disabled={isLoading || categoriesLoading || !selectedCategoryId}
           >
-            {isLoading ? 'Menyimpan...' : 'Simpan Transaksi'}
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Menyimpan...
+              </>
+            ) : (
+              'Simpan Transaksi'
+            )}
           </Button>
         </form>
       </CardContent>
