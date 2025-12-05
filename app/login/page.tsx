@@ -91,7 +91,7 @@ export default function LoginPage() {
     <>
       <LoadingOverlay isLoading={isPending} message="Masuk ke akun Anda..." />
       <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 flex items-center justify-center">
-        <div className="w-full max-w-md mx-4">
+        <div className="w-full max-w-md p-4">
           <div className="text-center mb-8">
             <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg overflow-hidden bg-white">
               <Image

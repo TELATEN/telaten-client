@@ -1,55 +1,67 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { ArrowLeft } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ArrowLeft } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ForgotPasswordPage() {
   const { toast } = useToast();
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     toast({
-      title: 'Link Reset Terkirim!',
-      description: 'Silakan cek email Anda untuk instruksi reset password.',
+      title: "Link Reset Terkirim!",
+      description: "Silakan cek email Anda untuk instruksi reset password.",
     });
 
     setIsSubmitted(true);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-cyan-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 flex items-center justify-center">
+      <div className="w-full max-w-md p-4">
         <div className="text-center mb-8">
           <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg overflow-hidden bg-white">
-            <Image 
-              src="/images/logo-telaten.png" 
-              alt="TELATEN Logo" 
-              width={80} 
+            <Image
+              src="/images/logo-telaten.png"
+              alt="TELATEN Logo"
+              width={80}
               height={80}
               className="object-cover"
             />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">TELATEN</h1>
-          <p className="text-gray-600 dark:text-gray-400">Maju Pelan-pelan, Usaha Jadi Mapapan</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            TELATEN
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Maju Pelan-pelan, Usaha Jadi Mapapan
+          </p>
         </div>
 
         <Card className="shadow-xl border-2 border-pink-100 dark:border-pink-900/30">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-center">Lupa Password?</CardTitle>
+            <CardTitle className="text-2xl font-bold text-center">
+              Lupa Password?
+            </CardTitle>
             <CardDescription className="text-center">
               {isSubmitted
-                ? 'Kami sudah mengirim link reset ke email Anda'
-                : 'Masukkan email untuk reset password'}
+                ? "Kami sudah mengirim link reset ke email Anda"
+                : "Masukkan email untuk reset password"}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -79,7 +91,8 @@ export default function ForgotPasswordPage() {
               <div className="space-y-6">
                 <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 text-center">
                   <p className="text-sm text-green-700 dark:text-green-400">
-                    Periksa inbox email Anda. Jika tidak menemukan email, cek folder spam.
+                    Periksa inbox email Anda. Jika tidak menemukan email, cek
+                    folder spam.
                   </p>
                 </div>
 
