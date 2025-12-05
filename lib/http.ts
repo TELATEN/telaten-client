@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
-import useRefreshToken from "@/hooks/services/auth/use-refresh-token";
 import { LoginResponse } from "@/types";
 
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export function http() {
+  let isRefreshing = false;
   const headers: Record<string, any> = {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -28,8 +28,10 @@ export function http() {
     async (err) => {
       if (
         err.response.status == 401 &&
-        !err.response.request.responseURL.includes("/auth/refresh")
+        !err.response.request.responseURL.includes("/auth/refresh") &&
+        !isRefreshing
       ) {
+        isRefreshing = true;
         const result = await http().post("/auth/refresh");
         const newToken = (result.data as LoginResponse).access_token;
 
