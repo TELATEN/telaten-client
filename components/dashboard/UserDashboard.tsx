@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Switch } from "@/components/ui/switch";
 import { MilestoneCard } from "@/components/MilestoneCard";
 import CelebrationModal from "@/components/CelebrationModal";
 import { useToast } from "@/hooks/use-toast";
-import { Sun, Moon, Trophy, Star, Target as TargetIcon } from "lucide-react";
+import { Trophy, Star, Target as TargetIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import useBusinessProfile from "@/hooks/services/business/use-business-profile";
 import useMilestones from "@/hooks/services/milestone/use-milestones";
@@ -26,7 +25,6 @@ export default function UserDashboard() {
   const { data: milestones } = useMilestones();
   const startMilestone = useStartMilestone();
   const completeTask = useCompleteTask();
-  const [isBusinessOpen, setIsBusinessOpen] = useState(true);
   const [celebrationData, setCelebrationData] =
     useState<CelebrationData | null>(null);
   const { toast } = useToast();
@@ -35,18 +33,6 @@ export default function UserDashboard() {
   const currentMilestone =
     milestones?.find((m) => m.status === "in_progress") ||
     milestones?.find((m) => m.status === "pending");
-
-  const handleToggleBusiness = () => {
-    const newStatus = !isBusinessOpen;
-    setIsBusinessOpen(newStatus);
-
-    toast({
-      title: newStatus ? "Warung Dibuka" : "Warung Ditutup",
-      description: newStatus
-        ? "Semangat berjualan hari ini!"
-        : "Semoga dapat istirahat yang cukup!",
-    });
-  };
 
   const handleStartMilestone = (milestoneId: string) => {
     startMilestone.mutate(milestoneId, {
@@ -134,36 +120,6 @@ export default function UserDashboard() {
       />
 
       <div className="space-y-6">
-        {/* Business Status Toggle */}
-        <div className="bg-card border border-border rounded-lg p-4 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              {isBusinessOpen ? (
-                <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                  <Sun className="w-5 h-5 text-green-600" />
-                </div>
-              ) : (
-                <div className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
-                  <Moon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                </div>
-              )}
-              <div>
-                <p className="font-semibold text-gray-900 dark:text-white">
-                  Status Warung
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {isBusinessOpen ? "Buka" : "Tutup"}
-                </p>
-              </div>
-            </div>
-            <Switch
-              checked={isBusinessOpen}
-              onCheckedChange={handleToggleBusiness}
-              className="data-[state=checked]:bg-green-600"
-            />
-          </div>
-        </div>
-
         {/* Level & Points Card */}
         {businessData && (
           <Link href="/leaderboard" className="block">

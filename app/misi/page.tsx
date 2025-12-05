@@ -63,7 +63,6 @@ export default function MisiPage() {
           title: data.title,
           points: data.reward_points,
           level: businessData?.level_name,
-          level: businessData?.level_name,
           message: "Kerja bagus! Terus semangat menyelesaikan misi!",
         });
 

@@ -32,6 +32,8 @@ export default function useFinancialSummary(params?: GetSummaryParams) {
         net_profit: 0,
         period_start: new Date().toISOString(),
         period_end: new Date().toISOString(),
+        income_breakdown: [],
+        expense_breakdown: [],
       };
     },
   });
