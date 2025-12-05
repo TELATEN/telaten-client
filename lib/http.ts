@@ -3,9 +3,9 @@ import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import { LoginResponse } from "@/types";
 
 const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
+let isRefreshing = false;
 
 export function http() {
-  let isRefreshing = false;
   const headers: Record<string, any> = {
     "Content-Type": "application/json",
     Accept: "application/json",
