@@ -17,6 +17,8 @@ export function http() {
     headers,
   });
 
+  // instance.defaults.withCredentials = true;
+
   instance.interceptors.request.use((config) => {
     config.headers.Authorization = getAuthToken();
 
@@ -27,7 +29,7 @@ export function http() {
     (res) => res,
     async (err) => {
       const originalRequest = err.config;
-      
+
       if (
         err.response?.status === 401 &&
         !originalRequest._retry &&
@@ -37,7 +39,7 @@ export function http() {
       ) {
         originalRequest._retry = true;
         isRefreshing = true;
-        
+
         try {
           const result = await http().post("/auth/refresh");
           const newToken = (result.data as LoginResponse).access_token;
@@ -54,7 +56,7 @@ export function http() {
           return Promise.reject(refreshError);
         }
       }
-      
+
       return Promise.reject(err);
     }
   );

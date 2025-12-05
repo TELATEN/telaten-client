@@ -57,7 +57,7 @@ export default function RootLayout({
                         <CollapsibleSidebar />
                         <main
                           className={[
-                            "flex-1 md:pb-0",
+                            "flex-1 md:pb-0 min-w-0 max-w-screen",
                             shouldShowBottomNav ? "pb-16" : "",
                           ].join(" ")}
                         >

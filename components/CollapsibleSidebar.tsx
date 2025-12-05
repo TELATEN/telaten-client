@@ -13,6 +13,7 @@ import {
   MessageSquare,
   Globe,
   Rocket,
+  Trophy,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import NavProfile from "./NavProfile";
@@ -54,14 +55,19 @@ export function CollapsibleSidebar() {
       href: "/misi",
       label: "Misi",
       icon: Target,
-      hidden: user?.role == "admin",
+      hidden: user?.role != "user",
     },
-    { href: "/achievement", label: "Pencapaian", icon: Rocket },
+    { href: "/achievement", label: "Pencapaian", icon: Trophy },
     {
       href: "/business-level",
       label: "Level Bisnis",
       icon: Globe,
       hidden: user?.role != "admin",
+    },
+    {
+      href: "/leaderboard",
+      label: "Leaderboard",
+      icon: Globe,
     },
     {
       href: "/keuangan",

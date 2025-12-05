@@ -10,7 +10,7 @@ import AchievementDialog from "@/components/achievement/AchievementDialog";
 import ConfirmDialog from "@/components/ui/confirm-dialog";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import { Button } from "@/components/ui/button";
-import { Plus, Edit, Trash2 } from "lucide-react";
+import { Plus, Edit, Trash2, Trophy } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import useDeleteAchievement from "@/hooks/services/achievements/use-delete-achievement";
 import { toast } from "@/hooks/use-toast";
@@ -48,7 +48,9 @@ export default function AchievementPage() {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 mb-2">
               <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center">
-                <span className="text-2xl">🏆</span>
+                <span className="text-2xl">
+                  <Trophy className="text-white" />
+                </span>
               </div>
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
@@ -87,10 +89,10 @@ export default function AchievementPage() {
             achievements.map((ach: Achievement) => (
               <Card
                 key={ach.id}
-                className={`flex overflow-hidden relative items-center gap-4 p-4 bg-card border border-border ${ach.is_unlocked ? "!border-yellow-400" : ""}`}
+                className={`flex overflow-hidden relative items-center gap-4 transition hover:scale-105 p-4 bg-card border border-border ${ach.is_unlocked ? "!border-yellow-400" : ""}`}
               >
                 {ach.is_unlocked && (
-                  <div className="absolute top-0 bottom-0 right-0 left-0 bg-yellow-400/10 dark:bg-yellow-500/20 -z-1"></div>
+                  <div className="absolute top-0 bottom-0 right-0 left-0 bg-yellow-400/10 dark:bg-yellow-500/10 -z-1"></div>
                 )}
                 <div
                   className={`w-16 relative h-16 text-2xl flex items-center justify-center bg-gray-200 dark:bg-gray-700 to-yellow-400/50 rounded-full ${ach.is_unlocked ? "ring-2 ring-yellow-400 bg-yellow-400/20" : ""}`}

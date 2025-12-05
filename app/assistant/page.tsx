@@ -143,7 +143,7 @@ export default function AssistantPage() {
             </div>
           </div>
 
-          <div className="max-w-2xl mx-auto px-4 py-6 md:py-8 min-h-[calc(100vh-80px)] md:min-h-[calc(100vh-0px)] flex flex-col w-full">
+          <div className="max-w-3xl mx-auto px-4 py-6 md:py-8 min-h-[calc(100vh-80px)] md:min-h-[calc(100vh-0px)] flex flex-col w-full">
             {isLoading ? (
               <div
                 className="flex w-full justify-center"

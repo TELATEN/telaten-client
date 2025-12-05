@@ -118,7 +118,7 @@ export default function MisiPage() {
             <Loader2 className="w-8 h-8 animate-spin text-pink-500" />
           </div>
         ) : (
-          <Tabs defaultValue="pending" className="w-full">
+          <Tabs defaultValue="in_progress" className="w-full">
             <TabsList className="grid w-full grid-cols-3 mb-6">
               <TabsTrigger value="pending">Tersedia</TabsTrigger>
               <TabsTrigger value="in_progress">Sedang Berjalan</TabsTrigger>
