@@ -35,6 +35,7 @@ export default function CelebrationModal({
   const [showConfetti, setShowConfetti] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const scrollPosition = useRef(0);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -43,9 +44,25 @@ export default function CelebrationModal({
       
       setShowConfetti(true);
       setTimeout(() => setShowContent(true), 100);
+
+      // Play celebration sound
+      if (!audioRef.current) {
+        audioRef.current = new Audio('/sounds/notification.mp3');
+      }
+      
+      audioRef.current.play().catch((error) => {
+        // Handle autoplay restrictions or errors silently
+        console.log('Audio playback failed:', error);
+      });
     } else {
       setShowConfetti(false);
       setShowContent(false);
+      
+      // Stop audio when modal closes
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
       
       // Small delay to ensure modal is fully closed before restoring scroll
       setTimeout(() => {
