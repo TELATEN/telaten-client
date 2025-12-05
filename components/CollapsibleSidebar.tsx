@@ -127,7 +127,7 @@ export function CollapsibleSidebar() {
       </div>
 
       {/* Navigation Items */}
-      <div className="flex-1 overflow-y-auto px-2 mt-4">
+      <div className="flex-1 overflow-y-auto px-2 mt-4 min-h-0">
         <nav>
           <ul className="space-y-1">
             {navItems

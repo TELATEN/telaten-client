@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { MilestoneCard } from "@/components/MilestoneCard";
+import CelebrationModal from "@/components/CelebrationModal";
 import { useToast } from "@/hooks/use-toast";
 import { Sun, Moon, Trophy, Star, Target as TargetIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,12 +12,21 @@ import useMilestones from "@/hooks/services/milestone/use-milestones";
 import useStartMilestone from "@/hooks/services/milestone/use-start-milestone";
 import useCompleteTask from "@/hooks/services/milestone/use-complete-task";
 
+interface CelebrationData {
+  type: "task" | "milestone";
+  title: string;
+  points: number;
+  level?: string;
+  message?: string;
+}
+
 export default function UserDashboard() {
   const { data: businessData } = useBusinessProfile();
   const { data: milestones } = useMilestones();
   const startMilestone = useStartMilestone();
   const completeTask = useCompleteTask();
   const [isBusinessOpen, setIsBusinessOpen] = useState(true);
+  const [celebrationData, setCelebrationData] = useState<CelebrationData | null>(null);
   const { toast } = useToast();
 
   // Get current active milestone (in_progress) or first pending
@@ -57,10 +67,29 @@ export default function UserDashboard() {
   const handleCompleteTask = (taskId: string) => {
     completeTask.mutate(taskId, {
       onSuccess: (data) => {
-        toast({
-          title: "Tugas Selesai!",
-          description: `+${data.reward_points} poin`,
+        // Show task celebration
+        setCelebrationData({
+          type: "task",
+          title: data.title,
+          points: data.reward_points,
+          level: businessData?.level,
+          message: "Kerja bagus! Terus semangat menyelesaikan misi!",
         });
+
+        // Check if all tasks in current milestone are completed after a delay
+        // This gives time for the query to refetch and update
+        setTimeout(() => {
+          const milestone = milestones?.find((m) => m.status === "completed" && m.id === currentMilestone?.id);
+          if (milestone) {
+            setCelebrationData({
+              type: "milestone",
+              title: milestone.title,
+              points: milestone.reward_points,
+              level: businessData?.level,
+              message: "Luar biasa! Kamu telah menyelesaikan milestone ini!",
+            });
+          }
+        }, 1500);
       },
       onError: (error: any) => {
         toast({
@@ -73,7 +102,18 @@ export default function UserDashboard() {
   };
 
   return (
-    <div className="space-y-6">
+    <>
+      <CelebrationModal
+        isOpen={!!celebrationData}
+        onClose={() => setCelebrationData(null)}
+        type={celebrationData?.type || "task"}
+        title={celebrationData?.title || ""}
+        points={celebrationData?.points || 0}
+        level={celebrationData?.level}
+        message={celebrationData?.message}
+      />
+      
+      <div className="space-y-6">
       {/* Business Status Toggle */}
       <div className="bg-card border border-border rounded-lg p-4 shadow-sm">
         <div className="flex items-center justify-between">
@@ -176,5 +216,6 @@ export default function UserDashboard() {
         )}
       </div>
     </div>
+    </>
   );
 }
