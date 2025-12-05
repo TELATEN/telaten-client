@@ -23,6 +23,7 @@ import useLogin from "@/hooks/services/auth/use-login";
 import { LoadingOverlay } from "@/components/LoadingOverlay";
 import { LoginParams } from "@/types";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
+import { AppConfig } from "@/lib/constants/app";
 
 const loginSchema = z.object({
   email: z
@@ -103,10 +104,10 @@ export default function LoginPage() {
               />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              TELATEN
+              {AppConfig.appName.toUpperCase()}
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
-              Maju Pelan-pelan, Usaha Jadi Mapapan
+              {AppConfig.appSlogan}
             </p>
           </div>
 

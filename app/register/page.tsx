@@ -23,6 +23,7 @@ import useRegister from "@/hooks/services/auth/use-register";
 import { SimpleLoading } from "@/components/SimpleLoading";
 import { RegisterParams } from "@/types";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
+import { AppConfig } from "@/lib/constants/app";
 
 const registerSchemaBase = z.object({
   name: z.string().min(1, "Nama lengkap wajib diisi"),
@@ -117,10 +118,10 @@ export default function RegisterPage() {
               />
             </div>
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-              TELATEN
+              {AppConfig.appName.toUpperCase()}
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
-              Maju Pelan-pelan, Usaha Jadi Mapapan
+              {AppConfig.appSlogan}
             </p>
           </div>
 

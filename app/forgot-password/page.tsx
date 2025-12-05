@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { AppConfig } from "@/lib/constants/app";
 
 export default function ForgotPasswordPage() {
   const { toast } = useToast();
@@ -46,10 +47,10 @@ export default function ForgotPasswordPage() {
             />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            TELATEN
+            {AppConfig.appName}
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
-            Maju Pelan-pelan, Usaha Jadi Mapapan
+            {AppConfig.appSlogan}
           </p>
         </div>
 

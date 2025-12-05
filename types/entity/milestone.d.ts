@@ -1,4 +1,4 @@
-export type MilestoneStatus = 'pending' | 'in_progress' | 'completed';
+export type MilestoneStatus = "pending" | "in_progress" | "completed";
 
 export interface MilestoneTask {
   title: string;
@@ -29,7 +29,7 @@ export interface MilestoneBase {
 
 // Milestone list item (from GET /milestones)
 export interface MilestoneListItem extends MilestoneBase {
-  tasks?: never; // Explicitly no tasks in list
+  tasks?: any; // Explicitly no tasks in list
 }
 
 // Milestone detail (from GET /milestones/{id})
@@ -50,7 +50,7 @@ export interface CreateMilestoneInput {
   is_generated?: boolean;
   level?: number;
   reward_points?: number;
-  tasks?: Omit<MilestoneTask, 'id' | 'milestone_id' | 'completed_at'>[];
+  tasks?: Omit<MilestoneTask, "id" | "milestone_id" | "completed_at">[];
 }
 
 export interface UpdateMilestoneInput {

@@ -10,6 +10,7 @@ import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import UserAvatar from "./UserAvatar";
 import useLogout from "@/hooks/services/auth/use-logout";
 import { useToast } from "@/hooks/use-toast";
+import { AppConfig } from "@/lib/constants/app";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -59,10 +60,10 @@ export function Sidebar() {
             />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-gray-900">TELATEN</h1>
-            <p className="text-xs text-gray-500">
-              Maju Pelan-pelan, Usaha Jadi Mapapan
-            </p>
+            <h1 className="text-xl font-bold text-gray-900">
+              {AppConfig.appName.toUpperCase()}
+            </h1>
+            <p className="text-xs text-gray-500">{AppConfig.appSlogan}</p>
           </div>
         </div>
       </div>

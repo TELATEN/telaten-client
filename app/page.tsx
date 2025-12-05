@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import NavProfile from "@/components/NavProfile";
+import { AppConfig } from "@/lib/constants/app";
 
 export default function LandingPage() {
   const user = useAuthStore((state) => state.user);
@@ -131,10 +132,10 @@ export default function LandingPage() {
               </div>
               <div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
-                  TELATEN
+                  {AppConfig.appName.toUpperCase()}
                 </h1>
                 <p className="text-xs text-gray-500 dark:text-gray-400 hidden sm:block">
-                  Maju Pelan-pelan, Usaha Jadi Mapapan
+                  {AppConfig.appSlogan}
                 </p>
               </div>
             </div>
@@ -446,11 +447,13 @@ export default function LandingPage() {
                   />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold">TELATEN</h3>
+                  <h3 className="text-xl font-bold">
+                    {AppConfig.appName.toUpperCase()}
+                  </h3>
                 </div>
               </div>
               <p className="text-gray-400 dark:text-gray-500 text-sm">
-                Maju Pelan-pelan, Usaha Jadi Mapapan untuk UMKM Indonesia
+                {AppConfig.appSlogan}
               </p>
             </div>
 

@@ -1,11 +1,12 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { AlertCircle, RefreshCw, Home } from 'lucide-react';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { AlertCircle, RefreshCw, Home } from "lucide-react";
+import { AppConfig } from "@/lib/constants/app";
 
 export default function ErrorPage({
   error,
@@ -17,7 +18,7 @@ export default function ErrorPage({
   const router = useRouter();
 
   useEffect(() => {
-    console.error('Application Error:', error);
+    console.error("Application Error:", error);
   }, [error]);
 
   return (
@@ -33,8 +34,12 @@ export default function ErrorPage({
               className="object-cover"
             />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">TELATEN</h1>
-          <p className="text-gray-600 dark:text-gray-400">Maju Pelan-pelan, Usaha Jadi Mapapan</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            {AppConfig.appName}
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            {AppConfig.appSlogan}
+          </p>
         </div>
 
         <Card className="shadow-xl border-2 border-orange-100 dark:border-orange-900/30">
@@ -66,7 +71,7 @@ export default function ErrorPage({
 
               <Button
                 variant="outline"
-                onClick={() => router.push('/')}
+                onClick={() => router.push("/")}
                 className="w-full h-12 text-base font-medium border-2"
               >
                 <Home className="w-5 h-5 mr-2" />
