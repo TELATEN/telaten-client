@@ -17,7 +17,7 @@ export function http() {
     headers,
   });
 
-  // instance.defaults.withCredentials = true;
+  instance.defaults.withCredentials = true;
 
   instance.interceptors.request.use((config) => {
     config.headers.Authorization = getAuthToken();
