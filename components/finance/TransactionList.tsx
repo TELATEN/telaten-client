@@ -4,15 +4,13 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { TrendingUp, TrendingDown, Calendar, Tag, Trash2, Loader2 } from 'lucide-react';
@@ -166,43 +164,56 @@ export function TransactionList({ transactions, onDelete, isDeleting }: Transact
       </div>
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Hapus Transaksi?</AlertDialogTitle>
-            <AlertDialogDescription asChild>
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">
-                  Apakah Anda yakin ingin menghapus transaksi ini?
-                </p>
-                {selectedTransaction && (
-                  <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <p className="font-semibold text-gray-900 dark:text-white">
-                      {selectedTransaction.description}
-                    </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                      {selectedTransaction.type === 'income' ? 'Pemasukan' : 'Pengeluaran'}:{' '}
-                      {formatCurrency(selectedTransaction.amount)}
-                    </p>
-                  </div>
-                )}
-                <p className="text-sm text-muted-foreground">
-                  Tindakan ini tidak dapat dibatalkan.
-                </p>
-              </div>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Batal</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleConfirmDelete}
-              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <DialogContent className="w-[calc(100%-2rem)] max-w-sm sm:max-w-[400px] gap-3 p-4 sm:p-6">
+          <DialogHeader className="space-y-1.5">
+            <DialogTitle className="text-lg">Hapus Transaksi?</DialogTitle>
+            <DialogDescription>
+              Apakah Anda yakin ingin menghapus transaksi ini?
+            </DialogDescription>
+          </DialogHeader>
+          
+          {selectedTransaction && (
+            <div className="p-3 bg-muted rounded-md space-y-1">
+              <p className="font-medium text-sm break-words">
+                {selectedTransaction.description}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {selectedTransaction.type === 'income' ? 'Pemasukan' : 'Pengeluaran'}:{' '}
+                {formatCurrency(selectedTransaction.amount)}
+              </p>
+            </div>
+          )}
+          
+          <DialogFooter className="gap-2 sm:gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setDeleteDialogOpen(false)}
+              className="flex-1 sm:flex-initial"
+              disabled={isDeleting}
             >
-              Hapus
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+              Batal
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleConfirmDelete}
+              disabled={isDeleting}
+              className="flex-1 sm:flex-initial"
+            >
+              {isDeleting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Menghapus...
+                </>
+              ) : (
+                'Hapus'
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
