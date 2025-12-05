@@ -80,6 +80,7 @@ export function CollapsibleSidebar() {
     { href: "/assistant", label: "AI Assistant", icon: MessageSquare },
     { href: "/misi", label: "Misi", icon: Target },
     { href: "/achievement", label: "Pencapaian", icon: Rocket },
+    { href: "/business-level", label: "Level Bisnis", icon: Globe },
     { href: "/keuangan", label: "Keuangan", icon: Wallet },
   ];
 

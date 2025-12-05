@@ -93,7 +93,7 @@ export default function AchievementPage() {
                   <div className="absolute top-0 bottom-0 right-0 left-0 bg-yellow-400/10 dark:bg-yellow-500/20 -z-1"></div>
                 )}
                 <div
-                  className={`w-16 relative h-16 text-2xl flex items-center justify-center bg-gray-200 to-yellow-400/50 rounded-full ${ach.is_unlocked ? "ring-2 ring-yellow-400 bg-yellow-400/20" : ""}`}
+                  className={`w-16 relative h-16 text-2xl flex items-center justify-center bg-gray-200 dark:bg-gray-700 to-yellow-400/50 rounded-full ${ach.is_unlocked ? "ring-2 ring-yellow-400 bg-yellow-400/20" : ""}`}
                 >
                   {ach.badge_icon}
                 </div>
@@ -127,7 +127,7 @@ export default function AchievementPage() {
                         callback={handleAchievementCallback}
                       >
                         <Button variant="ghost" size="sm">
-                          <Edit className="size-4" />
+                          <Edit className="h-5 w-5" />
                         </Button>
                       </AchievementDialog>
                       <ConfirmDialog
@@ -137,8 +137,12 @@ export default function AchievementPage() {
                         variant="destructive"
                         confirmText="Hapus"
                       >
-                        <Button variant="ghost" size="sm">
-                          <Trash2 className="size-4" />
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive"
+                        >
+                          <Trash2 className="h-5 w-5" />
                         </Button>
                       </ConfirmDialog>
                     </div>
