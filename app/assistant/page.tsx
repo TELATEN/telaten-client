@@ -1,5 +1,6 @@
 "use client";
 
+import Markdown from "react-markdown";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,6 +13,7 @@ import {
   ArrowLeft,
   History,
   Loader2,
+  Plus,
 } from "lucide-react";
 import CollapseChatSessionPanel from "@/components/chat/CollapseChatSessionPanel";
 import { ChatMessage, ChatSession } from "@/types";
@@ -117,17 +119,26 @@ export default function AssistantPage() {
                 <h1 className="text-lg font-semibold">TELATEN Assistant</h1>
               </div>
 
-              {!showSession ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  setSelectedSession(null);
+                  router.replace("/assistant");
+                }}
+                className="ml-auto"
+              >
+                <Plus className="h-4 w-4"></Plus>
+              </Button>
+
+              {!showSession && (
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setShowSession(!showSession)}
-                  className="flex items-center gap-2 ml-auto"
                 >
                   <History className="w-4 h-4" />
                 </Button>
-              ) : (
-                <div className="ml-auto"></div>
               )}
             </div>
           </div>
@@ -186,8 +197,8 @@ export default function AssistantPage() {
                             </span>
                           </div>
                         )}
-                        <p className="text-base leading-relaxed">
-                          {message.content}
+                        <p className="text-base leading-relaxed space-y-5 markdown">
+                          <Markdown>{message.content}</Markdown>
                         </p>
                       </div>
                     </div>
@@ -222,6 +233,7 @@ export default function AssistantPage() {
                       onClick={handleSendMessage}
                       size="icon"
                       className="h-12 w-12 rounded-full bg-pink-500 hover:bg-pink-600 flex-shrink-0 shadow-lg"
+                      disabled={isChatLoading}
                     >
                       {isChatLoading ? (
                         <Loader2 className="w-5 h-5 animate-spin" />

@@ -102,3 +102,15 @@
 .animate-progress {
   animation: progress 2s ease-in-out infinite;
 }
+
+.markdown ol {
+  @apply list-decimal pl-6;
+}
+
+.markdown ul {
+  @apply list-disc pl-6;
+}
+
+.markdown p code {
+  @apply rounded-sm bg-muted px-1 text-yellow-600;
+}

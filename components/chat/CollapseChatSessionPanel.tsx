@@ -69,6 +69,10 @@ export default function CollapseChatSessionPanel({
       setSessions((prev: ChatSession[]) => {
         return [newSession, ...prev];
       });
+
+      if (selectedSession?.id != newSession?.id) {
+        handleSelect(newSession);
+      }
     }
   }, [newSession]);
 
@@ -76,7 +80,7 @@ export default function CollapseChatSessionPanel({
     <>
       <div
         className={[
-          "lg:!hidden fixed top-0 left-0 right-0 bottom-0 bg-black/25 z-[19]",
+          "lg:!hidden fixed top-0 left-0 right-0 bottom-0 bg-black/25 z-[19] flex flex-col",
           show ? "block" : "hidden",
         ].join(" ")}
         onClick={() => setShow(false)}
@@ -97,7 +101,7 @@ export default function CollapseChatSessionPanel({
           </div>
         </div>
 
-        <div className="p-3 space-y-1">
+        <div className="p-3 space-y-1 flex-1 min-h-0 overflow-y-auto">
           <button
             type="button"
             className={`p-3 hover:bg-muted py-1.5 rounded transition flex items-center gap-2 group cursor-pointer w-full text-sm overflow-hidden ${!selectedSession?.id ? "bg-muted" : ""}`}
