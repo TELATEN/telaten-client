@@ -1,22 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  LineChart,
-  Line,
-  ResponsiveContainer,
-} from "recharts";
-import { TrendingUp, TrendingDown, DollarSign, Users } from "lucide-react";
+import { TrendingUp, TrendingDown, DollarSign, BarChart3 } from "lucide-react";
 
 export default function AdminDashboard() {
   const formatCurrency = (amount: number) => {
@@ -42,17 +27,6 @@ export default function AdminDashboard() {
     total_income: monthlyData.reduce((sum, d) => sum + d.income, 0),
     total_expense: monthlyData.reduce((sum, d) => sum + d.expense, 0),
     net_profit: monthlyData.reduce((sum, d) => sum + (d.income - d.expense), 0),
-  };
-
-  const chartConfig = {
-    income: {
-      label: "Pemasukan",
-      color: "hsl(142, 76%, 36%)",
-    },
-    expense: {
-      label: "Pengeluaran",
-      color: "hsl(0, 84%, 60%)",
-    },
   };
 
   return (
@@ -120,96 +94,115 @@ export default function AdminDashboard() {
         </Card>
       </div>
 
-      {/* Charts */}
+      {/* Charts - Simple Bar Visualization */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Bar Chart */}
+        {/* Bar Chart Alternative */}
         <Card>
           <CardHeader>
-            <CardTitle>Pemasukan vs Pengeluaran Bulanan</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <BarChart3 className="w-5 h-5 text-pink-600" />
+              Pemasukan vs Pengeluaran Bulanan
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={chartConfig} className="h-[300px]">
-              <BarChart data={monthlyData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="month"
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                />
-                <YAxis
-                  tickFormatter={(value) =>
-                    `${(value / 1000000).toFixed(0)}jt`
-                  }
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                />
-                <ChartTooltip
-                  content={<ChartTooltipContent />}
-                  cursor={{ fill: "rgba(0,0,0,0.05)" }}
-                />
-                <Bar
-                  dataKey="income"
-                  fill="var(--color-income)"
-                  radius={[4, 4, 0, 0]}
-                />
-                <Bar
-                  dataKey="expense"
-                  fill="var(--color-expense)"
-                  radius={[4, 4, 0, 0]}
-                />
-              </BarChart>
-            </ChartContainer>
+            <div className="space-y-4">
+              {monthlyData.map((data, index) => {
+                const maxValue = Math.max(...monthlyData.map(d => Math.max(d.income, d.expense)));
+                const incomePercentage = (data.income / maxValue) * 100;
+                const expensePercentage = (data.expense / maxValue) * 100;
+                
+                return (
+                  <div key={index} className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="font-medium text-gray-700 dark:text-gray-300">{data.month}</span>
+                      <div className="flex gap-4 text-xs">
+                        <span className="text-green-600">
+                          {formatCurrency(data.income)}
+                        </span>
+                        <span className="text-red-600">
+                          {formatCurrency(data.expense)}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      {/* Income Bar */}
+                      <div className="flex items-center gap-2">
+                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                          <div
+                            className="bg-green-500 h-full rounded-full transition-all duration-500"
+                            style={{ width: `${incomePercentage}%` }}
+                          />
+                        </div>
+                      </div>
+                      {/* Expense Bar */}
+                      <div className="flex items-center gap-2">
+                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                          <div
+                            className="bg-red-500 h-full rounded-full transition-all duration-500"
+                            style={{ width: `${expensePercentage}%` }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+              <div className="flex gap-4 pt-2 border-t dark:border-gray-700">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-green-500 rounded"></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400">Pemasukan</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 bg-red-500 rounded"></div>
+                  <span className="text-xs text-gray-600 dark:text-gray-400">Pengeluaran</span>
+                </div>
+              </div>
+            </div>
           </CardContent>
         </Card>
 
-        {/* Line Chart */}
+        {/* Line Chart Alternative - Profit Trend */}
         <Card>
           <CardHeader>
-            <CardTitle>Trend Laba Bersih</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-blue-600" />
+              Trend Laba Bersih
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartContainer
-              config={{
-                profit: {
-                  label: "Laba Bersih",
-                  color: "hsl(221, 83%, 53%)",
-                },
-              }}
-              className="h-[300px]"
-            >
-              <LineChart
-                data={monthlyData.map((d) => ({
-                  month: d.month,
-                  profit: d.income - d.expense,
-                }))}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="month"
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                />
-                <YAxis
-                  tickFormatter={(value) =>
-                    `${(value / 1000000).toFixed(0)}jt`
-                  }
-                  tickLine={false}
-                  axisLine={false}
-                  tickMargin={8}
-                />
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Line
-                  type="monotone"
-                  dataKey="profit"
-                  stroke="var(--color-profit)"
-                  strokeWidth={2}
-                  dot={{ fill: "var(--color-profit)" }}
-                />
-              </LineChart>
-            </ChartContainer>
+            <div className="space-y-4">
+              {monthlyData.map((data, index) => {
+                const profit = data.income - data.expense;
+                const isPositive = profit >= 0;
+                const maxProfit = Math.max(...monthlyData.map(d => d.income - d.expense));
+                const percentage = Math.abs((profit / maxProfit) * 100);
+                
+                return (
+                  <div key={index} className="flex items-center gap-3">
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300 w-12">
+                      {data.month}
+                    </span>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-4 overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all duration-500 ${
+                              isPositive ? 'bg-blue-500' : 'bg-orange-500'
+                            }`}
+                            style={{ width: `${percentage}%` }}
+                          />
+                        </div>
+                        <span className={`text-sm font-semibold w-24 text-right ${
+                          isPositive ? 'text-blue-600' : 'text-orange-600'
+                        }`}>
+                          {formatCurrency(profit)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </CardContent>
         </Card>
       </div>

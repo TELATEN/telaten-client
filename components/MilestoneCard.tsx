@@ -187,16 +187,6 @@ export function MilestoneCard({
                           : "bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700"
                       )}
                     >
-                      {!task.is_completed && (
-                        <Checkbox
-                          checked={task.is_completed}
-                          onCheckedChange={() =>
-                            !task.is_completed && onCompleteTask?.(task.id)
-                          }
-                          disabled={milestone.status !== "in_progress"}
-                          className="mt-0.5"
-                        />
-                      )}
                       <div className="flex-1">
                         <p className="text-sm text-gray-900 dark:text-white">
                           {index + 1}. {task.title}

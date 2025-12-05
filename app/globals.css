@@ -114,3 +114,90 @@
 .markdown p code {
   @apply rounded-sm bg-muted px-1 text-yellow-600;
 }
+
+/* Celebration Modal Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+    opacity: 1;
+  }
+}
+
+@keyframes bounce-slow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2s ease-in-out infinite;
+}
+
+/* Comprehensive fix for Radix Dialog body padding issue */
+/* This prevents the layout shift when dialog opens */
+
+/* Force body to never have padding-right */
+body {
+  padding-right: 0 !important;
+}
+
+/* Prevent any inline styles from adding padding */
+body[style] {
+  padding-right: 0 !important;
+}
+
+/* Target Radix's scroll lock */
+body[data-scroll-locked] {
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Ensure all direct children of body don't shift */
+body > * {
+  padding-right: 0 !important;
+}
+
+/* Override any padding on specific elements */
+aside,
+nav,
+header,
+main {
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* FIX: Prevent sidebar from being affected by scroll lock */
+/* Force sidebar to stay at viewport top when modal opens */
+body[data-scroll-locked] aside {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  height: 100vh !important;
+  overflow-y: auto !important;
+  z-index: 40 !important;
+}
+
+/* Compensate for fixed sidebar by adding margin to main content */
+@media (min-width: 768px) {
+  /* Push main content to the right when sidebar becomes fixed */
+  body[data-scroll-locked] main {
+    margin-left: 16rem !important; /* Default expanded sidebar width */
+  }
+  
+  /* Adjust for collapsed sidebar */
+  body[data-scroll-locked]:has(aside[class*="w-16"]) main {
+    margin-left: 4rem !important; /* Collapsed sidebar width */
+  }
+}
