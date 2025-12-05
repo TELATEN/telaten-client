@@ -35,7 +35,7 @@ import useDeleteCategory from '@/hooks/services/finance/use-delete-category';
 import type { TransactionType } from '@/types/entity/finance';
 
 const ICON_OPTIONS = [
-  '🛒', '🍔', '☕', '🏠', '🚗', '⚡', '💊', '📚', 
+  '🛒', '🍔', '☕', '🏠', '🚗', '⚡', '💊', '📚',
   '🎮', '👕', '✈️', '🎬', '💰', '📱', '🎁', '🔧',
   '🍕', '🥤', '🛍️', '⛽', '💳', '🏥', '🎓', '🏋️'
 ];
@@ -60,7 +60,7 @@ export function CategoryManager() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     createCategory.mutate(formData, {
       onSuccess: () => {
         toast({
@@ -217,7 +217,7 @@ export function CategoryManager() {
 
       {/* Create Category Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="w-[calc(100%-2rem)] max-w-md">
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Tambah Kategori Baru</DialogTitle>
             <DialogDescription>
@@ -225,8 +225,8 @@ export function CategoryManager() {
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSubmit}>
-            <div className="space-y-4 py-4">
-              <div className="space-y-2">
+            <div className="grid gap-4 py-4">
+              <div className="grid gap-2">
                 <Label htmlFor="name">Nama Kategori</Label>
                 <Input
                   id="name"
@@ -239,7 +239,7 @@ export function CategoryManager() {
                 />
               </div>
 
-              <div className="space-y-2">
+              <div className="grid gap-2">
                 <Label htmlFor="type">Tipe</Label>
                 <Select
                   value={formData.type}
@@ -257,7 +257,7 @@ export function CategoryManager() {
                 </Select>
               </div>
 
-              <div className="space-y-2">
+              <div className="grid gap-2">
                 <Label htmlFor="icon">Icon</Label>
                 <Select
                   value={formData.icon}
@@ -287,7 +287,10 @@ export function CategoryManager() {
               >
                 Batal
               </Button>
-              <Button type="submit" disabled={createCategory.isPending}>
+              <Button
+                type="submit"
+                disabled={createCategory.isPending}
+              >
                 {createCategory.isPending ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -304,18 +307,17 @@ export function CategoryManager() {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent className="w-[calc(100%-2rem)] max-w-sm">
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Hapus Kategori?</DialogTitle>
             <DialogDescription>
               Kategori yang sudah dihapus tidak dapat dikembalikan. Transaksi dengan kategori ini tidak akan terpengaruh.
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter className="gap-2">
+          <DialogFooter>
             <Button
               variant="outline"
               onClick={() => setDeleteDialogOpen(false)}
-              className="flex-1 sm:flex-initial"
             >
               Batal
             </Button>
@@ -323,7 +325,6 @@ export function CategoryManager() {
               variant="destructive"
               onClick={handleDelete}
               disabled={deleteCategory.isPending}
-              className="flex-1 sm:flex-initial"
             >
               {deleteCategory.isPending ? (
                 <>

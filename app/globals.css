@@ -164,8 +164,8 @@ body[data-scroll-locked] {
   overflow: hidden !important;
 }
 
-/* Ensure all direct children of body don't shift */
-body > * {
+/* Ensure all direct children of body don't shift, except dialogs */
+body > *:not([data-radix-portal]) {
   padding-right: 0 !important;
 }
 
