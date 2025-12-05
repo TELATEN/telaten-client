@@ -35,17 +35,15 @@ function getAuthToken() {
   let token: string | undefined = undefined;
 
   if (typeof window !== "undefined") {
-    // Try to get token from Zustand store first (most up-to-date)
     try {
       const storeToken = useAuthStore.getState().token;
       if (storeToken) {
         return `Bearer ${storeToken}`;
       }
     } catch (error) {
-      console.error("[HTTP] Failed to get token from store:", error);
+      //
     }
-    
-    // Fallback to localStorage
+
     const authStorage = localStorage.getItem("auth-storage");
     if (authStorage) {
       try {
@@ -54,7 +52,7 @@ function getAuthToken() {
           token = `Bearer ${state.token}`;
         }
       } catch (error) {
-        console.error("[HTTP] Failed to parse auth storage:", error);
+        //
       }
     }
   }
