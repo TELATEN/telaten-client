@@ -26,7 +26,6 @@ export default function CollapseChatSessionPanel({
 
   const handleSelect = (session: ChatSession) => {
     if (!setSelectedSession) return;
-
     if (selectedSession?.id === session.id) return;
 
     setSelectedSession(session);
@@ -53,21 +52,17 @@ export default function CollapseChatSessionPanel({
   }, [data]);
 
   useEffect(() => {
-    if (!setSelectedSession || !sessions) return;
-
-    // Only run on initial mount
     const hashId = window.location.hash.slice(1);
 
-    if (!hashId) {
-      setSelectedSession(null);
-      return;
+    if (hashId) {
+      const sessionFromHash = sessions.find(
+        (s: ChatSession) => s.id === hashId
+      );
+      if (sessionFromHash) {
+        setSelectedSession(sessionFromHash);
+      }
     }
-
-    const sessionFromHash = sessions.find((s: ChatSession) => s.id === hashId);
-    if (sessionFromHash && !selectedSession?.id) {
-      setSelectedSession(sessionFromHash);
-    }
-  }, [setSelectedSession, sessions, selectedSession]);
+  }, [sessions]);
 
   useEffect(() => {
     if (newSession) {
