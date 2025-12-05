@@ -218,7 +218,7 @@ export default function AssistantPage() {
               ) : (
                 <>
                   {messages.length == 0 && (
-                    <header className="mb-6 max-w-2xl mx-auto w-full">
+                    <header className="mb-6 max-w-3xl mx-auto w-full">
                       <div
                         className="flex justify-center"
                         style={{ marginTop: "15vh" }}
