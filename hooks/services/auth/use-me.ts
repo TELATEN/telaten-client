@@ -5,14 +5,20 @@ import { useQuery } from "@tanstack/react-query";
 
 export default function useMe() {
   const updateUser = useAuthStore((state) => state.updateUser);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
 
   const queryFn = async (): Promise<User> => {
-    const res = await http().get("/auth/me");
-    const user = res.data as User;
+    try {
+      const res = await http().get("/auth/me");
+      const user = res.data as User;
 
-    updateUser(user);
+      updateUser(user);
 
-    return user;
+      return user;
+    } catch (err) {
+      clearAuth();
+      throw new Error("Silahkan login terlebih dahulu");
+    }
   };
 
   return useQuery({
