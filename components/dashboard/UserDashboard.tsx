@@ -14,7 +14,7 @@ import useCompleteTask from "@/hooks/services/milestone/use-complete-task";
 import Link from "next/link";
 
 interface CelebrationData {
-  type: "task" | "milestone";
+  type: "task" | "milestone" | "achievement";
   title: string;
   points: number;
   level?: string;
@@ -68,7 +68,7 @@ export default function UserDashboard() {
 
   const handleCompleteTask = (taskId: string) => {
     completeTask.mutate(taskId, {
-      onSuccess: (data) => {
+      onSuccess: (data: any) => {
         // Show task celebration
         setCelebrationData({
           type: "task",
@@ -77,6 +77,19 @@ export default function UserDashboard() {
           level: businessData?.level_name,
           message: "Kerja bagus! Terus semangat menyelesaikan misi!",
         });
+
+        // Check if achievement was unlocked
+        if (data.unlocked_achievement) {
+          setTimeout(() => {
+            setCelebrationData({
+              type: "achievement",
+              title: data.unlocked_achievement.title,
+              points: data.unlocked_achievement.required_points,
+              level: businessData?.level,
+              message: `${data.unlocked_achievement.badge_icon} ${data.unlocked_achievement.description}`,
+            });
+          }, 2000);
+        }
 
         // Check if all tasks in current milestone are completed after a delay
         // This gives time for the query to refetch and update
@@ -93,7 +106,7 @@ export default function UserDashboard() {
               message: "Luar biasa! Kamu telah menyelesaikan milestone ini!",
             });
           }
-        }, 1500);
+        }, data.unlocked_achievement ? 4000 : 1500);
       },
       onError: (error: any) => {
         toast({

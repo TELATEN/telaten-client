@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 interface CelebrationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  type: "task" | "milestone";
+  type: "task" | "milestone" | "achievement";
   title: string;
   points?: number;
   level?: string;
@@ -58,6 +58,7 @@ export default function CelebrationModal({
   }, [isOpen]);
 
   const isMilestone = type === "milestone";
+  const isAchievement = type === "achievement";
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose} modal={true}>
@@ -70,7 +71,7 @@ export default function CelebrationModal({
       >
         <VisuallyHidden.Root>
           <DialogTitle>
-            {isMilestone ? "Milestone Selesai" : "Task Selesai"}
+            {isAchievement ? "Achievement Unlocked" : isMilestone ? "Milestone Selesai" : "Task Selesai"}
           </DialogTitle>
           <DialogDescription>
             {title} - {points} points earned
@@ -144,7 +145,9 @@ export default function CelebrationModal({
                   "animate-bounce-slow"
                 )}
               >
-                {isMilestone ? (
+                {isAchievement ? (
+                  <Trophy className="w-12 h-12 text-yellow-300" fill="currentColor" />
+                ) : isMilestone ? (
                   <Trophy className="w-12 h-12 text-yellow-300" fill="currentColor" />
                 ) : (
                   <CheckCircle2
@@ -165,7 +168,7 @@ export default function CelebrationModal({
                 : "opacity-0 translate-y-4"
             )}
           >
-            {isMilestone ? "🎉 Milestone Selesai!" : "✨ Task Selesai!"}
+            {isAchievement ? "🏆 Achievement Unlocked!" : isMilestone ? "🎉 Milestone Selesai!" : "✨ Task Selesai!"}
           </h2>
 
           {/* Task/Milestone Name */}
@@ -243,7 +246,7 @@ export default function CelebrationModal({
             )}
             style={{ transitionDelay: "500ms" }}
           >
-            {isMilestone ? "Lanjutkan Petualangan!" : "Ayo Lanjut!"}
+            {isAchievement ? "Mantap!" : isMilestone ? "Lanjutkan Petualangan!" : "Ayo Lanjut!"}
           </Button>
         </div>
       </DialogContent>
