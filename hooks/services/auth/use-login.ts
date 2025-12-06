@@ -1,10 +1,11 @@
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import { http } from "@/lib/http";
 import { LoginParams, LoginResponse, User } from "@/types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function useLogin() {
   const setAuth = useAuthStore((state) => state.setAuth);
+  const query = useQueryClient();
 
   const mutationFn = async (params: LoginParams): Promise<LoginResponse> => {
     const res = await http().post("/auth/login", params);
@@ -17,6 +18,7 @@ export default function useLogin() {
     };
 
     setAuth(user, result.access_token);
+    await query.invalidateQueries({ queryKey: ["me"] });
 
     return result;
   };

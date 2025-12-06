@@ -72,7 +72,6 @@ export default function OnboardingPage() {
   ];
 
   const handleNext = () => {
-    // Step 1: Business Name & Category
     if (step === 1) {
       if (!formData.businessName) {
         toast({
@@ -100,7 +99,6 @@ export default function OnboardingPage() {
       }
     }
 
-    // Step 2: Address
     if (step === 2) {
       if (
         !formData.street ||
@@ -117,7 +115,6 @@ export default function OnboardingPage() {
       }
     }
 
-    // Step 3: Business Details
     if (step === 3) {
       if (
         !formData.businessStage ||

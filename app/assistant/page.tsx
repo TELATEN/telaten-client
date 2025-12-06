@@ -157,7 +157,7 @@ export default function AssistantPage() {
       <div className="flex flex-1 overflow-hidden">
         <div className="flex-1 min-w-0 flex flex-col relative">
           {/* Fixed Header */}
-          <div className="bg-white dark:bg-gray-800 border-b border-gray-200/50 dark:border-gray-700/50 z-10 flex-shrink-0">
+          <div className="bg-white dark:bg-gray-800 border-b border-gray-200/50 dark:border-gray-700/50 z-50 flex-shrink-0">
             <div className="flex items-center justify-between px-4 py-3 gap-2">
               <Button
                 variant="ghost"
@@ -332,7 +332,7 @@ export default function AssistantPage() {
 
           {/* Fixed Input at Bottom - Mobile Only (Like BottomNav) */}
           <div
-            className="fixed left-0 right-0 z-50 md:hidden transition-all duration-150"
+            className="fixed left-0 right-0 z-10 md:hidden transition-all duration-150"
             style={{
               bottom: keyboardHeight > 0 ? `${keyboardHeight}px` : "0px",
             }}

@@ -1,3 +1,5 @@
+import { BusinessProfile } from ".";
+
 export type UserRole = "user" | "admin";
 
 export interface User {
@@ -6,11 +8,5 @@ export interface User {
   name: string;
   created_at: Date;
   role: UserRole;
-}
-
-export interface UserProfile {
-  id: string;
-  email: string;
-  name: string;
-  created_at: string;
+  business?: BusinessProfile;
 }

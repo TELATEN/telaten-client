@@ -1,24 +1,21 @@
 import { useAuthStore } from "@/hooks/stores/use-auth.store";
 import { http } from "@/lib/http";
 import { RegisterParams, RegisterResponse, User } from "@/types";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function useRegister() {
   const setAuth = useAuthStore((state) => state.setAuth);
+  const query = useQueryClient();
 
   const mutationFn = async (
     params: RegisterParams
   ): Promise<RegisterResponse> => {
-    // Step 1: Register the user
     const registerRes = await http().post("/auth/register", params);
     const registerData = registerRes.data;
 
-    // Step 2: Auto-login to get token
-    // Since register doesn't return token, we need to login
     try {
-      const loginRes = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`,
+      const loginRes = await http().post(
+        `/auth/login`,
         {
           email: params.email,
           password: params.password,
@@ -43,10 +40,9 @@ export default function useRegister() {
           created_at: new Date(registerData.created_at),
         };
 
-        // Save auth with token
         setAuth(user, loginData.access_token);
+        await query.invalidateQueries({ queryKey: ["me"] });
 
-        // Return combined data in RegisterResponse format
         return {
           user: {
             id: registerData.id,

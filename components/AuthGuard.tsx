@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
-import { useAuthStore } from '@/hooks/stores/use-auth.store';
-import Image from 'next/image';
+import { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { useAuthStore } from "@/hooks/stores/use-auth.store";
+import Image from "next/image";
 
 interface AuthGuardProps {
   children: React.ReactNode;
 }
 
 const publicRoutes = [
-  '/',
-  '/login',
-  '/register',
-  '/forgot-password',
-  '/unauthorized',
-  '/onboarding', // Allow onboarding for both logged-in and new users
+  "/",
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/unauthorized",
+  "/onboarding", // Allow onboarding for both logged-in and new users
 ];
 
 export default function AuthGuard({ children }: AuthGuardProps) {
@@ -25,6 +25,8 @@ export default function AuthGuard({ children }: AuthGuardProps) {
   const isLoggingOut = useAuthStore((state) => state.isLoggingOut);
   const [isChecking, setIsChecking] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
+  const isOnBoardingPage = pathname == "/onboarding";
+  const user = useAuthStore((state) => state.user);
 
   useEffect(() => {
     setIsMounted(true);
@@ -36,31 +38,31 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     const checkAuth = () => {
       const isPublicRoute = publicRoutes.includes(pathname);
 
-      // Allow public routes without authentication
+      if (isOnBoardingPage && (!user || !!user.business)) {
+        router.replace("/");
+      }
+
       if (isPublicRoute) {
         setIsChecking(false);
         return;
       }
 
-      // Don't redirect if user is in the process of logging out
       if (isLoggingOut) {
         return;
       }
 
-      // Protected routes require authentication
       if (!token) {
-        router.replace('/unauthorized');
+        router.replace("/unauthorized");
         return;
       }
 
       setIsChecking(false);
     };
 
-    // Small delay to ensure zustand hydration is complete
     const timer = setTimeout(checkAuth, 100);
 
     return () => clearTimeout(timer);
-  }, [token, pathname, router, isMounted, isLoggingOut]);
+  }, [token, pathname, router, isMounted, isLoggingOut, isOnBoardingPage]);
 
   if (!isMounted || isChecking) {
     return (
@@ -77,9 +79,18 @@ export default function AuthGuard({ children }: AuthGuardProps) {
             />
           </div>
           <div className="flex gap-1 justify-center">
-            <div className="h-2 w-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-            <div className="h-2 w-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-            <div className="h-2 w-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+            <div
+              className="h-2 w-2 bg-pink-500 rounded-full animate-bounce"
+              style={{ animationDelay: "0ms" }}
+            ></div>
+            <div
+              className="h-2 w-2 bg-pink-500 rounded-full animate-bounce"
+              style={{ animationDelay: "150ms" }}
+            ></div>
+            <div
+              className="h-2 w-2 bg-pink-500 rounded-full animate-bounce"
+              style={{ animationDelay: "300ms" }}
+            ></div>
           </div>
         </div>
       </div>
