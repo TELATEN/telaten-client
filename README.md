@@ -11,7 +11,7 @@ Ikuti langkah-langkah berikut untuk menjalankan aplikasi secara lokal:
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/izzaalfiansyah/telaten-client.git
+git clone https://github.com/TELATEN/telaten-client.git
 cd telaten-client
 ```
 
