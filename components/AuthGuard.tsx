@@ -39,7 +39,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
       const isPublicRoute = publicRoutes.includes(pathname);
 
       if (isOnBoardingPage && (!user || !!user.business)) {
-        router.replace("/");
+        router.replace(!user ? "/login" : "/dashboard");
       }
 
       if (isPublicRoute) {
