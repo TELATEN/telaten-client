@@ -44,8 +44,8 @@ export default function AchievementPage() {
 
   return (
     <>
-      <MobileHeading title="Pencapaian"></MobileHeading>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <MobileHeading title="Pencapaian"></MobileHeading>
         <div className="max-w-4xl mx-auto px-4 py-6 md:py-8">
           <header className="mb-6 md:flex hidden items-center justify-between">
             <div className="flex-1 min-w-0">
