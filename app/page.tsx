@@ -203,8 +203,9 @@ export default function LandingPage() {
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-              Platform Asisten UMKM dengan dukungan AI yang inklusif. Cukup ceritakan transaksi
-              Anda seperti chat biasa, TELATEN akan mencatatnya dengan sabar.
+              Platform Asisten UMKM dengan dukungan AI yang inklusif. Cukup
+              ceritakan transaksi Anda seperti chat biasa, TELATEN akan
+              mencatatnya dengan sabar.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
@@ -259,20 +260,13 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-900 p-8 aspect-video flex items-center justify-center">
+              <div className="bg-gray-900 overflow-hidden aspect-video flex items-center justify-center">
                 <div className="text-center">
-                  <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl animate-pulse overflow-hidden bg-white">
-                    <Image
-                      src="/images/logo-telaten.png"
-                      alt="TELATEN Logo"
-                      width={80}
-                      height={80}
-                      className="object-cover"
-                    />
-                  </div>
-                  <p className="text-white/60 dark:text-white/40 text-sm">
-                    Dashboard Preview
-                  </p>
+                  <img
+                    src="https://media.githubusercontent.com/media/TELATEN/telaten-apps/refs/heads/main/preview/demo.gif"
+                    alt="TELATEN Logo"
+                    className="object-cover w-full"
+                  />
                 </div>
               </div>
             </Card>
@@ -344,10 +338,11 @@ export default function LandingPage() {
             {plans.map((plan, index) => (
               <Card
                 key={index}
-                className={`relative border-2 ${plan.popular
+                className={`relative border-2 ${
+                  plan.popular
                     ? "border-pink-500 dark:border-pink-600 shadow-2xl scale-105"
                     : "border-gray-200 dark:border-gray-800"
-                  }`}
+                }`}
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-pink-500 to-purple-500 text-white px-4 py-1 rounded-full text-sm font-semibold shadow-lg">
@@ -380,10 +375,11 @@ export default function LandingPage() {
 
                   <Link href="/register">
                     <Button
-                      className={`w-full h-12 font-semibold ${plan.popular
+                      className={`w-full h-12 font-semibold ${
+                        plan.popular
                           ? "bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600"
                           : "bg-gray-900 hover:bg-gray-800"
-                        }`}
+                      }`}
                     >
                       {plan.cta}
                     </Button>
