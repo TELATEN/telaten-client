@@ -79,7 +79,7 @@
 ### 1️⃣ Clone Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/TELATEN/telaten-client.git
 cd telaten-client
 ```
 
