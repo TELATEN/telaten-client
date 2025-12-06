@@ -203,9 +203,9 @@ export default function LandingPage() {
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
-              Platform Asisten UMKM dengan dukungan AI yang inklusif. Cukup
-              ceritakan transaksi Anda seperti chat biasa, TELATEN akan
-              mencatatnya dengan sabar.
+              Platform Asisten UMKM dalam dunia bisnis digital. Belajar bisnis
+              kini tak lagi membosankan. Naik level, kumpulkan reward, dan lihat
+              bisnismu berkembang.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
