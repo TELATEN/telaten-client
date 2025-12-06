@@ -77,13 +77,6 @@ export function useSendMessage() {
       );
     }
 
-    setMessage({
-      id: (Date.now() + 1).toString(),
-      role: "assistant",
-      content: "Baik, saya mengerti. TELATEN akan membantu Anda dengan sabar!",
-      created_at: new Date(),
-    });
-
     setIsStreaming(false);
   };
 

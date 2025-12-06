@@ -40,6 +40,9 @@ export default function CollapseChatSessionPanel({
   const createNewSession = () => {
     if (!setSelectedSession) return;
 
+    if (!isDesktop) {
+      setShow(false);
+    }
     setSelectedSession(null);
 
     router.replace(`/assistant`);

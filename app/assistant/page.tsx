@@ -72,7 +72,6 @@ export default function AssistantPage() {
         const viewportHeight = viewport.height;
         const diff = windowHeight - viewportHeight;
 
-        // Only apply on mobile (when keyboard appears, viewport height changes significantly)
         if (diff > 150) {
           setKeyboardHeight(diff);
         } else {
@@ -112,7 +111,6 @@ export default function AssistantPage() {
 
       setMessageInput("");
       setIsChatLoading(false);
-      inputRef.current?.focus();
       setTimeout(scrollToBottom, 100);
     }
   };
@@ -147,9 +145,25 @@ export default function AssistantPage() {
   }, [isStreaming, assistantMessage, setMessages]);
 
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
+    if (!inputRef.current) return;
+    inputRef.current.focus();
+
+    const handleScrolling = () => {
+      setTimeout(() => {
+        if (chatContainerRef.current) {
+          const { scrollHeight } = chatContainerRef.current;
+          chatContainerRef.current.scrollTo({
+            top: scrollHeight - 200,
+          });
+        }
+      }, 400);
+    };
+
+    inputRef.current.addEventListener("focus", handleScrolling);
+
+    return () => {
+      inputRef.current?.removeEventListener("focus", handleScrolling);
+    };
   }, []);
 
   return (
@@ -244,33 +258,46 @@ export default function AssistantPage() {
                     {messages.map((message, i) => (
                       <div
                         key={message.id}
-                        className={`w-full flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
+                        className="last:min-h-[70vh] w-full"
                       >
                         <div
-                          className={`rounded-2xl md:p-4 p-3 ${
-                            message.role === "user"
-                              ? "bg-gradient-to-br from-pink-500 to-purple-500 text-white max-w-[80%]"
-                              : "bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700/30 text-gray-900 dark:text-white max-w-[95%]"
-                          }`}
+                          className={`w-full flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
                         >
-                          {message.role === "assistant" && (
-                            <div className="flex items-center gap-2 mb-2">
-                              <Bot className="w-4 h-4 text-pink-500" />
-                              <span className="text-xs font-semibold text-pink-600">
-                                ASSISTANT
-                              </span>
-                            </div>
-                          )}
-                          <div className="md:text-base text-sm leading-relaxed markdown prose prose-sm max-w-none dark:prose-invert">
-                            <Markdown>{message.content}</Markdown>
-                          </div>
-                          {message.role == "assistant" &&
-                            isChatLoading &&
-                            i == messages.length - 1 && (
-                              <div className="w-full flex justify-start text-primary mt-5">
-                                <Spinner />
+                          <div
+                            className={`rounded-2xl md:p-4 p-3 ${
+                              message.role === "user"
+                                ? "bg-gradient-to-br from-pink-500 to-purple-500 text-white max-w-[80%]"
+                                : "bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700/30 text-gray-900 dark:text-white max-w-[95%]"
+                            }`}
+                          >
+                            {message.role === "assistant" && (
+                              <div className="flex items-center gap-2 mb-2">
+                                <Bot className="w-4 h-4 text-pink-500" />
+                                <span className="text-xs font-semibold text-pink-600">
+                                  ASSISTANT
+                                </span>
                               </div>
                             )}
+                            <div className="md:text-base text-sm leading-relaxed markdown prose prose-sm max-w-none dark:prose-invert">
+                              {message.is_error ||
+                              (!message.content.trim() && !isChatLoading) ? (
+                                <span className="text-destructive">
+                                  Sistem gagal merespon permintaan Anda.
+                                  Silahkan tunggu beberapa saat sebelum mencoba
+                                  mengirim ulang.
+                                </span>
+                              ) : (
+                                <Markdown>{message.content}</Markdown>
+                              )}
+                            </div>
+                            {message.role == "assistant" &&
+                              isChatLoading &&
+                              i == messages.length - 1 && (
+                                <div className="w-full flex justify-start text-primary mt-5">
+                                  <Spinner />
+                                </div>
+                              )}
+                          </div>
                         </div>
                       </div>
                     ))}
