@@ -20,7 +20,10 @@ import { FinancialSummaryCard } from "@/components/finance/FinancialSummaryCard"
 import { TransactionFilter } from "@/components/finance/TransactionFilter";
 import { SummaryPeriodFilter } from "@/components/finance/SummaryPeriodFilter";
 import { CategoryManager } from "@/components/finance/CategoryManager";
-import { FinancialSummarySkeleton, TransactionListSkeleton } from "@/components/finance/FinancialSkeleton";
+import {
+  FinancialSummarySkeleton,
+  TransactionListSkeleton,
+} from "@/components/finance/FinancialSkeleton";
 import CelebrationModal from "@/components/CelebrationModal";
 import useTransactions from "@/hooks/services/finance/use-transactions";
 import useFinancialSummary from "@/hooks/services/finance/use-financial-summary";
@@ -115,7 +118,9 @@ export default function KeuanganPage() {
     }
   };
 
-  const handleSummaryPeriodChange = (period: "day" | "week" | "month" | "year") => {
+  const handleSummaryPeriodChange = (
+    period: "day" | "week" | "month" | "year"
+  ) => {
     setSummaryPeriod(period);
   };
 
@@ -158,7 +163,7 @@ export default function KeuanganPage() {
           {/* Header */}
           <header className="mb-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-gradient-to-br from-pink-400 to-purple-500 rounded-xl flex items-center justify-center">
                 <Wallet className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -229,11 +234,13 @@ export default function KeuanganPage() {
             <TabsContent value="list" className="space-y-4">
               {/* Filters */}
               <div className="grid gap-4 md:grid-cols-2">
-                <SummaryPeriodFilter 
+                <SummaryPeriodFilter
                   period={summaryPeriod}
                   onPeriodChange={handleSummaryPeriodChange}
                 />
-                <TransactionFilter onFilterChange={handleTransactionFilterChange} />
+                <TransactionFilter
+                  onFilterChange={handleTransactionFilterChange}
+                />
               </div>
 
               {/* Transaction List */}

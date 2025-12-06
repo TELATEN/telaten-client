@@ -1,15 +1,23 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { ArrowLeft, Store, MapPin, Package, FileText, Target, TrendingUp } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
-import useBusinessProfile from '@/hooks/services/business/use-business-profile';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import {
+  ArrowLeft,
+  Store,
+  MapPin,
+  Package,
+  FileText,
+  Target,
+  TrendingUp,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import useBusinessProfile from "@/hooks/services/business/use-business-profile";
 
 export default function EditBusinessPage() {
   const router = useRouter();
@@ -17,42 +25,42 @@ export default function EditBusinessPage() {
   const { data: businessProfile } = useBusinessProfile();
 
   const [businessInfo, setBusinessInfo] = useState({
-    name: '',
-    category: '',
-    description: '',
-    street: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    country: '',
-    stage: '',
-    targetMarket: '',
-    primaryGoal: '',
+    name: "",
+    category: "",
+    description: "",
+    street: "",
+    city: "",
+    state: "",
+    zipCode: "",
+    country: "",
+    stage: "",
+    targetMarket: "",
+    primaryGoal: "",
   });
 
   // Populate form when data is loaded
   useEffect(() => {
     if (businessProfile) {
       setBusinessInfo({
-        name: businessProfile.business_name || '',
-        category: businessProfile.business_category || '',
-        description: businessProfile.business_description || '',
-        street: businessProfile.address?.street || '',
-        city: businessProfile.address?.city || '',
-        state: businessProfile.address?.state || '',
-        zipCode: businessProfile.address?.zip_code || '',
-        country: businessProfile.address?.country || '',
-        stage: businessProfile.business_stage || '',
-        targetMarket: businessProfile.target_market || '',
-        primaryGoal: businessProfile.primary_goal || '',
+        name: businessProfile.business_name || "",
+        category: businessProfile.business_category || "",
+        description: businessProfile.business_description || "",
+        street: businessProfile.address?.street || "",
+        city: businessProfile.address?.city || "",
+        state: businessProfile.address?.state || "",
+        zipCode: businessProfile.address?.zip_code || "",
+        country: businessProfile.address?.country || "",
+        stage: businessProfile.business_stage || "",
+        targetMarket: businessProfile.target_market || "",
+        primaryGoal: businessProfile.primary_goal || "",
       });
     }
   }, [businessProfile]);
 
   const handleSave = () => {
     toast({
-      title: 'Informasi Usaha Disimpan',
-      description: 'Perubahan telah berhasil disimpan.',
+      title: "Informasi Usaha Disimpan",
+      description: "Perubahan telah berhasil disimpan.",
     });
     router.back();
   };
@@ -69,7 +77,6 @@ export default function EditBusinessPage() {
             className="flex items-center gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
-            Kembali
           </Button>
           <h1 className="text-lg font-semibold">Edit Usaha</h1>
           <div className="w-16" /> {/* Spacer for centering */}
@@ -91,7 +98,9 @@ export default function EditBusinessPage() {
               <Input
                 id="businessName"
                 value={businessInfo.name}
-                onChange={(e) => setBusinessInfo({ ...businessInfo, name: e.target.value })}
+                onChange={(e) =>
+                  setBusinessInfo({ ...businessInfo, name: e.target.value })
+                }
                 placeholder="Masukkan nama usaha"
                 className="h-12"
               />
@@ -101,7 +110,9 @@ export default function EditBusinessPage() {
               <Input
                 id="businessCategory"
                 value={businessInfo.category}
-                onChange={(e) => setBusinessInfo({ ...businessInfo, category: e.target.value })}
+                onChange={(e) =>
+                  setBusinessInfo({ ...businessInfo, category: e.target.value })
+                }
                 placeholder="Contoh: Food & Beverage, Retail"
                 className="h-12"
               />
@@ -111,7 +122,12 @@ export default function EditBusinessPage() {
               <Textarea
                 id="description"
                 value={businessInfo.description}
-                onChange={(e) => setBusinessInfo({ ...businessInfo, description: e.target.value })}
+                onChange={(e) =>
+                  setBusinessInfo({
+                    ...businessInfo,
+                    description: e.target.value,
+                  })
+                }
                 placeholder="Deskripsikan usaha Anda"
                 rows={4}
                 className="resize-none"
@@ -122,7 +138,9 @@ export default function EditBusinessPage() {
               <Input
                 id="businessStage"
                 value={businessInfo.stage}
-                onChange={(e) => setBusinessInfo({ ...businessInfo, stage: e.target.value })}
+                onChange={(e) =>
+                  setBusinessInfo({ ...businessInfo, stage: e.target.value })
+                }
                 placeholder="Contoh: Operational, Planning, Growth"
                 className="h-12"
               />
@@ -132,7 +150,12 @@ export default function EditBusinessPage() {
               <Input
                 id="targetMarket"
                 value={businessInfo.targetMarket}
-                onChange={(e) => setBusinessInfo({ ...businessInfo, targetMarket: e.target.value })}
+                onChange={(e) =>
+                  setBusinessInfo({
+                    ...businessInfo,
+                    targetMarket: e.target.value,
+                  })
+                }
                 placeholder="Contoh: Mahasiswa, Pekerja Remote"
                 className="h-12"
               />
@@ -142,7 +165,12 @@ export default function EditBusinessPage() {
               <Textarea
                 id="primaryGoal"
                 value={businessInfo.primaryGoal}
-                onChange={(e) => setBusinessInfo({ ...businessInfo, primaryGoal: e.target.value })}
+                onChange={(e) =>
+                  setBusinessInfo({
+                    ...businessInfo,
+                    primaryGoal: e.target.value,
+                  })
+                }
                 placeholder="Tujuan bisnis Anda"
                 rows={3}
                 className="resize-none"
@@ -165,7 +193,9 @@ export default function EditBusinessPage() {
               <Input
                 id="street"
                 value={businessInfo.street}
-                onChange={(e) => setBusinessInfo({ ...businessInfo, street: e.target.value })}
+                onChange={(e) =>
+                  setBusinessInfo({ ...businessInfo, street: e.target.value })
+                }
                 placeholder="Jl. Nama Jalan No. XX"
                 className="h-12"
               />
@@ -176,7 +206,9 @@ export default function EditBusinessPage() {
                 <Input
                   id="city"
                   value={businessInfo.city}
-                  onChange={(e) => setBusinessInfo({ ...businessInfo, city: e.target.value })}
+                  onChange={(e) =>
+                    setBusinessInfo({ ...businessInfo, city: e.target.value })
+                  }
                   placeholder="Kota"
                   className="h-12"
                 />
@@ -186,7 +218,9 @@ export default function EditBusinessPage() {
                 <Input
                   id="state"
                   value={businessInfo.state}
-                  onChange={(e) => setBusinessInfo({ ...businessInfo, state: e.target.value })}
+                  onChange={(e) =>
+                    setBusinessInfo({ ...businessInfo, state: e.target.value })
+                  }
                   placeholder="Provinsi"
                   className="h-12"
                 />
@@ -198,7 +232,12 @@ export default function EditBusinessPage() {
                 <Input
                   id="zipCode"
                   value={businessInfo.zipCode}
-                  onChange={(e) => setBusinessInfo({ ...businessInfo, zipCode: e.target.value })}
+                  onChange={(e) =>
+                    setBusinessInfo({
+                      ...businessInfo,
+                      zipCode: e.target.value,
+                    })
+                  }
                   placeholder="12345"
                   className="h-12"
                 />
@@ -208,7 +247,12 @@ export default function EditBusinessPage() {
                 <Input
                   id="country"
                   value={businessInfo.country}
-                  onChange={(e) => setBusinessInfo({ ...businessInfo, country: e.target.value })}
+                  onChange={(e) =>
+                    setBusinessInfo({
+                      ...businessInfo,
+                      country: e.target.value,
+                    })
+                  }
                   placeholder="Indonesia"
                   className="h-12"
                 />
@@ -229,30 +273,42 @@ export default function EditBusinessPage() {
                   <Store className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white">{businessInfo.name || 'Nama Usaha'}</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{businessInfo.category || 'Kategori'}</p>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">
+                    {businessInfo.name || "Nama Usaha"}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {businessInfo.category || "Kategori"}
+                  </p>
                 </div>
               </div>
               <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                 <div className="flex items-start gap-2">
                   <FileText className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                  <span className="text-xs">{businessInfo.description || 'Deskripsi usaha'}</span>
+                  <span className="text-xs">
+                    {businessInfo.description || "Deskripsi usaha"}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 flex-shrink-0" />
                   <span className="text-xs">
-                    {businessInfo.street || businessInfo.city || businessInfo.state
-                      ? `${businessInfo.street ? businessInfo.street + ', ' : ''}${businessInfo.city}${businessInfo.state ? ', ' + businessInfo.state : ''}`
-                      : 'Alamat belum diisi'}
+                    {businessInfo.street ||
+                    businessInfo.city ||
+                    businessInfo.state
+                      ? `${businessInfo.street ? businessInfo.street + ", " : ""}${businessInfo.city}${businessInfo.state ? ", " + businessInfo.state : ""}`
+                      : "Alamat belum diisi"}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <TrendingUp className="w-4 h-4 flex-shrink-0" />
-                  <span className="text-xs">{businessInfo.stage || 'Tahap usaha'}</span>
+                  <span className="text-xs">
+                    {businessInfo.stage || "Tahap usaha"}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Target className="w-4 h-4 flex-shrink-0" />
-                  <span className="text-xs">{businessInfo.targetMarket || 'Target market'}</span>
+                  <span className="text-xs">
+                    {businessInfo.targetMarket || "Target market"}
+                  </span>
                 </div>
                 {businessInfo.primaryGoal && (
                   <div className="flex items-start gap-2 pt-2 border-t border-pink-200 dark:border-pink-800/50">

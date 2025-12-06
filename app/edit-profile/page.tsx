@@ -60,7 +60,6 @@ export default function EditProfilePage() {
             className="flex items-center gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
-            Kembali
           </Button>
           <h1 className="text-lg font-semibold">Edit Profil</h1>
           <div className="w-16" /> {/* Spacer for centering */}
