@@ -279,7 +279,7 @@ export default function AssistantPage() {
                                 </span>
                               </div>
                             )}
-                            <div className="md:text-base text-sm leading-relaxed markdown prose prose-sm max-w-none dark:prose-invert">
+                            <div className="text-sm leading-normal markdown prose prose-sm max-w-none dark:prose-invert">
                               {message.is_error ||
                               (!message.content.trim() && !isChatLoading) ? (
                                 <p className="text-destructive">
