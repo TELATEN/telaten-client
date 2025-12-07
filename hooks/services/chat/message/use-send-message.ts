@@ -1,5 +1,10 @@
 import { httpStream } from "@/lib/http";
-import { ChatMessage, ChatSession, SendMessageParams } from "@/types";
+import {
+  ChatMessage,
+  ChatMessageRole,
+  ChatSession,
+  SendMessageParams,
+} from "@/types";
 import { useState } from "react";
 
 export function useSendMessage() {
@@ -7,15 +12,19 @@ export function useSendMessage() {
   const [session, setSession] = useState<ChatSession | null>();
   const [isStreaming, setIsStreaming] = useState(false);
 
+  const defaultMessage = () => {
+    return {
+      id: (Date.now() + 1).toString(),
+      role: "assistant" as ChatMessageRole,
+      content: "",
+      created_at: new Date(),
+    };
+  };
+
   const mutate = async (data: SendMessageParams) => {
     setIsStreaming(true);
     setSession(null);
-    setMessage({
-      id: (Date.now() + 1).toString(),
-      role: "assistant",
-      content: "",
-      created_at: new Date(),
-    });
+    setMessage(defaultMessage());
 
     try {
       const response = await httpStream("/chat/completion", {
@@ -76,6 +85,8 @@ export function useSendMessage() {
           }) as ChatMessage
       );
     }
+
+    setMessage(defaultMessage());
 
     setIsStreaming(false);
   };

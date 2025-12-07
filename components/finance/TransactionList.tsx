@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,13 +10,21 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { format } from 'date-fns';
-import { id } from 'date-fns/locale';
-import { TrendingUp, TrendingDown, Calendar, Tag, Trash2, Loader2, Wallet } from 'lucide-react';
-import type { Transaction, PaymentMethod } from '@/types/entity/finance';
-import { cn } from '@/lib/utils';
-import { useState } from 'react';
+} from "@/components/ui/dialog";
+import { format } from "date-fns";
+import { id } from "date-fns/locale";
+import {
+  TrendingUp,
+  TrendingDown,
+  Calendar,
+  Tag,
+  Trash2,
+  Loader2,
+  Wallet,
+} from "lucide-react";
+import type { Transaction, PaymentMethod } from "@/types/entity/finance";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 interface TransactionListProps {
   transactions: Transaction[];
@@ -24,28 +32,35 @@ interface TransactionListProps {
   isDeleting?: boolean;
 }
 
-export function TransactionList({ transactions, onDelete, isDeleting }: TransactionListProps) {
+export function TransactionList({
+  transactions,
+  onDelete,
+  isDeleting,
+}: TransactionListProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<Transaction | null>(null);
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
       minimumFractionDigits: 0,
     }).format(amount);
   };
 
   const getPaymentMethodLabel = (method: PaymentMethod): string => {
     const labels: Record<PaymentMethod, string> = {
-      CASH: '💵 Tunai',
-      BANK_TRANSFER: '🏦 Transfer',
-      E_WALLET: '📱 E-Wallet',
-      DEBIT_CARD: '💳 Debit',
-      CREDIT_CARD: '💳 Kredit',
+      CASH: "💵 Tunai",
+      BANK_TRANSFER: "🏦 Transfer",
+      E_WALLET: "📱 E-Wallet",
+      DEBIT_CARD: "💳 Debit",
+      CREDIT_CARD: "💳 Kredit",
     };
     return labels[method] || method;
   };
+
+  const isIncome = (type: string) => type.toLowerCase() === "income";
 
   const handleDeleteClick = (transaction: Transaction) => {
     setSelectedTransaction(transaction);
@@ -62,7 +77,10 @@ export function TransactionList({ transactions, onDelete, isDeleting }: Transact
 
   // Safety check: ensure transactions is an array
   if (!Array.isArray(transactions)) {
-    console.error('TransactionList: transactions prop is not an array', transactions);
+    console.error(
+      "TransactionList: transactions prop is not an array",
+      transactions
+    );
     return (
       <Card>
         <CardContent className="p-8 text-center">
@@ -93,10 +111,10 @@ export function TransactionList({ transactions, onDelete, isDeleting }: Transact
           <Card
             key={transaction.id}
             className={cn(
-              'border-l-4 transition-all hover:shadow-md',
-              transaction.type === 'income'
-                ? 'border-l-green-500 bg-green-50/50 dark:bg-green-900/10'
-                : 'border-l-red-500 bg-red-50/50 dark:bg-red-900/10'
+              "border-l-4 transition-all hover:shadow-md",
+              isIncome(transaction.type)
+                ? "border-l-green-500 bg-green-50/50 dark:bg-green-900/10"
+                : "border-l-red-500 bg-red-50/50 dark:bg-red-900/10"
             )}
           >
             <CardContent className="p-4">
@@ -104,7 +122,7 @@ export function TransactionList({ transactions, onDelete, isDeleting }: Transact
                 <div className="flex-1 min-w-0">
                   {/* Type Icon & Description */}
                   <div className="flex items-start gap-2 mb-2">
-                    {transaction.type === 'income' ? (
+                    {isIncome(transaction.type) ? (
                       <TrendingUp className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                     ) : (
                       <TrendingDown className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
@@ -121,24 +139,31 @@ export function TransactionList({ transactions, onDelete, isDeleting }: Transact
                     <Badge
                       variant="secondary"
                       className={cn(
-                        'flex items-center gap-1',
-                        transaction.type === 'income'
-                          ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                          : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                        "flex items-center gap-1",
+                        isIncome(transaction.type)
+                          ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                          : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
                       )}
                     >
                       <Tag className="w-3 h-3" />
                       {transaction.category_name || transaction.category}
                     </Badge>
-                    <Badge variant="outline" className="flex items-center gap-1">
+                    <Badge
+                      variant="outline"
+                      className="flex items-center gap-1"
+                    >
                       <Wallet className="w-3 h-3" />
                       {getPaymentMethodLabel(transaction.payment_method)}
                     </Badge>
                     <span className="flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
-                      {format(new Date(transaction.transaction_date), 'dd MMM yyyy', {
-                        locale: id,
-                      })}
+                      {format(
+                        new Date(transaction.transaction_date),
+                        "dd MMM yyyy",
+                        {
+                          locale: id,
+                        }
+                      )}
                     </span>
                   </div>
                 </div>
@@ -148,11 +173,13 @@ export function TransactionList({ transactions, onDelete, isDeleting }: Transact
                   <div className="text-right">
                     <p
                       className={cn(
-                        'text-lg font-bold',
-                        transaction.type === 'income' ? 'text-green-700' : 'text-red-700'
+                        "text-lg font-bold",
+                        isIncome(transaction.type)
+                          ? "text-green-700"
+                          : "text-red-700"
                       )}
                     >
-                      {transaction.type === 'income' ? '+' : '-'}
+                      {isIncome(transaction.type) ? "+" : "-"}
                       {formatCurrency(transaction.amount)}
                     </p>
                   </div>
@@ -187,19 +214,21 @@ export function TransactionList({ transactions, onDelete, isDeleting }: Transact
               Apakah Anda yakin ingin menghapus transaksi ini?
             </DialogDescription>
           </DialogHeader>
-          
+
           {selectedTransaction && (
             <div className="p-3 bg-muted rounded-md space-y-1">
               <p className="font-medium text-sm break-words">
                 {selectedTransaction.description}
               </p>
               <p className="text-xs text-muted-foreground">
-                {selectedTransaction.type === 'income' ? 'Pemasukan' : 'Pengeluaran'}:{' '}
-                {formatCurrency(selectedTransaction.amount)}
+                {isIncome(selectedTransaction.type)
+                  ? "Pemasukan"
+                  : "Pengeluaran"}
+                : {formatCurrency(selectedTransaction.amount)}
               </p>
             </div>
           )}
-          
+
           <DialogFooter>
             <Button
               type="button"
@@ -221,7 +250,7 @@ export function TransactionList({ transactions, onDelete, isDeleting }: Transact
                   Menghapus...
                 </>
               ) : (
-                'Hapus'
+                "Hapus"
               )}
             </Button>
           </DialogFooter>

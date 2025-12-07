@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Plus, Trash2, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { useState } from "react";
+import { Plus, Trash2, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -19,25 +19,46 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { useToast } from '@/hooks/use-toast';
-import useCategories from '@/hooks/services/finance/use-categories';
-import useCreateCategory from '@/hooks/services/finance/use-create-category';
-import useDeleteCategory from '@/hooks/services/finance/use-delete-category';
-import type { TransactionType } from '@/types/entity/finance';
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
+import useCategories from "@/hooks/services/finance/use-categories";
+import useCreateCategory from "@/hooks/services/finance/use-create-category";
+import useDeleteCategory from "@/hooks/services/finance/use-delete-category";
+import type { TransactionType } from "@/types/entity/finance";
 
 const ICON_OPTIONS = [
-  '🛒', '🍔', '☕', '🏠', '🚗', '⚡', '💊', '📚',
-  '🎮', '👕', '✈️', '🎬', '💰', '📱', '🎁', '🔧',
-  '🍕', '🥤', '🛍️', '⛽', '💳', '🏥', '🎓', '🏋️'
+  "🛒",
+  "🍔",
+  "☕",
+  "🏠",
+  "🚗",
+  "⚡",
+  "💊",
+  "📚",
+  "🎮",
+  "👕",
+  "✈️",
+  "🎬",
+  "💰",
+  "📱",
+  "🎁",
+  "🔧",
+  "🍕",
+  "🥤",
+  "🛍️",
+  "⛽",
+  "💳",
+  "🏥",
+  "🎓",
+  "🏋️",
 ];
 
 export function CategoryManager() {
@@ -48,15 +69,19 @@ export function CategoryManager() {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(
+    null
+  );
   const [formData, setFormData] = useState({
-    name: '',
-    type: 'expense' as TransactionType,
-    icon: '🛒',
+    name: "",
+    type: "expense" as TransactionType,
+    icon: "🛒",
   });
 
-  const incomeCategories = categories?.filter((c) => c.type === 'income') || [];
-  const expenseCategories = categories?.filter((c) => c.type === 'expense') || [];
+  const incomeCategories =
+    categories?.filter((c) => c.type.toLowerCase() === "income") || [];
+  const expenseCategories =
+    categories?.filter((c) => c.type.toLowerCase() === "expense") || [];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,17 +89,17 @@ export function CategoryManager() {
     createCategory.mutate(formData, {
       onSuccess: () => {
         toast({
-          title: 'Kategori Berhasil Ditambahkan!',
+          title: "Kategori Berhasil Ditambahkan!",
           description: `Kategori "${formData.name}" telah dibuat.`,
         });
         setIsDialogOpen(false);
-        setFormData({ name: '', type: 'expense', icon: '🛒' });
+        setFormData({ name: "", type: "expense", icon: "🛒" });
       },
       onError: (error: any) => {
         toast({
-          title: 'Gagal Menambahkan Kategori',
-          description: error?.response?.data?.message || 'Terjadi kesalahan',
-          variant: 'destructive',
+          title: "Gagal Menambahkan Kategori",
+          description: error?.response?.data?.message || "Terjadi kesalahan",
+          variant: "destructive",
         });
       },
     });
@@ -86,16 +111,18 @@ export function CategoryManager() {
     deleteCategory.mutate(selectedCategoryId, {
       onSuccess: () => {
         toast({
-          title: 'Kategori Berhasil Dihapus',
+          title: "Kategori Berhasil Dihapus",
         });
         setDeleteDialogOpen(false);
         setSelectedCategoryId(null);
       },
       onError: (error: any) => {
         toast({
-          title: 'Gagal Menghapus Kategori',
-          description: error?.response?.data?.message || 'Kategori default tidak dapat dihapus',
-          variant: 'destructive',
+          title: "Gagal Menghapus Kategori",
+          description:
+            error?.response?.data?.message ||
+            "Kategori default tidak dapat dihapus",
+          variant: "destructive",
         });
       },
     });
@@ -134,7 +161,9 @@ export function CategoryManager() {
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Kategori Pemasukan</CardTitle>
-            <CardDescription>{incomeCategories.length} kategori</CardDescription>
+            <CardDescription>
+              {incomeCategories.length} kategori
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
@@ -148,7 +177,9 @@ export function CategoryManager() {
                     <div>
                       <p className="font-medium text-sm">{category.name}</p>
                       {category.is_default && (
-                        <Badge variant="secondary" className="text-xs">Default</Badge>
+                        <Badge variant="secondary" className="text-xs">
+                          Default
+                        </Badge>
                       )}
                     </div>
                   </div>
@@ -176,7 +207,9 @@ export function CategoryManager() {
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Kategori Pengeluaran</CardTitle>
-            <CardDescription>{expenseCategories.length} kategori</CardDescription>
+            <CardDescription>
+              {expenseCategories.length} kategori
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
@@ -190,7 +223,9 @@ export function CategoryManager() {
                     <div>
                       <p className="font-medium text-sm">{category.name}</p>
                       {category.is_default && (
-                        <Badge variant="secondary" className="text-xs">Default</Badge>
+                        <Badge variant="secondary" className="text-xs">
+                          Default
+                        </Badge>
                       )}
                     </div>
                   </div>
@@ -287,17 +322,14 @@ export function CategoryManager() {
               >
                 Batal
               </Button>
-              <Button
-                type="submit"
-                disabled={createCategory.isPending}
-              >
+              <Button type="submit" disabled={createCategory.isPending}>
                 {createCategory.isPending ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Menyimpan...
                   </>
                 ) : (
-                  'Simpan'
+                  "Simpan"
                 )}
               </Button>
             </DialogFooter>
@@ -311,7 +343,8 @@ export function CategoryManager() {
           <DialogHeader>
             <DialogTitle>Hapus Kategori?</DialogTitle>
             <DialogDescription>
-              Kategori yang sudah dihapus tidak dapat dikembalikan. Transaksi dengan kategori ini tidak akan terpengaruh.
+              Kategori yang sudah dihapus tidak dapat dikembalikan. Transaksi
+              dengan kategori ini tidak akan terpengaruh.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -332,7 +365,7 @@ export function CategoryManager() {
                   Menghapus...
                 </>
               ) : (
-                'Hapus'
+                "Hapus"
               )}
             </Button>
           </DialogFooter>

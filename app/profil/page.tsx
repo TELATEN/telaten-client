@@ -1,8 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { mockMissions } from "@/lib/mockData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -11,13 +9,9 @@ import {
   User,
   Store,
   Trophy,
-  Target,
   Settings,
   HelpCircle,
   LogOut,
-  Crown,
-  Sparkles,
-  Edit,
   Mail,
   Calendar,
   Globe,
@@ -272,12 +266,7 @@ export default function ProfilPage() {
           <Card>
             <CardContent className="p-0">
               <Button
-                onClick={() =>
-                  toast({
-                    title: "Keluar",
-                    description: "Sampai jumpa lagi!",
-                  })
-                }
+                onClick={handleLogout}
                 variant="ghost"
                 className="w-full justify-start h-14 px-5 text-base text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20"
               >
