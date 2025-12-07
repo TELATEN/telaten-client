@@ -125,6 +125,24 @@ html {
   @apply rounded-sm bg-muted px-1 text-yellow-600;
 }
 
+.markdown p,
+.markdown table {
+  @apply mt-3 first:mt-0;
+}
+
+.markdown table {
+  @apply border border-collapse border-border w-full;
+}
+
+.markdown table td,
+.markdown table th {
+  @apply border border-collapse border-border px-2 py-1;
+}
+
+.markdown table th {
+  @apply bg-muted;
+}
+
 /* Celebration Modal Animations */
 @keyframes float {
   0%,

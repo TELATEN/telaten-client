@@ -1,6 +1,7 @@
 "use client";
 
 import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
@@ -281,13 +282,15 @@ export default function AssistantPage() {
                             <div className="md:text-base text-sm leading-relaxed markdown prose prose-sm max-w-none dark:prose-invert">
                               {message.is_error ||
                               (!message.content.trim() && !isChatLoading) ? (
-                                <span className="text-destructive">
+                                <p className="text-destructive">
                                   Sistem gagal merespon permintaan Anda.
                                   Silahkan tunggu beberapa saat sebelum mencoba
                                   mengirim ulang.
-                                </span>
+                                </p>
                               ) : (
-                                <Markdown>{message.content}</Markdown>
+                                <Markdown remarkPlugins={[remarkGfm]}>
+                                  {message.content}
+                                </Markdown>
                               )}
                             </div>
                             {message.role == "assistant" &&
